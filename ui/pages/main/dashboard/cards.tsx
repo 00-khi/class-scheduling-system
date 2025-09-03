@@ -1,3 +1,7 @@
+import { getInstructorCount } from "@/services/instructorService";
+import { getRoomCount } from "@/services/roomService";
+import { getSectionCount } from "@/services/sectionService";
+import { getSubjectCount } from "@/services/subjectService";
 import {
   Card,
   CardAction,
@@ -5,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/shadcn/components/ui/card";
+import { stat } from "fs";
 import {
   BookOpen,
   Building,
@@ -12,40 +17,57 @@ import {
   Users,
   type LucideIcon,
 } from "lucide-react";
+import { title } from "process";
 
 export default function InfoCardWrapper() {
+  const sectionCount = getSectionCount();
+  const instructorCount = getInstructorCount();
+  const subjectCount = getSubjectCount();
+  const roomCount = getRoomCount();
+
+  const stats = [
+    {
+      title: "Sections",
+      value: sectionCount,
+      icon: GraduationCap,
+    },
+    {
+      title: "Instructors",
+      value: instructorCount,
+      icon: Users,
+    },
+    {
+      title: "Subjects",
+      value: subjectCount,
+      icon: BookOpen,
+    },
+    {
+      title: "Rooms",
+      value: roomCount,
+      icon: Building,
+    },
+  ];
+
   return (
     <>
-      <InfoCard
-        header="Sections"
-        value="--"
-        icon={GraduationCap}
-      />
-      <InfoCard
-        header="Instructors"
-        value="--"
-        icon={Users}
-      />
-      <InfoCard
-        header="Subjects"
-        value="--"
-        icon={BookOpen}
-      />
-      <InfoCard
-        header="Rooms"
-        value="--"
-        icon={Building}
-      />
+      {stats.map((stat) => (
+        <InfoCard
+          key={stat.title}
+          title={stat.title}
+          value={stat.value}
+          icon={stat.icon}
+        />
+      ))}
     </>
   );
 }
 
 function InfoCard({
-  header,
+  title,
   value,
   icon,
 }: {
-  header: string;
+  title: string;
   value: number | string;
   icon: LucideIcon;
 }) {
@@ -56,7 +78,7 @@ function InfoCard({
     <Card>
       <CardHeader>
         <CardDescription className="text-card-foreground">
-          {header}
+          {title}
         </CardDescription>
         <CardTitle className="text-2xl">{value}</CardTitle>
         <CardAction>

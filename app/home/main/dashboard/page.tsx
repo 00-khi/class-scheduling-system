@@ -20,7 +20,7 @@ export default function Dashboard() {
       <Separator />
       {/* TEST */}
 
-      <MainSection.Section>
+      {/* <MainSection.Section>
         <MainSection.Title>Today's Class Schedule</MainSection.Title>
         <MainSection.Content>
           <Card className="h-[600px]">
@@ -29,7 +29,7 @@ export default function Dashboard() {
             </CardHeader>
           </Card>
         </MainSection.Content>
-      </MainSection.Section>
+      </MainSection.Section> */}
     </MainSection>
   );
 }
