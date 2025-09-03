@@ -7,8 +7,8 @@ import {
   SelectItem,
 } from "@/shadcn/components/ui/select";
 import { Loader2 } from "lucide-react";
-import { IDepartment, IInstructor } from "@/types";
-import { getDepartments } from "@/services/departmentService";
+import { IAcademicQualification, IInstructor } from "@/types";
+import { getAcademicQualification } from "@/services/academicQualificationService";
 import { getInstructors } from "@/services/instructorService";
 
 interface SelectInstructorProps {
@@ -18,17 +18,17 @@ interface SelectInstructorProps {
 export default function SelectInstructor({
   onInstructorChange,
 }: SelectInstructorProps) {
-  const [departments, setDepartments] = useState<IDepartment[]>([]);
+  const [academicQualifications, setAcademicQualifications] = useState<IAcademicQualification[]>([]);
   const [instructors, setInstructors] = useState<IInstructor[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const [departmentId, setDepartmentId] = useState<string | null>(null);
+  const [academicQualificationId, setAcademicQualificationId] = useState<string | null>(null);
   const [instructorId, setInstructorId] = useState<string | null>(null);
 
   const load = () => {
     setLoading(true);
     setTimeout(() => {
-      setDepartments(getDepartments());
+      setAcademicQualifications(getAcademicQualification());
       setInstructors(getInstructors());
       setLoading(false);
     }, 120);
@@ -43,8 +43,8 @@ export default function SelectInstructor({
   }, [instructorId, onInstructorChange]);
 
   const filteredInstructors = () => {
-    if (!departmentId) return instructors;
-    return instructors.filter((i) => i.departmentId === departmentId);
+    if (!academicQualificationId) return instructors;
+    return instructors.filter((i) => i.academicQualificationId === academicQualificationId);
   };
 
   if (loading) {
@@ -59,17 +59,17 @@ export default function SelectInstructor({
   return (
     <div className="flex flex-wrap gap-3">
       <Select
-        value={departmentId ?? ""}
+        value={academicQualificationId ?? ""}
         onValueChange={(val) => {
-          setDepartmentId(val || null);
+          setAcademicQualificationId(val || null);
           setInstructorId(null);
         }}
       >
         <SelectTrigger>
-          <SelectValue placeholder="Select Department" />
+          <SelectValue placeholder="Select Academic Qualification" />
         </SelectTrigger>
         <SelectContent>
-          {departments.map((d) => (
+          {academicQualifications.map((d) => (
             <SelectItem key={d._id} value={d._id!}>
               {d.name}
             </SelectItem>

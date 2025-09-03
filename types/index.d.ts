@@ -1,6 +1,6 @@
 // import { Types } from "mongoose"; // Replace string with Types.ObjectId, if database is used
 
-export interface IDepartment {
+export interface IAcademicQualification {
   _id?: string;
   code: string; // e.g., "IT", "HM"
   name: string; // e.g., "Information Technology", "Hospitality Management"
@@ -9,7 +9,7 @@ export interface IDepartment {
 export interface IInstructor {
   _id?: string;
   name: string; // e.g., "Lebrawn Hayme"
-  departmentId: string; // ID of the department this instructor belongs to
+  academicQualificationId: string; // ID of the academic qualification this instructor belongs to
   status: "Full-Time" | "Part-Time";
 }
 

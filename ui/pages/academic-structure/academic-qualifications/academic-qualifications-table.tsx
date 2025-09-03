@@ -13,38 +13,38 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/shadcn/components/ui/dropdown-menu";
-import { IDepartment, IInstructor } from "@/types";
+import { IAcademicQualification, IInstructor } from "@/types";
 import {
-  getDepartments,
-  addDepartment,
-  updateDepartment,
-  deleteDepartment,
-} from "@/services/departmentService";
+  getAcademicQualification,
+  addAcademicQualification,
+  updateAcademicQualification,
+  deleteAcademicQualification,
+} from "@/services/academicQualificationService";
 import { toast } from "sonner";
 import { ConfirmDeleteDialog } from "@/ui/components/comfirm-delete-dialog";
 import { DataForm } from "@/ui/components/data-form";
 import { Badge } from "@/shadcn/components/ui/badge";
 import { getInstructors } from "@/services/instructorService";
 
-export default function DepartmentsTable() {
+export default function AcademicQualificationsTable() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [editingDepartment, setEditingDepartment] =
-    useState<IDepartment | null>(null);
+  const [editingAcademicQualification, setEditingAcademicQualification] =
+    useState<IAcademicQualification | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [departments, setDepartments] = useState<IDepartment[]>([]);
+  const [academicQualifications, setAcademicQualifications] = useState<IAcademicQualification[]>([]);
   const [instructors, setInstructors] = useState<IInstructor[]>([]);
 
   // 🆕 delete dialog state
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [departmentToDelete, setDepartmentToDelete] =
-    useState<IDepartment | null>(null);
+  const [academicQualificationToDelete, setAcademicQualificationToDelete] =
+    useState<IAcademicQualification | null>(null);
 
   const loadData = () => {
     setLoading(true);
     setTimeout(() => {
-      setDepartments(getDepartments());
+      setAcademicQualifications(getAcademicQualification());
       setInstructors(getInstructors());
       setLoading(false);
     }, 800);
@@ -54,36 +54,36 @@ export default function DepartmentsTable() {
     loadData();
   }, []);
 
-  const getDepartmentStats = (departmentId: string) => {
+  const getAcademicQualificationStats = (academicQualificationId: string) => {
     const instructorsCount = instructors.filter(
-      (i) => i.departmentId === departmentId
+      (i) => i.academicQualificationId === academicQualificationId
     ).length;
 
     return { instructorsCount };
   };
 
   // ADD
-  const handleAddDepartment = async (
-    departmentData: Omit<IDepartment, "_id">
+  const handleAddAcademicQualification = async (
+    academicQualificationData: Omit<IAcademicQualification, "_id">
   ) => {
-    if (!departmentData.code) {
-      toast.error("Department code is required");
+    if (!academicQualificationData.code) {
+      toast.error("Academic Qualification code is required");
       return false;
     }
 
-    if (!departmentData.name) {
-      toast.error("Department name is required");
+    if (!academicQualificationData.name) {
+      toast.error("Academic Qualification name is required");
       return false;
     }
 
     setIsSubmitting(true);
     try {
-      if (addDepartment(departmentData)) {
-        toast.success(`Department added successfully`);
+      if (addAcademicQualification(academicQualificationData)) {
+        toast.success(`Academic Qualification added successfully`);
         loadData();
         setIsAddDialogOpen(false);
       } else {
-        toast.error("Failed to add department");
+        toast.error("Failed to add academic qualification");
         return false;
       }
     } finally {
@@ -93,38 +93,38 @@ export default function DepartmentsTable() {
   };
 
   // UPDATE
-  const handleUpdateDepartment = async (departmentData: IDepartment) => {
-    if (!departmentData._id) {
+  const handleUpdateAcademicQualification = async (academicQualificationData: IAcademicQualification) => {
+    if (!academicQualificationData._id) {
       toast.error("Invalid ID");
       return false;
     }
 
-    if (!departmentData.code) {
-      toast.error("Department code is required");
+    if (!academicQualificationData.code) {
+      toast.error("Academic Qualification code is required");
       return false;
     }
 
-    if (!departmentData.name) {
-      toast.error("Department name is required");
+    if (!academicQualificationData.name) {
+      toast.error("Academic Qualification name is required");
       return false;
     }
 
     setIsSubmitting(true);
     try {
-      const { _id, ...data } = departmentData;
+      const { _id, ...data } = academicQualificationData;
 
-      if (updateDepartment(_id, data)) {
-        toast.success(`Department updated successfully`);
+      if (updateAcademicQualification(_id, data)) {
+        toast.success(`Academic Qualification updated successfully`);
         loadData();
       } else {
-        toast.error("Failed to update department");
+        toast.error("Failed to update academic qualification");
       }
 
       setIsEditDialogOpen(false);
-      setEditingDepartment(null);
+      setEditingAcademicQualification(null);
     } catch (error) {
-      toast.error("Error updating department");
-      console.error("Error updating department:", error);
+      toast.error("Error updating academic qualification");
+      console.error("Error updating academic qualification:", error);
     } finally {
       setIsSubmitting(false);
       return true;
@@ -132,25 +132,25 @@ export default function DepartmentsTable() {
   };
 
   // DELETE
-  const handleDeleteDepartment = (id: string) => {
+  const handleDeleteAcademicQualification = (id: string) => {
     try {
       if (!id) {
-        toast.error("Error deleting department: Invalid ID");
+        toast.error("Error deleting academic qualification: Invalid ID");
         return;
       }
-      if (deleteDepartment(id)) {
-        toast.success(`Department deleted successfully`);
+      if (deleteAcademicQualification(id)) {
+        toast.success(`Academic Qualification deleted successfully`);
         loadData();
       } else {
-        toast.error("Failed to delete department");
+        toast.error("Failed to delete academic qualification");
       }
     } catch (error) {
-      toast.error("Error deleting department");
-      console.error("Error deleting department:", error);
+      toast.error("Error deleting academic qualification");
+      console.error("Error deleting academic qualification:", error);
     }
   };
 
-  const columns: ColumnDef<IDepartment>[] = [
+  const columns: ColumnDef<IAcademicQualification>[] = [
     {
       id: "select",
       header: ({ table }) => (
@@ -191,7 +191,7 @@ export default function DepartmentsTable() {
       id: "instructors",
       header: "Instructors",
       cell: ({ row }) => {
-        const stats = getDepartmentStats(row.original._id || "");
+        const stats = getAcademicQualificationStats(row.original._id || "");
 
         return <Badge variant="secondary">{stats.instructorsCount}</Badge>;
       },
@@ -201,13 +201,13 @@ export default function DepartmentsTable() {
       header: () => <span className="sr-only">Actions</span>,
       cell: ({ row }) => (
         <RowActions
-          department={row.original}
+          academicQualification={row.original}
           onEdit={(dep) => {
-            setEditingDepartment(dep);
+            setEditingAcademicQualification(dep);
             setIsEditDialogOpen(true);
           }}
           onDelete={(dep) => {
-            setDepartmentToDelete(dep);
+            setAcademicQualificationToDelete(dep);
             setIsDeleteDialogOpen(true);
           }}
         />
@@ -227,13 +227,13 @@ export default function DepartmentsTable() {
           </span>
         </div>
       ) : (
-        <DataTable data={departments} columns={columns}>
+        <DataTable data={academicQualifications} columns={columns}>
           {/* Toolbar */}
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex flex-wrap items-center gap-3">
               <DataTable.Search
                 column="name"
-                placeholder="Search departments..."
+                placeholder="Search"
                 className="max-w-sm"
               />
               <DataTable.ClearFilters />
@@ -242,12 +242,12 @@ export default function DepartmentsTable() {
             <div className="flex flex-wrap items-center gap-3">
               <DataTable.DeleteSelected
                 onDeleteSelected={(ids) => {
-                  ids.forEach((id) => handleDeleteDepartment(id));
+                  ids.forEach((id) => handleDeleteAcademicQualification(id));
                 }}
               />
               <Button onClick={() => setIsAddDialogOpen(true)}>
                 <PlusIcon className="-ms-1 opacity-60" size={16} />
-                Add Department
+                Add Academic Qualification
               </Button>
             </div>
           </div>
@@ -257,21 +257,21 @@ export default function DepartmentsTable() {
         </DataTable>
       )}
 
-      <DepartmentForm
+      <AcademicQualificationForm
         isOpen={isAddDialogOpen}
         onClose={() => setIsAddDialogOpen(false)}
-        onSubmit={handleAddDepartment}
+        onSubmit={handleAddAcademicQualification}
         isLoading={isSubmitting}
       />
 
-      <DepartmentForm
-        item={editingDepartment || undefined}
+      <AcademicQualificationForm
+        item={editingAcademicQualification || undefined}
         isOpen={isEditDialogOpen}
         onClose={() => {
           setIsEditDialogOpen(false);
-          setEditingDepartment(null);
+          setEditingAcademicQualification(null);
         }}
-        onSubmit={handleUpdateDepartment}
+        onSubmit={handleUpdateAcademicQualification}
         isLoading={isSubmitting}
       />
 
@@ -280,26 +280,26 @@ export default function DepartmentsTable() {
         isOpen={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
         onConfirm={() => {
-          if (departmentToDelete?._id) {
-            handleDeleteDepartment(departmentToDelete._id);
+          if (academicQualificationToDelete?._id) {
+            handleDeleteAcademicQualification(academicQualificationToDelete._id);
           }
           setIsDeleteDialogOpen(false);
-          setDepartmentToDelete(null);
+          setAcademicQualificationToDelete(null);
         }}
-        itemName={departmentToDelete?.name}
+        itemName={academicQualificationToDelete?.name}
       />
     </div>
   );
 }
 
 function RowActions({
-  department,
+  academicQualification,
   onEdit,
   onDelete,
 }: {
-  department: IDepartment;
-  onEdit: (dep: IDepartment) => void;
-  onDelete: (dep: IDepartment) => void;
+  academicQualification: IAcademicQualification;
+  onEdit: (dep: IAcademicQualification) => void;
+  onDelete: (dep: IAcademicQualification) => void;
 }) {
   return (
     <DropdownMenu>
@@ -311,13 +311,13 @@ function RowActions({
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => onEdit(department)}>
+        <DropdownMenuItem onClick={() => onEdit(academicQualification)}>
           Edit
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
           variant="destructive"
-          onClick={() => onDelete(department)}
+          onClick={() => onDelete(academicQualification)}
         >
           Delete
         </DropdownMenuItem>
@@ -326,7 +326,7 @@ function RowActions({
   );
 }
 
-function DepartmentForm({
+function AcademicQualificationForm({
   isOpen,
   item,
   onClose,
@@ -334,29 +334,29 @@ function DepartmentForm({
   isLoading,
 }: {
   isOpen: boolean;
-  item?: IDepartment;
+  item?: IAcademicQualification;
   onClose: () => void;
-  onSubmit: (data: IDepartment) => void;
+  onSubmit: (data: IAcademicQualification) => void;
   isLoading?: boolean;
 }) {
   return (
-    <DataForm<IDepartment>
+    <DataForm<IAcademicQualification>
       item={item}
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={onSubmit}
       isLoading={isLoading}
-      title={{ add: "Add Department", edit: "Edit Department" }}
+      title={{ add: "Add Academic Qualification", edit: "Edit Academic Qualification" }}
     >
       <DataForm.Input
         name="code"
-        label="Department Code"
+        label="Academic Qualification Code"
         placeholder="e.g., IT"
         required
       />
       <DataForm.Input
         name="name"
-        label="Department Name"
+        label="Academic Qualification Name"
         placeholder="e.g., Information Technology"
         required
       />

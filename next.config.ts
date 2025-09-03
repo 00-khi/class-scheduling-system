@@ -16,7 +16,7 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/home/academic-structure",
-        destination: "/home/academic-structure/departments",
+        destination: "/home/academic-structure/academic-qualifications",
         permanent: false,
       },
       {

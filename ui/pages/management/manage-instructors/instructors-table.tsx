@@ -13,7 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/shadcn/components/ui/dropdown-menu";
-import { IDepartment, IInstructor } from "@/types";
+import { IAcademicQualification, IInstructor } from "@/types";
 import {
   getInstructors,
   addInstructor,
@@ -23,7 +23,7 @@ import {
 import { toast } from "sonner";
 import { ConfirmDeleteDialog } from "@/ui/components/comfirm-delete-dialog";
 import { DataForm } from "@/ui/components/data-form";
-import { getDepartments } from "@/services/departmentService";
+import { getAcademicQualification } from "@/services/academicQualificationService";
 import { Badge } from "@/shadcn/components/ui/badge";
 import {
   Tooltip,
@@ -39,7 +39,7 @@ export default function InstructorsTable() {
     useState<IInstructor | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [instructors, setInstructors] = useState<IInstructor[]>([]);
-  const [departments, setDepartments] = useState<IDepartment[]>([]);
+  const [academicQualifications, setAcademicQualifications] = useState<IAcademicQualification[]>([]);
 
   // 🆕 delete dialog state
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -50,7 +50,7 @@ export default function InstructorsTable() {
     setLoading(true);
     setTimeout(() => {
       setInstructors(getInstructors());
-      setDepartments(getDepartments());
+      setAcademicQualifications(getAcademicQualification());
       setLoading(false);
     }, 800);
   };
@@ -70,8 +70,8 @@ export default function InstructorsTable() {
         return;
       }
 
-      if (!instructorData.departmentId) {
-        toast.error("Department is required");
+      if (!instructorData.academicQualificationId) {
+        toast.error("Academic Qualification is required");
         return;
       }
 
@@ -102,8 +102,8 @@ export default function InstructorsTable() {
         return;
       }
 
-      if (!instructorData.departmentId) {
-        toast.error("Department is required");
+      if (!instructorData.academicQualificationId) {
+        toast.error("Academic Qualification is required");
         return;
       }
 
@@ -150,13 +150,13 @@ export default function InstructorsTable() {
     }
   };
 
-  const getDepartmentName = (departmentId: string) => {
-    const dept = departments.find((d) => d._id === departmentId);
+  const getAcademicQualificationName = (academicQualificationId: string) => {
+    const dept = academicQualifications.find((d) => d._id === academicQualificationId);
     return dept ? dept.name : "Unknown";
   };
 
-  const getDepartmentCode = (departmentId: string) => {
-    const dept = departments.find((d) => d._id === departmentId);
+  const getAcademicQualificationCode = (academicQualificationId: string) => {
+    const dept = academicQualifications.find((d) => d._id === academicQualificationId);
     return dept ? dept.code : "Unknown";
   };
 
@@ -192,16 +192,16 @@ export default function InstructorsTable() {
       enableHiding: false,
     },
     {
-      header: "Department",
-      accessorKey: "departmentId",
+      header: "Academic Qualification",
+      accessorKey: "academicQualificationId",
       cell: ({ row }) => {
-        const departmentId = row.getValue<string>("departmentId");
+        const academicQualificationId = row.getValue<string>("academicQualificationId");
         return (
           <Tooltip>
             <TooltipTrigger>
-              <Badge variant="outline">{getDepartmentCode(departmentId)}</Badge>
+              <Badge variant="outline">{getAcademicQualificationCode(academicQualificationId)}</Badge>
             </TooltipTrigger>
-            <TooltipContent>{getDepartmentName(departmentId)}</TooltipContent>
+            <TooltipContent>{getAcademicQualificationName(academicQualificationId)}</TooltipContent>
           </Tooltip>
         );
       },
@@ -260,10 +260,10 @@ export default function InstructorsTable() {
                 className="max-w-sm"
               />
               <DataTable.Filter
-                column="departmentId"
-                placeholder="All departments"
+                column="academicQualificationId"
+                placeholder="All academic qualifications"
                 renderValue={(id) => {
-                  const dept = departments.find((d) => d._id === id);
+                  const dept = academicQualifications.find((d) => d._id === id);
                   return dept ? dept.name : "Unknown";
                 }}
               />
@@ -307,7 +307,7 @@ export default function InstructorsTable() {
         }}
         onSubmit={handleAddInstructor}
         isLoading={isSubmitting}
-        departments={departments}
+        academicQualifications={academicQualifications}
       />
 
       <InstructorForm
@@ -319,7 +319,7 @@ export default function InstructorsTable() {
         }}
         onSubmit={handleUpdateInstructor}
         isLoading={isSubmitting}
-        departments={departments}
+        academicQualifications={academicQualifications}
       />
 
       {/* Delete Dialog */}
@@ -379,14 +379,14 @@ function InstructorForm({
   onClose,
   onSubmit,
   isLoading,
-  departments,
+  academicQualifications,
 }: {
   isOpen: boolean;
   item?: IInstructor;
   onClose: () => void;
   onSubmit: (data: IInstructor) => void;
   isLoading?: boolean;
-  departments: IDepartment[];
+  academicQualifications: IAcademicQualification[];
 }) {
   return (
     <DataForm<IInstructor>
@@ -404,10 +404,10 @@ function InstructorForm({
         required
       />
       <DataForm.Select
-        name="departmentId"
-        label="Department"
+        name="academicQualificationId"
+        label="Academic Qualification"
         required
-        options={departments.map((dept) => ({
+        options={academicQualifications.map((dept) => ({
           label: dept.name,
           value: dept._id ?? "",
         }))}

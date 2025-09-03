@@ -52,8 +52,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         category: "ACADEMIC STRUCTURE",
         items: [
           {
-            title: "Departments",
-            url: "/home/academic-structure/departments",
+            title: "Academic Qualifications",
+            url: "/home/academic-structure/academic-qualifications",
             icon: Building,
           },
           {

@@ -1,6 +1,6 @@
-import { IDepartment } from "@/types/index";
+import { IAcademicQualification } from "@/types/index";
 
-const departments: IDepartment[] = [
+const academicQualifications: IAcademicQualification[] = [
   { _id: "1", name: "How Much", code: "HM" },
   { _id: "2", name: "International Tambay", code: "IT" },
   { _id: "3", name: "Engineering", code: "ENGR" },
@@ -14,6 +14,6 @@ const departments: IDepartment[] = [
   { _id: "11", name: "Foreign Language", code: "FL" },
 ];
 
-export function getDepartmentStore() {
-  return departments
+export function getAcademicQualificationStore() {
+  return academicQualifications
 }
