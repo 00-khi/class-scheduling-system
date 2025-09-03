@@ -35,6 +35,6 @@ export function deleteSubject(id: string): boolean {
   return true;
 }
 
-export function getSubjetCount(): number {
+export function getSubjectCount(): number {
   return getSubjectStore().length;
 }
