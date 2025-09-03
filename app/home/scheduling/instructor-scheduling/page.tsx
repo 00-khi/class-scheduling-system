@@ -1,5 +1,5 @@
 import { MainSection } from "@/ui/components/main-section";
-import InstructorSchedulingClient from "@/ui/pages/scheduling/instructor-scheduling/instructor-assigning-client";
+import InstructorSchedulingClient from "@/ui/pages/scheduling/instructor-scheduling/instructor-scheduling-client";
 
 export default function InstructorAssigning() {
   return (

@@ -10,7 +10,6 @@ import {
   getAssignedSubjects,
 } from "@/services/assignedSubjectService";
 import { IAssignedSubject, IScheduledSubject } from "@/types";
-import { WarningDialog } from "@/ui/components/warning-dialog";
 
 export default function CustomScheduleClient() {
   const [selectedSection, setSelectedSection] = useState<string | null>(null);
@@ -72,7 +71,6 @@ export default function CustomScheduleClient() {
           />
         </div>
       </div>
-      <WarningDialog src="/images/ayko.png" />
     </div>
   );
 }

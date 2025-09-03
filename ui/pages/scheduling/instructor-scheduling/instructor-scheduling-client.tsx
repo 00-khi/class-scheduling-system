@@ -10,7 +10,6 @@ import {
 import SelectInstructor from "./select-instructor";
 import UnassignedInstructorSubjectsTable from "./unassigned-instructor-subjects-table";
 import AssignedInstructorSubjectsTable from "./assigned-instructor-subjects-table";
-import { WarningDialog } from "../../../components/warning-dialog";
 
 export default function InstructorSchedulingClient() {
   const [selectedInstructor, setSelectedInstructor] = useState<string | null>(
@@ -63,7 +62,6 @@ export default function InstructorSchedulingClient() {
           </CardContent>
         </Card>
       </div>
-      <WarningDialog />
     </div>
   );
 }
