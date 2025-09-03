@@ -85,8 +85,8 @@ const courses: ICourse[] = [
   },
   {
     _id: "5",
-    code: "GAS",
-    name: " General Academic",
+    code: "ITMAWD",
+    name: "IT in Mobile App and Web Development",
     academicLevelId: "2",
     yearLevels: [
       {
@@ -103,8 +103,8 @@ const courses: ICourse[] = [
   },
   {
     _id: "6",
-    code: "BSHM",
-    name: "Bachelor of Science in Hospitality Management",
+    code: "BSAIS",
+    name: "Bachelor of Science in Accounting Information System",
     academicLevelId: "3",
     yearLevels: [
       {
@@ -131,8 +131,8 @@ const courses: ICourse[] = [
   },
   {
     _id: "7",
-    code: "BSIT",
-    name: "Bachelor of Science in Information Technology",
+    code: "BSBA",
+    name: "Bachelor of Science in Business Administration",
     academicLevelId: "3",
     yearLevels: [
       {
@@ -187,8 +187,8 @@ const courses: ICourse[] = [
   },
   {
     _id: "9",
-    code: "BSBM",
-    name: "Bachelor of Science in Business and Management",
+    code: "BSHM",
+    name: "Bachelor of Science in Hospitality Management",
     academicLevelId: "3",
     yearLevels: [
       {
@@ -215,8 +215,8 @@ const courses: ICourse[] = [
   },
   {
     _id: "10",
-    code: "BSAIS",
-    name: "Bachelor of Science in Accounting Information System",
+    code: "BSIT",
+    name: "Bachelor of Science in Information Technology",
     academicLevelId: "3",
     yearLevels: [
       {
