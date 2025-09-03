@@ -2,8 +2,8 @@
 
 import { useMemo, useState } from "react";
 import SelectSection from "@/ui/components/select-section";
-import { ScheduledSubjectsTable } from "./test-scheduled-subjects-table.test";
-import { CustomScheduleTable } from "./test-custom-schedule-table.test";
+import { ScheduledSubjectsTable } from "./test-scheduled-subjects-table";
+import { CustomScheduleTable } from "./test-custom-schedule-table";
 import { getScheduledSubjects } from "@/services/scheduledSubjectService";
 import {
   getAssignedSubjectById,
