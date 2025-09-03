@@ -10,7 +10,7 @@ export interface IInstructor {
   _id?: string;
   name: string; // e.g., "Lebrawn Hayme"
   academicQualificationId: string; // ID of the academic qualification this instructor belongs to
-  status: "Full-Time" | "Part-Time";
+  status: "PT" | "PTFL" | "PROBY" | "FT"; // PT = Part-Time, PTFL = Part-Time with Full Load, PROBY = Probationary, FT = Full-Time
 }
 
 export interface IAcademicLevel {

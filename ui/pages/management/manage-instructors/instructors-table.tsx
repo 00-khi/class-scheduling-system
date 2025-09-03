@@ -39,7 +39,9 @@ export default function InstructorsTable() {
     useState<IInstructor | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [instructors, setInstructors] = useState<IInstructor[]>([]);
-  const [academicQualifications, setAcademicQualifications] = useState<IAcademicQualification[]>([]);
+  const [academicQualifications, setAcademicQualifications] = useState<
+    IAcademicQualification[]
+  >([]);
 
   // 🆕 delete dialog state
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -151,12 +153,16 @@ export default function InstructorsTable() {
   };
 
   const getAcademicQualificationName = (academicQualificationId: string) => {
-    const acadQual = academicQualifications.find((d) => d._id === academicQualificationId);
+    const acadQual = academicQualifications.find(
+      (d) => d._id === academicQualificationId
+    );
     return acadQual ? acadQual.name : "Unknown";
   };
 
   const getAcademicQualificationCode = (academicQualificationId: string) => {
-    const acadQual = academicQualifications.find((d) => d._id === academicQualificationId);
+    const acadQual = academicQualifications.find(
+      (d) => d._id === academicQualificationId
+    );
     return acadQual ? acadQual.code : "Unknown";
   };
 
@@ -195,13 +201,19 @@ export default function InstructorsTable() {
       header: "Academic Qualification",
       accessorKey: "academicQualificationId",
       cell: ({ row }) => {
-        const academicQualificationId = row.getValue<string>("academicQualificationId");
+        const academicQualificationId = row.getValue<string>(
+          "academicQualificationId"
+        );
         return (
           <Tooltip>
             <TooltipTrigger>
-              <Badge variant="outline">{getAcademicQualificationCode(academicQualificationId)}</Badge>
+              <Badge variant="outline">
+                {getAcademicQualificationCode(academicQualificationId)}
+              </Badge>
             </TooltipTrigger>
-            <TooltipContent>{getAcademicQualificationName(academicQualificationId)}</TooltipContent>
+            <TooltipContent>
+              {getAcademicQualificationName(academicQualificationId)}
+            </TooltipContent>
           </Tooltip>
         );
       },
@@ -212,11 +224,7 @@ export default function InstructorsTable() {
       accessorKey: "status",
       cell: ({ row }) => {
         const status = row.getValue<string>("status");
-        return (
-          <Badge variant={status === "Full-Time" ? "default" : "secondary"}>
-            {status}
-          </Badge>
-        );
+        return <Badge variant="secondary">{status}</Badge>;
       },
     },
     {
@@ -263,7 +271,9 @@ export default function InstructorsTable() {
                 column="academicQualificationId"
                 placeholder="All academic qualifications"
                 renderValue={(id) => {
-                  const acadQual = academicQualifications.find((d) => d._id === id);
+                  const acadQual = academicQualifications.find(
+                    (d) => d._id === id
+                  );
                   return acadQual ? acadQual.name : "Unknown";
                 }}
               />
@@ -417,8 +427,10 @@ function InstructorForm({
         label="Status"
         required
         options={[
-          { label: "Full-Time", value: "Full-Time" },
-          { label: "Part-Time", value: "Part-Time" },
+          { label: "PT", value: "PT" },
+          { label: "PTFL", value: "PTFL" },
+          { label: "PROBY", value: "PROBY" },
+          { label: "FT", value: "FT" },
         ]}
       />
     </DataForm>
