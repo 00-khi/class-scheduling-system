@@ -10,13 +10,11 @@ import {
 import SelectSection from "../../../components/select-section";
 import { Button } from "@/shadcn/components/ui/button";
 import { Zap } from "lucide-react";
-import Image from "next/image";
 import { Progress } from "@/shadcn/components/ui/progress";
 
 export default function AutoClassSchedulingClient() {
   const [selectedSection, setSelectedSection] = useState<string | null>(null);
   const [generateKey, setGenerateKey] = useState(false);
-  const [showImage, setShowImage] = useState(false);
   const [value, setValue] = useState(0);
 
   useEffect(() => {
@@ -40,10 +38,8 @@ export default function AutoClassSchedulingClient() {
   useEffect(() => {
     if (!generateKey) return;
 
-    setShowImage(false);
     const timer = setTimeout(() => {
       setGenerateKey(false);
-      setShowImage(true);
     }, 3000);
 
     return () => clearTimeout(timer);
@@ -52,7 +48,6 @@ export default function AutoClassSchedulingClient() {
   const triggerGenerate = () => {
     setGenerateKey(true);
     setValue(0);
-    setShowImage(false);
   };
 
   return (
@@ -123,14 +118,7 @@ export default function AutoClassSchedulingClient() {
             </CardTitle>
           </CardHeader>
           <CardContent className="h-[70vh] max-h-[70vh] overflow-y-auto py-4 border-y">
-            {showImage ? (
-              <Image
-                src="/images/mock_image_1.jpg"
-                alt="Generated Schedule"
-                width={1000}
-                height={1000}
-              />
-            ) : generateKey ? (
+            {generateKey ? (
               <div className="flex flex-col gap-2 items-center justify-center">
                 <span className="text-sm text-muted-foreground">
                   Generating schedule, please wait...

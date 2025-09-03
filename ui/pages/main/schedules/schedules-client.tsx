@@ -53,15 +53,10 @@ export default function SchedulesClient() {
         <CardContent className="space-y-4">
           <SelectSection onSectionChange={setSelectedSection} />
           <SelectRoom onRoomChange={setSelectedRoom} />
-          <Tooltip>
-            <TooltipTrigger asChild>
-                <Button onClick={() => exportDocx("/images/wow.png")}>
-                  <FileText />
-                  Export DOCX
-                </Button>
-            </TooltipTrigger>
-            <TooltipContent>wag</TooltipContent>
-          </Tooltip>
+          <Button onClick={() => exportDocx()}>
+            <FileText />
+            Export DOCX
+          </Button>
         </CardContent>
         <CardFooter></CardFooter>
       </Card>
@@ -134,26 +129,13 @@ function SelectRoom({
 }
 
 // TESTING
-async function exportDocx(imageUrl: string) {
-  const response = await fetch(imageUrl);
-  const blob = await response.blob();
-  const arrayBuffer = await blob.arrayBuffer();
-
+async function exportDocx() {
   const doc = new Document({
     sections: [
       {
         children: [
           new Paragraph({
-            children: [
-              new ImageRun({
-                data: arrayBuffer,
-                transformation: {
-                  width: 600,
-                  height: 300,
-                },
-                type: "png",
-              }),
-            ],
+            text: "Hello World",
           }),
         ],
       },
