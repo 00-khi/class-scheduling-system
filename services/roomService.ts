@@ -31,3 +31,7 @@ export function deleteRoom(id: string): boolean {
   rooms.splice(index, 1);
   return true;
 }
+
+export function getRoomCount(): number {
+  return getRoomStore().length;
+}

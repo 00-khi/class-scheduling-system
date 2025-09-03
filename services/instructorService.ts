@@ -37,3 +37,6 @@ export function deleteInstructor(id: string): boolean {
   return true;
 }
 
+export function getInstructorCount(): number {
+  return getInstructorStore().length;
+}

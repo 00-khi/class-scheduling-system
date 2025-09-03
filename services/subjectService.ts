@@ -34,3 +34,7 @@ export function deleteSubject(id: string): boolean {
   subjects.splice(index, 1);
   return true;
 }
+
+export function geSubjetCount(): number {
+  return getSubjectStore().length;
+}

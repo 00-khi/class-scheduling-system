@@ -34,3 +34,7 @@ export function deleteSection(id: string): boolean {
   sections.splice(index, 1);
   return true;
 }
+
+export function getSectionCount(): number {
+  return getSectionStore().length;
+}
