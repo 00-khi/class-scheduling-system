@@ -1,3 +1,5 @@
+"use client";
+
 import { getInstructorCount } from "@/services/instructorService";
 import { getRoomCount } from "@/services/roomService";
 import { getSectionCount } from "@/services/sectionService";
@@ -9,7 +11,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/shadcn/components/ui/card";
-import { stat } from "fs";
 import {
   BookOpen,
   Building,
@@ -17,43 +18,35 @@ import {
   Users,
   type LucideIcon,
 } from "lucide-react";
-import { title } from "process";
+import { useEffect, useState } from "react";
 
 export default function InfoCardWrapper() {
-  const sectionCount = getSectionCount();
-  const instructorCount = getInstructorCount();
-  const subjectCount = getSubjectCount();
-  const roomCount = getRoomCount();
+  const [stats, setStats] = useState([
+    { label: "Sections", value: 0, icon: GraduationCap },
+    { label: "Instructors", value: 0, icon: Users },
+    { label: "Subjects", value: 0, icon: BookOpen },
+    { label: "Rooms", value: 0, icon: Building },
+  ]);
 
-  const stats = [
-    {
-      title: "Sections",
-      value: sectionCount,
-      icon: GraduationCap,
-    },
-    {
-      title: "Instructors",
-      value: instructorCount,
-      icon: Users,
-    },
-    {
-      title: "Subjects",
-      value: subjectCount,
-      icon: BookOpen,
-    },
-    {
-      title: "Rooms",
-      value: roomCount,
-      icon: Building,
-    },
-  ];
+  const refreshStats = () => {
+    setStats([
+      { label: "Sections", value: getSectionCount(), icon: GraduationCap },
+      { label: "Instructors", value: getInstructorCount(), icon: Users },
+      { label: "Subjects", value: getSubjectCount(), icon: BookOpen },
+      { label: "Rooms", value: getRoomCount(), icon: Building },
+    ]);
+  };
+
+  useEffect(() => {
+    refreshStats();
+  }, []);
 
   return (
     <>
       {stats.map((stat) => (
         <InfoCard
-          key={stat.title}
-          title={stat.title}
+          key={stat.label}
+          label={stat.label}
           value={stat.value}
           icon={stat.icon}
         />
@@ -63,22 +56,21 @@ export default function InfoCardWrapper() {
 }
 
 function InfoCard({
-  title,
+  label,
   value,
   icon,
 }: {
-  title: string;
+  label: string;
   value: number | string;
   icon: LucideIcon;
 }) {
   const Icon = icon;
 
   return (
-    // <Card className="from-primary/5 to-card bg-gradient-to-t">
     <Card>
       <CardHeader>
         <CardDescription className="text-card-foreground">
-          {title}
+          {label}
         </CardDescription>
         <CardTitle className="text-2xl">{value}</CardTitle>
         <CardAction>
