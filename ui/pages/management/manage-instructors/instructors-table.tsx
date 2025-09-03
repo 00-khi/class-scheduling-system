@@ -151,13 +151,13 @@ export default function InstructorsTable() {
   };
 
   const getAcademicQualificationName = (academicQualificationId: string) => {
-    const dept = academicQualifications.find((d) => d._id === academicQualificationId);
-    return dept ? dept.name : "Unknown";
+    const acadQual = academicQualifications.find((d) => d._id === academicQualificationId);
+    return acadQual ? acadQual.name : "Unknown";
   };
 
   const getAcademicQualificationCode = (academicQualificationId: string) => {
-    const dept = academicQualifications.find((d) => d._id === academicQualificationId);
-    return dept ? dept.code : "Unknown";
+    const acadQual = academicQualifications.find((d) => d._id === academicQualificationId);
+    return acadQual ? acadQual.code : "Unknown";
   };
 
   const columns: ColumnDef<IInstructor>[] = [
@@ -263,8 +263,8 @@ export default function InstructorsTable() {
                 column="academicQualificationId"
                 placeholder="All academic qualifications"
                 renderValue={(id) => {
-                  const dept = academicQualifications.find((d) => d._id === id);
-                  return dept ? dept.name : "Unknown";
+                  const acadQual = academicQualifications.find((d) => d._id === id);
+                  return acadQual ? acadQual.name : "Unknown";
                 }}
               />
               <DataTable.Filter column="status" placeholder="All statuses" />
@@ -407,9 +407,9 @@ function InstructorForm({
         name="academicQualificationId"
         label="Academic Qualification"
         required
-        options={academicQualifications.map((dept) => ({
-          label: dept.name,
-          value: dept._id ?? "",
+        options={academicQualifications.map((acadQual) => ({
+          label: acadQual.name,
+          value: acadQual._id ?? "",
         }))}
       />
       <DataForm.Select

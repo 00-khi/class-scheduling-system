@@ -147,8 +147,8 @@ export default function CoursesTable() {
   };
 
   const getAcademicLevelName = (academicLevelId: string) => {
-    const dept = academicLevels.find((d) => d._id === academicLevelId);
-    return dept ? dept.name : "Unknown";
+    const acadQual = academicLevels.find((d) => d._id === academicLevelId);
+    return acadQual ? acadQual.name : "Unknown";
   };
 
   const getAcademicLevelCode = (academicLevelId: string) => {

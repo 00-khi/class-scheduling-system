@@ -271,8 +271,8 @@ function RowActions({
   onDelete,
 }: {
   room: IRoom;
-  onEdit: (dep: IRoom) => void;
-  onDelete: (dep: IRoom) => void;
+  onEdit: (rm: IRoom) => void;
+  onDelete: (rm: IRoom) => void;
 }) {
   return (
     <DropdownMenu>

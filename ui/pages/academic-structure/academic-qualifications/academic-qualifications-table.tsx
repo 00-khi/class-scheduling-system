@@ -202,12 +202,12 @@ export default function AcademicQualificationsTable() {
       cell: ({ row }) => (
         <RowActions
           academicQualification={row.original}
-          onEdit={(dep) => {
-            setEditingAcademicQualification(dep);
+          onEdit={(acadQual) => {
+            setEditingAcademicQualification(acadQual);
             setIsEditDialogOpen(true);
           }}
-          onDelete={(dep) => {
-            setAcademicQualificationToDelete(dep);
+          onDelete={(acadQual) => {
+            setAcademicQualificationToDelete(acadQual);
             setIsDeleteDialogOpen(true);
           }}
         />
@@ -298,8 +298,8 @@ function RowActions({
   onDelete,
 }: {
   academicQualification: IAcademicQualification;
-  onEdit: (dep: IAcademicQualification) => void;
-  onDelete: (dep: IAcademicQualification) => void;
+  onEdit: (acadQual: IAcademicQualification) => void;
+  onDelete: (acadQual: IAcademicQualification) => void;
 }) {
   return (
     <DropdownMenu>
