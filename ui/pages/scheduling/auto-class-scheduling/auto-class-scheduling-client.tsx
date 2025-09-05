@@ -81,15 +81,15 @@ export default function AutoClassSchedulingClient() {
                       <p className="text-muted-foreground">
                         Unscheduled Subjects:
                       </p>
-                      <p>{selectedSection ? "wala pa inaayos ko pa" : "--"}</p>
+                      {/* <p>{selectedSection ? "wala pa inaayos ko pa" : "--"}</p> */}
                     </div>
                     <div className="flex justify-between items-center">
                       <p className="text-muted-foreground">Selected Days:</p>
                     </div>
                     <div className="flex justify-between items-center">
-                      <p className="text-muted-foreground">
+                      {/* <p className="text-muted-foreground">
                         Ano pa pwede idagdag?
-                      </p>
+                      </p> */}
                     </div>
                   </div>
                 </CardContent>
