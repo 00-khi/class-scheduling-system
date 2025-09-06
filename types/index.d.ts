@@ -83,9 +83,3 @@ export interface IScheduleOfInstructor {
   assignedSubjectId: string; // Links to assigned subject this assigned instructor belongs to
   instructorId: string; // Links to instructor this schedule of intructor ha ano daw, naubusan na ko ng english
 }
-
-export interface IUser {
-  _id?: string;
-  username: string;
-  passwordHash: string; // store hash, not plain
-}
