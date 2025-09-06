@@ -28,7 +28,6 @@ import {
 
 import { NavGroup } from "./nav-group";
 import { Sidebar, SidebarContent } from "@/shadcn/components/ui/sidebar";
-import { signOut } from "next-auth/react";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const data = {
@@ -159,12 +158,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             title: "Settings",
             url: "/home/system/settings",
             icon: Settings,
-          },
-          {
-            title: "Log Out",
-            url: "#",
-            icon: LogOut,
-            onLogout: () => signOut({ callbackUrl: "/login" }),
           },
         ],
       },
