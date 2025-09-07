@@ -17,7 +17,7 @@ Designed to simplify the process of creating and managing class schedules in sch
 - Next.js (React framework)
 - TypeScript
 - Shadcn UI
-- MongoDB
+- SQLite
 
 ---
 
