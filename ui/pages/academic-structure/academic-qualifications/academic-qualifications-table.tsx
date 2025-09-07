@@ -13,7 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/shadcn/components/ui/dropdown-menu";
-import { IAcademicQualification } from "@/types";
+import { IAcademicQualification, IAcademicQualificationRow } from "@/types";
 import {
   getAcademicQualification,
   addAcademicQualification,
@@ -158,7 +158,7 @@ export default function AcademicQualificationsTable() {
     }
   };
 
-  const columns: ColumnDef<IAcademicQualification>[] = [
+  const columns: ColumnDef<IAcademicQualificationRow>[] = [
     {
       id: "select",
       header: ({ table }) => (
@@ -194,6 +194,14 @@ export default function AcademicQualificationsTable() {
       cell: ({ row }) => (
         <div className="font-medium">{row.getValue("name")}</div>
       ),
+    },
+    {
+      id: "instructors",
+      header: "Instructors",
+      cell: ({ row }) => {
+        const count = row.original._count?.instructors ?? 0;
+        return <Badge variant="secondary">{count}</Badge>;
+      },
     },
     {
       id: "actions",
@@ -280,9 +288,7 @@ export default function AcademicQualificationsTable() {
         onClose={() => setIsDeleteDialogOpen(false)}
         onConfirm={() => {
           if (academicQualificationToDelete?.id) {
-            handleDeleteAcademicQualification(
-              academicQualificationToDelete.id
-            );
+            handleDeleteAcademicQualification(academicQualificationToDelete.id);
           }
           setIsDeleteDialogOpen(false);
           setAcademicQualificationToDelete(null);

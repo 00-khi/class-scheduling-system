@@ -3,12 +3,6 @@ import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
 
-// Base interface for the Academic Qualification data
-interface IAcademicQualificationBase {
-  code: string;
-  name: string;
-}
-
 // Interface for the incoming data in the PUT request for partial updates
 interface IUpdateAcademicQualification {
   code?: string;
@@ -71,6 +65,8 @@ export async function PUT(
     }
 
     const body: IUpdateAcademicQualification = await request.json();
+
+    console.log("PUT Body:", body);
 
     const updatedAcademicQualification =
       await prisma.academicQualification.update({

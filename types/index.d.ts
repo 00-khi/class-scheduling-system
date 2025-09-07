@@ -6,6 +6,12 @@ export interface IAcademicQualification {
   name: string; // e.g., "Information Technology", "Hospitality Management"
 }
 
+export interface IAcademicQualificationRow extends IAcademicQualification {
+  _count?: {
+    instructors: number;
+  };
+}
+
 export interface IInstructor {
   id?: string;
   name: string; // e.g., "Lebrawn Hayme"
