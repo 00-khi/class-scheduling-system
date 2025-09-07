@@ -1,0 +1,147 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  // output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// ---------- ENUMS
+
+enum InstructorStatus {
+  PT
+  PTFL
+  PROBY
+  FT
+}
+
+enum RoomType {
+  Lecture
+  Laboratory
+}
+
+// ---------- MODELS
+
+model AcademicQualification {
+  id          Int          @id @default(autoincrement())
+  code        String
+  name        String
+  instructors Instructor[]
+}
+
+model Instructor {
+  id                      Int              @id @default(autoincrement())
+  name                    String
+  academicQualificationId Int
+  status                  InstructorStatus
+
+  academicQualification AcademicQualification  @relation(fields: [academicQualificationId], references: [id])
+  schedules             ScheduleOfInstructor[]
+}
+
+model AcademicLevel {
+  id       Int       @id @default(autoincrement())
+  code     String
+  name     String
+  courses  Course[]
+  sections Section[]
+  subjects Subject[]
+}
+
+model Room {
+  id        Int                @id @default(autoincrement())
+  name      String
+  type      RoomType
+  schedules ScheduledSubject[]
+}
+
+model Course {
+  id              Int           @id @default(autoincrement())
+  code            String
+  name            String
+  academicLevelId Int
+  academicLevel   AcademicLevel @relation(fields: [academicLevelId], references: [id])
+  yearLevels      YearLevel[]
+  sections        Section[]
+  subjects        Subject[]
+}
+
+model YearLevel {
+  id       Int       @id @default(autoincrement())
+  name     String
+  code     String
+  courseId Int
+  course   Course    @relation(fields: [courseId], references: [id])
+  sections Section[]
+  subjects Subject[]
+}
+
+model Section {
+  id              Int    @id @default(autoincrement())
+  name            String
+  academicLevelId Int
+  courseId        Int
+  yearLevelId     Int
+
+  academicLevel    AcademicLevel     @relation(fields: [academicLevelId], references: [id])
+  course           Course            @relation(fields: [courseId], references: [id])
+  yearLevel        YearLevel         @relation(fields: [yearLevelId], references: [id])
+  assignedSubjects AssignedSubject[]
+}
+
+model Subject {
+  id              Int      @id @default(autoincrement())
+  code            String
+  title           String
+  type            RoomType
+  units           Int
+  academicLevelId Int
+  courseId        Int
+  yearLevelId     Int
+  semester        String
+
+  academicLevel    AcademicLevel     @relation(fields: [academicLevelId], references: [id])
+  course           Course            @relation(fields: [courseId], references: [id])
+  yearLevel        YearLevel         @relation(fields: [yearLevelId], references: [id])
+  assignedSubjects AssignedSubject[]
+}
+
+model AssignedSubject {
+  id        Int @id @default(autoincrement())
+  subjectId Int
+  sectionId Int
+
+  subject             Subject                @relation(fields: [subjectId], references: [id])
+  section             Section                @relation(fields: [sectionId], references: [id])
+  scheduledSubjects   ScheduledSubject[]
+  instructorSchedules ScheduleOfInstructor[]
+}
+
+model ScheduledSubject {
+  id                Int    @id @default(autoincrement())
+  assignedSubjectId Int
+  roomId            Int
+  dayOfWeek         Int
+  startTime         String
+  endTime           String
+
+  assignedSubject AssignedSubject @relation(fields: [assignedSubjectId], references: [id])
+  room            Room            @relation(fields: [roomId], references: [id])
+}
+
+model ScheduleOfInstructor {
+  id                Int @id @default(autoincrement())
+  assignedSubjectId Int
+  instructorId      Int
+
+  assignedSubject AssignedSubject @relation(fields: [assignedSubjectId], references: [id])
+  instructor      Instructor      @relation(fields: [instructorId], references: [id])
+}
