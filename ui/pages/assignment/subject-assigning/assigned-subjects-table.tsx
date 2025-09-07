@@ -38,7 +38,7 @@ export default function AssignedSubjectsTable({
   refreshKey: number;
 }) {
   const [loading, setLoading] = useState(true);
-  const [isUnassigning, setIsUnassigning] = useState<string | null>(null); // _id being unassigned
+  const [isUnassigning, setIsUnassigning] = useState<string | null>(null); // id being unassigned
   const [assignedSubjects, setAssignedSubjects] = useState<IAssignedSubject[]>(
     []
   );
@@ -96,7 +96,7 @@ export default function AssignedSubjectsTable({
 
   // ----- relationship helpers -----
   const getSubject = (subjectId: string): ISubject => {
-    const subject = subjects.find((s) => s._id === subjectId);
+    const subject = subjects.find((s) => s.id === subjectId);
     return (
       subject ?? {
         code: "Unknown",
@@ -112,7 +112,7 @@ export default function AssignedSubjectsTable({
   };
 
   const getSection = (sectionId: string) => {
-    const sect = sections.find((s) => s._id === sectionId);
+    const sect = sections.find((s) => s.id === sectionId);
     return (
       sect ?? {
         name: "Unknown",
@@ -124,23 +124,23 @@ export default function AssignedSubjectsTable({
   };
 
   const getAcademicLevel = (academicLevelId: string) => {
-    const al = academicLevels.find((a) => a._id === academicLevelId);
+    const al = academicLevels.find((a) => a.id === academicLevelId);
     return al
       ? { code: al.code, name: al.name }
       : { code: "Unknown", name: "Unknown" };
   };
 
   const getCourse = (courseId: string) => {
-    const c = courses.find((c) => c._id === courseId);
+    const c = courses.find((c) => c.id === courseId);
     return c
       ? { code: c.code, name: c.name }
       : { code: "Unknown", name: "Unknown" };
   };
 
   const getYearLevelByCourseId = (courseId: string, yearLevelId: string) => {
-    const course = courses.find((c) => c._id === courseId);
+    const course = courses.find((c) => c.id === courseId);
     if (!course) return { code: "Unknown", name: "Unknown" };
-    const yl = course.yearLevels?.find((y) => y._id === yearLevelId);
+    const yl = course.yearLevels?.find((y) => y.id === yearLevelId);
     return yl
       ? { code: yl.code, name: yl.name }
       : { code: "Unknown", name: "Unknown" };
@@ -154,8 +154,8 @@ export default function AssignedSubjectsTable({
       header: () => <span className="sr-only">Actions</span>,
       cell: ({ row }) => {
         const subj = row.original;
-        // leave guard in case _id is undefined (interface says it's required but being defensive)
-        const id = subj._id ?? "";
+        // leave guard in case id is undefined (interface says it's required but being defensive)
+        const id = subj.id ?? "";
         return (
           <Button
             size="icon"

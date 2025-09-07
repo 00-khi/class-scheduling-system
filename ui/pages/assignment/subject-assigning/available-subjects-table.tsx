@@ -75,7 +75,7 @@ export default function AvailableSubjectsTable({
   }, [refreshKey]);
 
   const section = useMemo(
-    () => sections.find((s) => s._id === selectedSection) || null,
+    () => sections.find((s) => s.id === selectedSection) || null,
     [sections, selectedSection]
   );
 
@@ -93,7 +93,7 @@ export default function AvailableSubjectsTable({
   const filteredSubjects = useMemo(() => {
     if (!section || ignoreSectionFilter) {
       // if no section selected or user opted to ignore the filter — show all subjects EXCLUDING those already assigned to selectedSection
-      return subjects.filter((s) => !assignedSubjectIdsForSection.has(s._id!));
+      return subjects.filter((s) => !assignedSubjectIdsForSection.has(s.id!));
     }
 
     return subjects.filter((s) => {
@@ -103,7 +103,7 @@ export default function AvailableSubjectsTable({
         s.courseId === section.courseId &&
         s.yearLevelId === section.yearLevelId;
       // exclude assigned ones
-      return matchesSection && !assignedSubjectIdsForSection.has(s._id!);
+      return matchesSection && !assignedSubjectIdsForSection.has(s.id!);
     });
   }, [subjects, section, assignedSubjectIdsForSection, ignoreSectionFilter]);
 
@@ -134,7 +134,7 @@ export default function AvailableSubjectsTable({
   };
 
   const getAcademicLevel = (academicLevelId: string) => {
-    const acadLevel = academicLevels.find((al) => al._id === academicLevelId);
+    const acadLevel = academicLevels.find((al) => al.id === academicLevelId);
 
     return acadLevel
       ? { code: acadLevel.code, name: acadLevel.name }
@@ -142,7 +142,7 @@ export default function AvailableSubjectsTable({
   };
 
   const getCourse = (courseId: string) => {
-    const course = courses.find((c) => c._id === courseId);
+    const course = courses.find((c) => c.id === courseId);
 
     return course
       ? { code: course.code, name: course.name }
@@ -150,10 +150,10 @@ export default function AvailableSubjectsTable({
   };
 
   const getYearLevelByCourseId = (courseId: string, yearLevelId: string) => {
-    const course = courses.find((c) => c._id === courseId);
+    const course = courses.find((c) => c.id === courseId);
     if (!course) return { code: "Unknown", name: "Unknown" };
 
-    const yearLevel = course.yearLevels?.find((yl) => yl._id === yearLevelId);
+    const yearLevel = course.yearLevels?.find((yl) => yl.id === yearLevelId);
     return yearLevel
       ? { code: yearLevel.code, name: yearLevel.name }
       : { code: "Unknown", name: "Unknown" };
@@ -168,11 +168,11 @@ export default function AvailableSubjectsTable({
         return (
           <Button
             size="icon"
-            onClick={() => handleAssignSubject(subj._id!)}
+            onClick={() => handleAssignSubject(subj.id!)}
             disabled={isAssigning !== null}
             className="size-7"
           >
-            {isAssigning === subj._id ? (
+            {isAssigning === subj.id ? (
               <Loader2 className="animate-spin" />
             ) : (
               <PlusIcon />
@@ -335,7 +335,7 @@ export default function AvailableSubjectsTable({
                 column="academicLevelId"
                 placeholder="All academic levels"
                 renderValue={(id) => {
-                  const acadLevel = academicLevels.find((a) => a._id === id);
+                  const acadLevel = academicLevels.find((a) => a.id === id);
                   return acadLevel ? acadLevel.name : "Unknown";
                 }}
               />
@@ -343,7 +343,7 @@ export default function AvailableSubjectsTable({
                 column="courseId"
                 placeholder="All courses"
                 renderValue={(id) => {
-                  const crs = courses.find((c) => c._id === id);
+                  const crs = courses.find((c) => c.id === id);
                   return crs ? crs.name : "Unknown";
                 }}
               />

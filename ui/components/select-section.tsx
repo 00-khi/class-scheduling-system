@@ -49,7 +49,7 @@ export default function SelectSection({
   }, []);
 
   const getYearLevelsByCourseId = (courseId: string) => {
-    const course = courses.find((c) => c._id === courseId);
+    const course = courses.find((c) => c.id === courseId);
     if (!course) return [];
 
     const yearLevels = course.yearLevels;
@@ -122,7 +122,7 @@ export default function SelectSection({
         </SelectTrigger>
         <SelectContent>
           {academicLevels.map((level) => (
-            <SelectItem key={level._id} value={level._id}>
+            <SelectItem key={level.id} value={level.id}>
               {level.name}
             </SelectItem>
           ))}
@@ -144,7 +144,7 @@ export default function SelectSection({
         </SelectTrigger>
         <SelectContent>
           {getFilteredCoursesByAcademicLevelId(academicLevel!).map((c) => (
-            <SelectItem key={c._id} value={c._id as string}>
+            <SelectItem key={c.id} value={c.id as string}>
               {c.name}
             </SelectItem>
           ))}
@@ -165,7 +165,7 @@ export default function SelectSection({
         </SelectTrigger>
         <SelectContent>
           {getYearLevelsByCourseId(course!).map((y) => (
-            <SelectItem key={y._id ?? ""} value={y._id ?? ""}>
+            <SelectItem key={y.id ?? ""} value={y.id ?? ""}>
               {y.name}
             </SelectItem>
           ))}
@@ -183,7 +183,7 @@ export default function SelectSection({
         </SelectTrigger>
         <SelectContent>
           {getFilteredSections(academicLevel!, course!, yearLevel!).map((s) => (
-            <SelectItem key={s._id} value={s._id as string}>
+            <SelectItem key={s.id} value={s.id as string}>
               {s.name}
             </SelectItem>
           ))}

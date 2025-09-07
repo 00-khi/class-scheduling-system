@@ -61,7 +61,7 @@ export default function SectionsTable() {
   }, []);
 
   // ADD
-  const handleAddSection = async (sectionData: Omit<ISection, "_id">) => {
+  const handleAddSection = async (sectionData: Omit<ISection, "id">) => {
     setIsSubmitting(true);
     try {
       if (!sectionData.name) {
@@ -98,7 +98,7 @@ export default function SectionsTable() {
 
   // UPDATE
   const handleUpdateSection = async (sectionData: ISection) => {
-    if (!sectionData._id) return;
+    if (!sectionData.id) return;
     setIsSubmitting(true);
     try {
       if (!sectionData.name) {
@@ -121,9 +121,9 @@ export default function SectionsTable() {
         return;
       }
 
-      const { _id, ...data } = sectionData;
+      const { id: id, ...data } = sectionData;
 
-      if (updateSection(_id, data)) {
+      if (updateSection(id, data)) {
         toast.success(`Section updated successfully`);
         loadData();
       } else {
@@ -160,7 +160,7 @@ export default function SectionsTable() {
   };
 
   const getAcademicLevel = (academicLevelId: string) => {
-    const acadLevel = academicLevels.find((al) => al._id === academicLevelId);
+    const acadLevel = academicLevels.find((al) => al.id === academicLevelId);
 
     return acadLevel
       ? { code: acadLevel.code, name: acadLevel.name }
@@ -168,7 +168,7 @@ export default function SectionsTable() {
   };
 
   const getCourse = (courseId: string) => {
-    const course = courses.find((c) => c._id === courseId);
+    const course = courses.find((c) => c.id === courseId);
 
     return course
       ? { code: course.code, name: course.name }
@@ -176,10 +176,10 @@ export default function SectionsTable() {
   };
 
   const getYearLevelByCourseId = (courseId: string, yearLevelId: string) => {
-    const course = courses.find((c) => c._id === courseId);
+    const course = courses.find((c) => c.id === courseId);
     if (!course) return { code: "Unknown", name: "Unknown" };
 
-    const yearLevel = course.yearLevels?.find((yl) => yl._id === yearLevelId);
+    const yearLevel = course.yearLevels?.find((yl) => yl.id === yearLevelId);
     return yearLevel
       ? { code: yearLevel.code, name: yearLevel.name }
       : { code: "Unknown", name: "Unknown" };
@@ -324,7 +324,7 @@ export default function SectionsTable() {
                 column="academicLevelId"
                 placeholder="All academic levels"
                 renderValue={(id) => {
-                  const acadLevel = academicLevels.find((a) => a._id === id);
+                  const acadLevel = academicLevels.find((a) => a.id === id);
                   return acadLevel ? acadLevel.name : "Unknown";
                 }}
               />
@@ -332,7 +332,7 @@ export default function SectionsTable() {
                 column="courseId"
                 placeholder="All courses"
                 renderValue={(id) => {
-                  const crs = courses.find((c) => c._id === id);
+                  const crs = courses.find((c) => c.id === id);
                   return crs ? crs.name : "Unknown";
                 }}
               />
@@ -384,8 +384,8 @@ export default function SectionsTable() {
         isOpen={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
         onConfirm={() => {
-          if (sectionToDelete?._id) {
-            handleDeleteSection(sectionToDelete._id);
+          if (sectionToDelete?.id) {
+            handleDeleteSection(sectionToDelete.id);
           }
           setIsDeleteDialogOpen(false);
           setSectionToDelete(null);
@@ -448,7 +448,7 @@ function SectionForm({
   courses: ICourse[];
 }) {
   const [formData, setFormData] = useState<ISection>(
-    item || ({} as Omit<ISection, "_id">)
+    item || ({} as Omit<ISection, "id">)
   );
 
   useEffect(() => {
@@ -458,7 +458,7 @@ function SectionForm({
   }, [item]);
 
   const getYearLevelsByCourseId = (courseId: string) => {
-    const course = courses.find((c) => c._id === courseId);
+    const course = courses.find((c) => c.id === courseId);
     if (!course) return [];
 
     const yearLevels = course.yearLevels;
@@ -521,7 +521,7 @@ function SectionForm({
       <DataForm.Select
         name="academicLevelId"
         label="Academic Level"
-        options={academicLevels.map((a) => ({ value: a._id, label: a.name }))}
+        options={academicLevels.map((a) => ({ value: a.id, label: a.name }))}
         required
         onValueChange={handleAcademicLevelChange}
       />
@@ -531,7 +531,7 @@ function SectionForm({
         name="courseId"
         label="Course"
         options={getFilteredCourses().map((c) => ({
-          value: c._id as string,
+          value: c.id as string,
           label: c.name,
         }))}
         required
@@ -544,7 +544,7 @@ function SectionForm({
         name="yearLevelId"
         label="Year Level"
         options={getYearLevelsByCourseId(formData.courseId).map((yl) => ({
-          value: yl._id!,
+          value: yl.id!,
           label: yl.name,
         }))}
         disabled={!formData.courseId}

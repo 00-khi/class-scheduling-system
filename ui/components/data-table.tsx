@@ -438,7 +438,7 @@ function DataTableDeleteSelected({
 
   const handleConfirmDelete = () => {
     if (!onDeleteSelected) return;
-    const ids = selectedRows.map((row) => (row.original as any)._id); // assumes each row has `_id`
+    const ids = selectedRows.map((row) => (row.original as any).id); // assumes each row has `id`
     onDeleteSelected(ids);
     table.resetRowSelection(); // clear selection after delete
   };

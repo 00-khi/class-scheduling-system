@@ -2,7 +2,7 @@ import { IScheduledSubject } from "@/types";
 
 const scheduledSubjects: IScheduledSubject[] = [
   // {
-  //   _id: "1",
+  //   id: "1",
   //   assignedSubjectId: "1",
   //   roomId: "1",
   //   dayOfWeek: "1",
@@ -10,7 +10,7 @@ const scheduledSubjects: IScheduledSubject[] = [
   //   endTime: "08:30",
   // },
   // {
-  //   _id: "2",
+  //   id: "2",
   //   assignedSubjectId: "2",
   //   roomId: "2",
   //   dayOfWeek: "2",
@@ -18,7 +18,7 @@ const scheduledSubjects: IScheduledSubject[] = [
   //   endTime: "10:00",
   // },
   // {
-  //   _id: "3",
+  //   id: "3",
   //   assignedSubjectId: "3",
   //   roomId: "1",
   //   dayOfWeek: "3",
@@ -26,7 +26,7 @@ const scheduledSubjects: IScheduledSubject[] = [
   //   endTime: "13:30",
   // },
   // {
-  //   _id: "4",
+  //   id: "4",
   //   assignedSubjectId: "4",
   //   roomId: "4",
   //   dayOfWeek: "4",
@@ -34,7 +34,7 @@ const scheduledSubjects: IScheduledSubject[] = [
   //   endTime: "13:30",
   // },
   // {
-  //   _id: "5",
+  //   id: "5",
   //   assignedSubjectId: "5",
   //   roomId: "2",
   //   dayOfWeek: "5",
@@ -42,7 +42,7 @@ const scheduledSubjects: IScheduledSubject[] = [
   //   endTime: "16:30",
   // },
   // {
-  //   _id: "6",
+  //   id: "6",
   //   assignedSubjectId: "6",
   //   roomId: "3",
   //   dayOfWeek: "1",
@@ -50,7 +50,7 @@ const scheduledSubjects: IScheduledSubject[] = [
   //   endTime: "10:30",
   // },
   // {
-  //   _id: "7",
+  //   id: "7",
   //   assignedSubjectId: "7",
   //   roomId: "5",
   //   dayOfWeek: "2",
@@ -58,7 +58,7 @@ const scheduledSubjects: IScheduledSubject[] = [
   //   endTime: "13:30",
   // },
   // {
-  //   _id: "8",
+  //   id: "8",
   //   assignedSubjectId: "8",
   //   roomId: "3",
   //   dayOfWeek: "3",

@@ -7,11 +7,11 @@ export function getSections(): ISection[] {
 
 export function getSectionById(id: string): ISection | undefined {
   const sections = getSectionStore();
-  return sections.find((section) => section._id === id);
+  return sections.find((section) => section.id === id);
 }
 
-export function addSection(section: Omit<ISection, "_id">): ISection {
-  const newSection = { ...section, _id: Date.now().toString() };
+export function addSection(section: Omit<ISection, "id">): ISection {
+  const newSection = { ...section, id: Date.now().toString() };
   getSectionStore().push(newSection);
   return newSection;
 }
@@ -21,7 +21,7 @@ export function updateSection(
   updates: Partial<ISection>
 ): ISection | null {
   const sections = getSectionStore();
-  const index = sections.findIndex((section) => section._id === id);
+  const index = sections.findIndex((section) => section.id === id);
   if (index === -1) return null;
   sections[index] = { ...sections[index], ...updates };
   return sections[index];
@@ -29,7 +29,7 @@ export function updateSection(
 
 export function deleteSection(id: string): boolean {
   const sections = getSectionStore();
-  const index = sections.findIndex((section) => section._id === id);
+  const index = sections.findIndex((section) => section.id === id);
   if (index === -1) return false;
   sections.splice(index, 1);
   return true;

@@ -101,7 +101,7 @@ export function UnscheduledSubjectsTable({
   }, [scheduledSubjects, selectedSection]);
 
   const getSubject = (subjectId: string) => {
-    const subject = subjects.find((c) => c._id === subjectId);
+    const subject = subjects.find((c) => c.id === subjectId);
 
     return subject
       ? { ...subject }
@@ -130,7 +130,7 @@ export function UnscheduledSubjectsTable({
         if (!subj) return null;
 
         const requiredMinutes = (subj.units || 0) * 60;
-        const scheduledMinutes = totalScheduledInMinutes.get(a._id!) || 0;
+        const scheduledMinutes = totalScheduledInMinutes.get(a.id!) || 0;
 
         // filter out subjects already complete
         if (scheduledMinutes >= requiredMinutes) return null;
@@ -208,7 +208,7 @@ export function UnscheduledSubjectsTable({
   const candidates = data.map((d) => {
     // ensure we pick required assigned-subject fields plus the extra fields
     return {
-      _id: d._id,
+      id: d.id,
       subjectId: d.subjectId,
       sectionId: d.sectionId,
       // populated relation
@@ -304,7 +304,7 @@ function ScheduleForm({
 }) {
   // dayOfWeek kept as string to match Select values.
   // interface Form {
-  //   _id?: string;
+  //   id?: string;
   //   assignedSubjectId: string;
   //   roomId: string;
   //   dayOfWeek: string; // "" or "0".."6"
@@ -368,7 +368,7 @@ function ScheduleForm({
     if (sameSubjectSameSlot) errs.push("Duplicate timeslot for subject");
 
     // units limit
-    const picked = candidates.find((c) => c._id === data.assignedSubjectId);
+    const picked = candidates.find((c) => c.id === data.assignedSubjectId);
     if (picked) {
       const newTotal = picked.scheduledMins + (endM - startM);
       if (newTotal > picked.requiredMins) errs.push("Exceeds allowed hours");
@@ -401,7 +401,7 @@ function ScheduleForm({
       };
 
       const added = addScheduledSubject(payload);
-      if (added?._id) {
+      if (added?.id) {
         toast.success("Schedule added");
         reset();
         onAdded();
@@ -415,7 +415,7 @@ function ScheduleForm({
 
   // compute picked subject details for display
   const picked = useMemo(() => {
-    return candidates.find((c) => c._id === form.assignedSubjectId);
+    return candidates.find((c) => c.id === form.assignedSubjectId);
   }, [form.assignedSubjectId]);
 
   const remainingMins = useMemo(
@@ -460,9 +460,9 @@ function ScheduleForm({
         name="assignedSubjectId"
         label="Assigned Subject"
         options={candidates
-          .filter((c): c is typeof c & { _id: string } => !!c._id)
+          .filter((c): c is typeof c & { id: string } => !!c.id)
           .map((c) => ({
-            value: c._id,
+            value: c.id,
             label: `${c.subject.code} - ${c.subject.title} (${toHours(
               c.requiredMins - c.scheduledMins
             )}h remaining)`,
@@ -478,7 +478,7 @@ function ScheduleForm({
         name="roomId"
         label="Room"
         options={filteredRooms.map((r) => ({
-          value: r._id || "",
+          value: r.id || "",
           label: r.name,
         }))}
         required

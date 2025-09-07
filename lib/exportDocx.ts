@@ -66,7 +66,7 @@ export async function exportScheduleDocx(
     for (const it of list) {
       const asg = getAssignedSubjectById(it.assignedSubjectId);
       const subj = asg ? getSubjectById(asg.subjectId) : undefined;
-      const room = rooms.find((r) => r._id === it.roomId);
+      const room = rooms.find((r) => r.id === it.roomId);
       const line = `${it.startTime} - ${it.endTime}, ${
         room?.name || "Unknown room"
       }, ${subj ? `${subj.code} - ${subj.title}` : "Unknown subject"}`;

@@ -50,7 +50,7 @@ export function RoomsTable() {
   }, []);
 
   // ADD
-  const handleAddRoom = async (roomData: Omit<IRoom, "_id">) => {
+  const handleAddRoom = async (roomData: Omit<IRoom, "id">) => {
     setIsSubmitting(true);
     try {
       if (!roomData.name) {
@@ -76,7 +76,7 @@ export function RoomsTable() {
 
   // UPDATE
   const handleUpdateRoom = async (roomData: IRoom) => {
-    if (!roomData._id) return;
+    if (!roomData.id) return;
     setIsSubmitting(true);
     try {
       if (!roomData.name) {
@@ -88,9 +88,9 @@ export function RoomsTable() {
         return;
       }
 
-      const { _id, ...data } = roomData;
+      const { id: id, ...data } = roomData;
 
-      if (updateRoom(_id, data)) {
+      if (updateRoom(id, data)) {
         toast.success(`Room updated successfully`);
         loadData();
       } else {
@@ -253,8 +253,8 @@ export function RoomsTable() {
         isOpen={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
         onConfirm={() => {
-          if (roomToDelete?._id) {
-            handleDeleteRoom(roomToDelete._id);
+          if (roomToDelete?.id) {
+            handleDeleteRoom(roomToDelete.id);
           }
           setIsDeleteDialogOpen(false);
           setRoomToDelete(null);

@@ -9,15 +9,15 @@ export function getScheduleOfInstructorById(
   id: string
 ): IScheduleOfInstructor | undefined {
   const scheduledOfInstructors = getScheduledOfInstructorStore();
-  return scheduledOfInstructors.find((item) => item._id === id);
+  return scheduledOfInstructors.find((item) => item.id === id);
 }
 
 export function addScheduleOfInstructor(
-  scheduledOfInstructor: Omit<IScheduleOfInstructor, "_id">
+  scheduledOfInstructor: Omit<IScheduleOfInstructor, "id">
 ): IScheduleOfInstructor {
   const newScheduledOfInstructor = {
     ...scheduledOfInstructor,
-    _id: Date.now().toString(),
+    id: Date.now().toString(),
   };
   getScheduledOfInstructorStore().push(newScheduledOfInstructor);
   return newScheduledOfInstructor;
@@ -28,7 +28,7 @@ export function updateScheduleOfInstructor(
   updates: Partial<IScheduleOfInstructor>
 ): IScheduleOfInstructor | null {
   const scheduledOfInstructors = getScheduledOfInstructorStore();
-  const index = scheduledOfInstructors.findIndex((item) => item._id === id);
+  const index = scheduledOfInstructors.findIndex((item) => item.id === id);
   if (index === -1) return null;
   scheduledOfInstructors[index] = {
     ...scheduledOfInstructors[index],
@@ -39,7 +39,7 @@ export function updateScheduleOfInstructor(
 
 export function deleteScheduleOfInstructor(id: string): boolean {
   const scheduledOfInstructors = getScheduledOfInstructorStore();
-  const index = scheduledOfInstructors.findIndex((item) => item._id === id);
+  const index = scheduledOfInstructors.findIndex((item) => item.id === id);
   if (index === -1) return false;
   scheduledOfInstructors.splice(index, 1);
   return true;

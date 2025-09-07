@@ -13,7 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/shadcn/components/ui/dropdown-menu";
-import { IAcademicQualification, IInstructor } from "@/types";
+import { IAcademicQualification } from "@/types";
 import {
   getAcademicQualification,
   addAcademicQualification,
@@ -24,47 +24,47 @@ import { toast } from "sonner";
 import { ConfirmDeleteDialog } from "@/ui/components/comfirm-delete-dialog";
 import { DataForm } from "@/ui/components/data-form";
 import { Badge } from "@/shadcn/components/ui/badge";
-import { getInstructors } from "@/services/instructorService";
 
 export default function AcademicQualificationsTable() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [editingAcademicQualification, setEditingAcademicQualification] =
     useState<IAcademicQualification | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [academicQualifications, setAcademicQualifications] = useState<IAcademicQualification[]>([]);
-  const [instructors, setInstructors] = useState<IInstructor[]>([]);
 
-  // 🆕 delete dialog state
+  const [loading, setLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [academicQualificationToDelete, setAcademicQualificationToDelete] =
     useState<IAcademicQualification | null>(null);
 
-  const loadData = () => {
+  // DATA STORE
+  const [academicQualifications, setAcademicQualifications] = useState<
+    IAcademicQualification[]
+  >([]);
+
+  // FETCH DATA
+  const fetchData = async () => {
     setLoading(true);
-    setTimeout(() => {
-      setAcademicQualifications(getAcademicQualification());
-      setInstructors(getInstructors());
-      setLoading(false);
-    }, 800);
+
+    const [fetchedAcademicQualifications] = await Promise.all([
+      getAcademicQualification(),
+    ]);
+
+    setAcademicQualifications(fetchedAcademicQualifications);
+
+    setLoading(false);
   };
 
   useEffect(() => {
-    loadData();
+    fetchData();
   }, []);
 
-  const getAcademicQualificationStats = (academicQualificationId: string) => {
-    const instructorsCount = instructors.filter(
-      (i) => i.academicQualificationId === academicQualificationId
-    ).length;
+  console.log(academicQualifications);
 
-    return { instructorsCount };
-  };
-
-  // ADD
+  // ADD DATA
   const handleAddAcademicQualification = async (
-    academicQualificationData: Omit<IAcademicQualification, "_id">
+    academicQualificationData: Omit<IAcademicQualification, "id">
   ) => {
     if (!academicQualificationData.code) {
       toast.error("Academic Qualification code is required");
@@ -78,9 +78,11 @@ export default function AcademicQualificationsTable() {
 
     setIsSubmitting(true);
     try {
-      if (addAcademicQualification(academicQualificationData)) {
+      const added = await addAcademicQualification(academicQualificationData);
+
+      if (added) {
         toast.success(`Academic Qualification added successfully`);
-        loadData();
+        fetchData();
         setIsAddDialogOpen(false);
       } else {
         toast.error("Failed to add academic qualification");
@@ -93,8 +95,10 @@ export default function AcademicQualificationsTable() {
   };
 
   // UPDATE
-  const handleUpdateAcademicQualification = async (academicQualificationData: IAcademicQualification) => {
-    if (!academicQualificationData._id) {
+  const handleUpdateAcademicQualification = async (
+    academicQualificationData: IAcademicQualification
+  ) => {
+    if (!academicQualificationData.id) {
       toast.error("Invalid ID");
       return false;
     }
@@ -111,11 +115,13 @@ export default function AcademicQualificationsTable() {
 
     setIsSubmitting(true);
     try {
-      const { _id, ...data } = academicQualificationData;
+      const { id: id, ...data } = academicQualificationData;
 
-      if (updateAcademicQualification(_id, data)) {
+      const updated = await updateAcademicQualification(id, data);
+
+      if (updated) {
         toast.success(`Academic Qualification updated successfully`);
-        loadData();
+        fetchData();
       } else {
         toast.error("Failed to update academic qualification");
       }
@@ -132,15 +138,17 @@ export default function AcademicQualificationsTable() {
   };
 
   // DELETE
-  const handleDeleteAcademicQualification = (id: string) => {
+  const handleDeleteAcademicQualification = async (id: string) => {
     try {
       if (!id) {
         toast.error("Error deleting academic qualification: Invalid ID");
         return;
       }
-      if (deleteAcademicQualification(id)) {
+      const deleted = await deleteAcademicQualification(id);
+
+      if (deleted) {
         toast.success(`Academic Qualification deleted successfully`);
-        loadData();
+        fetchData();
       } else {
         toast.error("Failed to delete academic qualification");
       }
@@ -186,15 +194,6 @@ export default function AcademicQualificationsTable() {
       cell: ({ row }) => (
         <div className="font-medium">{row.getValue("name")}</div>
       ),
-    },
-    {
-      id: "instructors",
-      header: "Instructors",
-      cell: ({ row }) => {
-        const stats = getAcademicQualificationStats(row.original._id || "");
-
-        return <Badge variant="secondary">{stats.instructorsCount}</Badge>;
-      },
     },
     {
       id: "actions",
@@ -280,8 +279,10 @@ export default function AcademicQualificationsTable() {
         isOpen={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
         onConfirm={() => {
-          if (academicQualificationToDelete?._id) {
-            handleDeleteAcademicQualification(academicQualificationToDelete._id);
+          if (academicQualificationToDelete?.id) {
+            handleDeleteAcademicQualification(
+              academicQualificationToDelete.id
+            );
           }
           setIsDeleteDialogOpen(false);
           setAcademicQualificationToDelete(null);
@@ -346,7 +347,10 @@ function AcademicQualificationForm({
       onClose={onClose}
       onSubmit={onSubmit}
       isLoading={isLoading}
-      title={{ add: "Add Academic Qualification", edit: "Edit Academic Qualification" }}
+      title={{
+        add: "Add Academic Qualification",
+        edit: "Edit Academic Qualification",
+      }}
     >
       <DataForm.Input
         name="code"

@@ -52,7 +52,7 @@ export default function AcademicLevelsTable() {
   }, []);
 
   // ADD
-  const handleAddAcademicLevel = async (academicLevelData: Omit<IAcademicLevel, "_id">) => {
+  const handleAddAcademicLevel = async (academicLevelData: Omit<IAcademicLevel, "id">) => {
     setIsSubmitting(true);
     try {
       if (!academicLevelData.name) {
@@ -74,7 +74,7 @@ export default function AcademicLevelsTable() {
 
   // UPDATE
   const handleUpdateAcademicLevel = async (academicLevelData: IAcademicLevel) => {
-    if (!academicLevelData._id) return;
+    if (!academicLevelData.id) return;
     setIsSubmitting(true);
     try {
       if (!academicLevelData.code) {
@@ -86,10 +86,10 @@ export default function AcademicLevelsTable() {
         return;
       }
 
-      const { _id, ...data } = academicLevelData;
+      const { id: id, ...data } = academicLevelData;
 
       if (
-        updateAcademicLevel(_id, data)
+        updateAcademicLevel(id, data)
       ) {
         toast.success(`Academic level updated successfully`);
         loadData();
@@ -247,8 +247,8 @@ export default function AcademicLevelsTable() {
         isOpen={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
         onConfirm={() => {
-          if (academicLevelToDelete?._id) {
-            handleDeleteAcademicLevel(academicLevelToDelete._id);
+          if (academicLevelToDelete?.id) {
+            handleDeleteAcademicLevel(academicLevelToDelete.id);
           }
           setIsDeleteDialogOpen(false);
           setAcademicLevelToDelete(null);

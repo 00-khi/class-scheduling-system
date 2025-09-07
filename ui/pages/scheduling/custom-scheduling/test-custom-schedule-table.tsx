@@ -128,10 +128,10 @@ export function CustomScheduleTable({
           sortedByDay.map((s) => {
             const asg = getAssignedSubjectById(s.assignedSubjectId);
             const subj = asg ? getSubjectById(asg.subjectId) : undefined;
-            const room = rooms.find((r) => r._id === s.roomId);
+            const room = rooms.find((r) => r.id === s.roomId);
             return (
               <div
-                key={s._id}
+                key={s.id}
                 className="p-2 border rounded flex justify-between items-center"
               >
                 <div>
@@ -147,12 +147,12 @@ export function CustomScheduleTable({
                 <div>
                   <button
                     onClick={() => {
-                      onRemove(s._id);
+                      onRemove(s.id);
                       const newList = (window as any).__customScheduleList as
                         | any[]
                         | undefined;
                       const updated = newList
-                        ? newList.filter((x) => x._id !== s._id)
+                        ? newList.filter((x) => x.id !== s.id)
                         : [];
                       (window as any).__customScheduleList = updated;
                     }}

@@ -63,7 +63,7 @@ export default function InstructorsTable() {
 
   // ADD
   const handleAddInstructor = async (
-    instructorData: Omit<IInstructor, "_id">
+    instructorData: Omit<IInstructor, "id">
   ) => {
     setIsSubmitting(true);
     try {
@@ -96,7 +96,7 @@ export default function InstructorsTable() {
 
   // UPDATE
   const handleUpdateInstructor = async (instructorData: IInstructor) => {
-    if (!instructorData._id) return;
+    if (!instructorData.id) return;
     setIsSubmitting(true);
     try {
       if (!instructorData.name) {
@@ -114,9 +114,9 @@ export default function InstructorsTable() {
         return;
       }
 
-      const { _id, ...data } = instructorData;
+      const { id: id, ...data } = instructorData;
 
-      if (updateInstructor(_id, data)) {
+      if (updateInstructor(id, data)) {
         toast.success(`Instructor updated successfully`);
         loadData();
       } else {
@@ -154,14 +154,14 @@ export default function InstructorsTable() {
 
   const getAcademicQualificationName = (academicQualificationId: string) => {
     const acadQual = academicQualifications.find(
-      (d) => d._id === academicQualificationId
+      (d) => d.id === academicQualificationId
     );
     return acadQual ? acadQual.name : "Unknown";
   };
 
   const getAcademicQualificationCode = (academicQualificationId: string) => {
     const acadQual = academicQualifications.find(
-      (d) => d._id === academicQualificationId
+      (d) => d.id === academicQualificationId
     );
     return acadQual ? acadQual.code : "Unknown";
   };
@@ -272,7 +272,7 @@ export default function InstructorsTable() {
                 placeholder="All academic qualifications"
                 renderValue={(id) => {
                   const acadQual = academicQualifications.find(
-                    (d) => d._id === id
+                    (d) => d.id === id
                   );
                   return acadQual ? acadQual.name : "Unknown";
                 }}
@@ -337,8 +337,8 @@ export default function InstructorsTable() {
         isOpen={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
         onConfirm={() => {
-          if (instructorToDelete?._id) {
-            handleDeleteInstructor(instructorToDelete._id);
+          if (instructorToDelete?.id) {
+            handleDeleteInstructor(instructorToDelete.id);
           }
           setIsDeleteDialogOpen(false);
           setInstructorToDelete(null);
@@ -419,7 +419,7 @@ function InstructorForm({
         required
         options={academicQualifications.map((acadQual) => ({
           label: acadQual.name,
-          value: acadQual._id ?? "",
+          value: acadQual.id ?? "",
         }))}
       />
       <DataForm.Select

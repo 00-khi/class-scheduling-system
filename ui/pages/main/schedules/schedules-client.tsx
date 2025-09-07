@@ -119,7 +119,7 @@ function SelectRoom({
       </SelectTrigger>
       <SelectContent>
         {rooms.map((room) => (
-          <SelectItem key={room._id} value={room._id!}>
+          <SelectItem key={room.id} value={room.id!}>
             {room.name}
           </SelectItem>
         ))}

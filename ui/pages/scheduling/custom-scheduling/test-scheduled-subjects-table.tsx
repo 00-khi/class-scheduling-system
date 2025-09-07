@@ -58,10 +58,10 @@ export function ScheduledSubjectsTable({
           rows.map((r) => {
             const asg = getAssignedSubjectById(r.assignedSubjectId);
             const subj = asg ? getSubjectById(asg.subjectId) : undefined;
-            const room = rooms.find((x) => x._id === r.roomId);
+            const room = rooms.find((x) => x.id === r.roomId);
             return (
               <div
-                key={r._id}
+                key={r.id}
                 className="p-2 border rounded flex justify-between items-center"
               >
                 <div>

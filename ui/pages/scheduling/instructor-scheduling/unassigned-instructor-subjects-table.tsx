@@ -77,7 +77,7 @@ export default function UnassignedInstructorSubjectsTable({
     return map
       .filter((s) => s.instructorId === selectedInstructor)
       .map((x) =>
-        getScheduledSubjects().find((ss) => ss._id === x.assignedSubjectId)
+        getScheduledSubjects().find((ss) => ss.id === x.assignedSubjectId)
       )
       .filter(Boolean) as IScheduledSubject[];
   }, [selectedInstructor, refreshKey]);
@@ -88,9 +88,9 @@ export default function UnassignedInstructorSubjectsTable({
       .map((s) => {
         const asg = getAssignedSubjectById(s.assignedSubjectId);
         if (!asg) return null;
-        const subj = subjects.find((x) => x._id === asg.subjectId);
-        const sect = sections.find((r) => r._id === asg.sectionId);
-        const room = rooms.find((r) => r._id === s.roomId);
+        const subj = subjects.find((x) => x.id === asg.subjectId);
+        const sect = sections.find((r) => r.id === asg.sectionId);
+        const room = rooms.find((r) => r.id === s.roomId);
         return {
           scheduled: s,
           assigned: asg,
@@ -125,7 +125,7 @@ export default function UnassignedInstructorSubjectsTable({
       return;
     }
 
-    setIsAssigning(scheduled._id!);
+    setIsAssigning(scheduled.id!);
 
     try {
       if (hasConflict(scheduled)) {
@@ -134,7 +134,7 @@ export default function UnassignedInstructorSubjectsTable({
       }
 
       const payload = {
-        assignedSubjectId: scheduled._id!,
+        assignedSubjectId: scheduled.id!,
         instructorId: selectedInstructor,
       };
 
@@ -166,7 +166,7 @@ export default function UnassignedInstructorSubjectsTable({
             disabled={isAssigning !== null}
             className="size-7"
           >
-            {isAssigning === r.scheduled._id ? (
+            {isAssigning === r.scheduled.id ? (
               <Loader2 className="animate-spin" />
             ) : (
               <PlusIcon />

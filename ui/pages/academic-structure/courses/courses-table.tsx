@@ -58,7 +58,7 @@ export default function CoursesTable() {
   }, []);
 
   // ADD
-  const handleAddCourse = async (courseData: Omit<ICourse, "_id">) => {
+  const handleAddCourse = async (courseData: Omit<ICourse, "id">) => {
     setIsSubmitting(true);
     try {
       if (!courseData.code) {
@@ -89,7 +89,7 @@ export default function CoursesTable() {
 
   // UPDATE
   const handleUpdateCourse = async (courseData: ICourse) => {
-    if (!courseData._id) return;
+    if (!courseData.id) return;
     setIsSubmitting(true);
     try {
       if (!courseData.code) {
@@ -106,10 +106,10 @@ export default function CoursesTable() {
         return;
       }
 
-      const {_id, ...data } = courseData;
+      const {id: id, ...data } = courseData;
 
       if (
-        updateCourse(_id, data)
+        updateCourse(id, data)
       ) {
         toast.success(`Course updated successfully`);
         loadData();
@@ -147,18 +147,18 @@ export default function CoursesTable() {
   };
 
   const getAcademicLevelName = (academicLevelId: string) => {
-    const acadQual = academicLevels.find((d) => d._id === academicLevelId);
+    const acadQual = academicLevels.find((d) => d.id === academicLevelId);
     return acadQual ? acadQual.name : "Unknown";
   };
 
   const getAcademicLevelCode = (academicLevelId: string) => {
-    const acadLevel = academicLevels.find((d) => d._id === academicLevelId);
+    const acadLevel = academicLevels.find((d) => d.id === academicLevelId);
     return acadLevel ? acadLevel.code : "Unknown";
   };
 
   const getYearLevelCode = (course: ICourse, yearLevelId: string) => {
     const yearLevel = (course.yearLevels || []).find(
-      (yl) => yl._id === yearLevelId
+      (yl) => yl.id === yearLevelId
     );
     return yearLevel ? yearLevel.code : "Unknown";
   };
@@ -236,11 +236,11 @@ export default function CoursesTable() {
           <div className="flex flex-wrap gap-1">
             {levels.length > 0 ? (
               levels.map((yl) =>
-                yl._id ? (
-                  <Tooltip key={yl._id}>
+                yl.id ? (
+                  <Tooltip key={yl.id}>
                     <TooltipTrigger>
                       <Badge variant="secondary">
-                        {getYearLevelCode(course, yl._id)}
+                        {getYearLevelCode(course, yl.id)}
                       </Badge>
                     </TooltipTrigger>
                     <TooltipContent>{yl.name}</TooltipContent>
@@ -298,7 +298,7 @@ export default function CoursesTable() {
                 column="academicLevelId"
                 placeholder="All academic levels"
                 renderValue={(id) => {
-                  const acadLevel = academicLevels.find((a) => a._id === id);
+                  const acadLevel = academicLevels.find((a) => a.id === id);
                   return acadLevel ? acadLevel.name : "Unknown";
                 }}
               />
@@ -348,8 +348,8 @@ export default function CoursesTable() {
         isOpen={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
         onConfirm={() => {
-          if (courseToDelete?._id) {
-            handleDeleteCourse(courseToDelete._id);
+          if (courseToDelete?.id) {
+            handleDeleteCourse(courseToDelete.id);
           }
           setIsDeleteDialogOpen(false);
           setCourseToDelete(null);
@@ -435,7 +435,7 @@ function CourseForm({
         required
         options={(academicLevels ?? []).map((acadLevel) => ({
           label: acadLevel.name,
-          value: acadLevel._id ?? "",
+          value: acadLevel.id ?? "",
         }))}
       />
 

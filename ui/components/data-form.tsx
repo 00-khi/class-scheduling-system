@@ -34,7 +34,7 @@ interface DataFormProps<T> {
   children: ReactNode;
 }
 
-function DataFormBase<T extends { _id?: string }>({
+function DataFormBase<T extends { id?: string }>({
   item,
   isOpen,
   onClose,
@@ -233,7 +233,7 @@ function DataFormArrayInput({
       ...prev,
       [name]: [
         ...(prev[name] || []),
-        { ...tempItem, _id: Date.now().toString() },
+        { ...tempItem, id: Date.now().toString() },
       ],
     }));
     setTempItem({});
@@ -242,7 +242,7 @@ function DataFormArrayInput({
   const handleDelete = (id: string) => {
     setFormData?.((prev: any) => ({
       ...prev,
-      [name]: prev[name]?.filter((i: any) => i._id !== id),
+      [name]: prev[name]?.filter((i: any) => i.id !== id),
     }));
   };
 
@@ -250,7 +250,7 @@ function DataFormArrayInput({
     setFormData?.((prev: any) => ({
       ...prev,
       [name]: prev[name]?.map((i: any) =>
-        i._id === id ? { ...i, [key]: value } : i
+        i.id === id ? { ...i, [key]: value } : i
       ),
     }));
   };
@@ -281,21 +281,21 @@ function DataFormArrayInput({
       <div className="space-y-2 mt-2">
         {(formData?.[name] || []).map((item: any) => (
           <div
-            key={item._id}
+            key={item.id}
             className="flex items-center gap-2 border rounded p-2"
           >
             {fields.map((f) => (
               <Input
                 key={f.name}
                 value={item[f.name]}
-                onChange={(e) => handleEdit(item._id, f.name, e.target.value)}
+                onChange={(e) => handleEdit(item.id, f.name, e.target.value)}
               />
             ))}
             <Button
               type="button"
               variant="destructive"
               size="sm"
-              onClick={() => handleDelete(item._id)}
+              onClick={() => handleDelete(item.id)}
             >
               Delete
             </Button>

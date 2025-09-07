@@ -7,11 +7,11 @@ export function getSubjects(): ISubject[] {
 
 export function getSubjectById(id: string): ISubject | undefined {
   const subjects = getSubjectStore();
-  return subjects.find((subject) => subject._id === id);
+  return subjects.find((subject) => subject.id === id);
 }
 
-export function addSubject(subject: Omit<ISubject, "_id">): ISubject {
-  const newSubject = { ...subject, _id: Date.now().toString() };
+export function addSubject(subject: Omit<ISubject, "id">): ISubject {
+  const newSubject = { ...subject, id: Date.now().toString() };
   getSubjectStore().push(newSubject);
   return newSubject;
 }
@@ -21,7 +21,7 @@ export function updateSubject(
   updates: Partial<ISubject>
 ): ISubject | null {
   const subjects = getSubjectStore();
-  const index = subjects.findIndex((subject) => subject._id === id);
+  const index = subjects.findIndex((subject) => subject.id === id);
   if (index === -1) return null;
   subjects[index] = { ...subjects[index], ...updates };
   return subjects[index];
@@ -29,7 +29,7 @@ export function updateSubject(
 
 export function deleteSubject(id: string): boolean {
   const subjects = getSubjectStore();
-  const index = subjects.findIndex((subject) => subject._id === id);
+  const index = subjects.findIndex((subject) => subject.id === id);
   if (index === -1) return false;
   subjects.splice(index, 1);
   return true;

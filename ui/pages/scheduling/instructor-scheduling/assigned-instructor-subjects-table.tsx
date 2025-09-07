@@ -74,14 +74,14 @@ export default function AssignedInstructorSubjectsTable({
       .filter((s) => s.instructorId === selectedInstructor)
       .map((s) => {
         const scheduled = scheduledSubjects.find(
-          (ss) => ss._id === s.assignedSubjectId
+          (ss) => ss.id === s.assignedSubjectId
         ) as IScheduledSubject | undefined;
         const assigned =
           getAssignedSubjectById(scheduled?.assignedSubjectId || "") ||
           ({} as IAssignedSubject);
-        const subject = getSubjects().find((x) => x._id === assigned.subjectId);
-        const section = getSections().find((x) => x._id === assigned.sectionId);
-        const room = getRooms().find((x) => x._id === scheduled?.roomId);
+        const subject = getSubjects().find((x) => x.id === assigned.subjectId);
+        const section = getSections().find((x) => x.id === assigned.sectionId);
+        const room = getRooms().find((x) => x.id === scheduled?.roomId);
         return { record: s, scheduled, assigned, subject, section, room };
       })
       .filter((r) => r.scheduled);
@@ -120,7 +120,7 @@ export default function AssignedInstructorSubjectsTable({
       header: () => <span className="sr-only">Actions</span>,
       cell: ({ row }) => {
         const r = row.original;
-        const id = r.record._id || "";
+        const id = r.record.id || "";
         return (
           <Button
             size="icon"

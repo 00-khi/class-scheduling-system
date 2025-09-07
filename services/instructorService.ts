@@ -7,13 +7,13 @@ export function getInstructors(): IInstructor[] {
 
 export function getInstructorById(id: string): IInstructor | undefined {
   const instructors = getInstructorStore();
-  return instructors.find((instructor) => instructor._id === id);
+  return instructors.find((instructor) => instructor.id === id);
 }
 
 export function addInstructor(
-  instructor: Omit<IInstructor, "_id">
+  instructor: Omit<IInstructor, "id">
 ): IInstructor {
-  const newInstructor = { ...instructor, _id: Date.now().toString() };
+  const newInstructor = { ...instructor, id: Date.now().toString() };
   getInstructorStore().push(newInstructor);
   return newInstructor;
 }
@@ -23,7 +23,7 @@ export function updateInstructor(
   updates: Partial<IInstructor>
 ): IInstructor | null {
   const instructors = getInstructorStore();
-  const index = instructors.findIndex((instructor) => instructor._id === id);
+  const index = instructors.findIndex((instructor) => instructor.id === id);
   if (index === -1) return null;
   instructors[index] = { ...instructors[index], ...updates };
   return instructors[index];
@@ -31,7 +31,7 @@ export function updateInstructor(
 
 export function deleteInstructor(id: string): boolean {
   const instructors = getInstructorStore();
-  const index = instructors.findIndex((instructor) => instructor._id === id);
+  const index = instructors.findIndex((instructor) => instructor.id === id);
   if (index === -1) return false;
   instructors.splice(index, 1);
   return true;

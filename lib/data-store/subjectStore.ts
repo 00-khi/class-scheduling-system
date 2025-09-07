@@ -3,7 +3,7 @@ import { ISubject } from "@/types/index";
 const subjects: ISubject[] = [
   // Junior Highschool Grade Levels
   {
-    _id: "1",
+    id: "1",
     code: "MAPEH7",
     title: "Music, Arts, PE & Health",
     type: "Lecture",
@@ -14,7 +14,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "2",
+    id: "2",
     code: "HR7",
     title: "Homeroom",
     type: "Lecture",
@@ -25,7 +25,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "3",
+    id: "3",
     code: "VE7",
     title: "Values Education",
     type: "Lecture",
@@ -36,7 +36,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "4",
+    id: "4",
     code: "TLE7",
     title: "Tech and Livelihood Educ",
     type: "Lecture",
@@ -47,7 +47,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "5",
+    id: "5",
     code: "Eng7",
     title: "English",
     type: "Lecture",
@@ -58,7 +58,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "6",
+    id: "6",
     code: "Math7",
     title: "Mathematics",
     type: "Lecture",
@@ -69,7 +69,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "7",
+    id: "7",
     code: "Sci7",
     title: "Science",
     type: "Lecture",
@@ -80,7 +80,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "8",
+    id: "8",
     code: "Fil7",
     title: "Filipino",
     type: "Lecture",
@@ -91,7 +91,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "9",
+    id: "9",
     code: "AP7",
     title: "Araling Panlipunan",
     type: "Lecture",
@@ -102,7 +102,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "10",
+    id: "10",
     code: "SOC7",
     title: "Student Organizations & Clubs",
     type: "Lecture",
@@ -115,7 +115,7 @@ const subjects: ISubject[] = [
 
   // Grade 8
   {
-    _id: "11",
+    id: "11",
     code: "MAPEH8",
     title: "Music, Arts, PE & Health",
     type: "Lecture",
@@ -126,7 +126,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "12",
+    id: "12",
     code: "HR8",
     title: "Homeroom",
     type: "Lecture",
@@ -137,7 +137,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "13",
+    id: "13",
     code: "TLE8",
     title: "Tech and Livelihood Educ",
     type: "Lecture",
@@ -148,7 +148,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "14",
+    id: "14",
     code: "VE8",
     title: "Values Education",
     type: "Lecture",
@@ -159,7 +159,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "15",
+    id: "15",
     code: "Math8",
     title: "Mathematics",
     type: "Lecture",
@@ -170,7 +170,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "16",
+    id: "16",
     code: "Eng8",
     title: "English",
     type: "Lecture",
@@ -181,7 +181,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "17",
+    id: "17",
     code: "Fil8",
     title: "Filipino",
     type: "Lecture",
@@ -192,7 +192,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "18",
+    id: "18",
     code: "Sci8",
     title: "Science",
     type: "Lecture",
@@ -203,7 +203,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "19",
+    id: "19",
     code: "AP8",
     title: "Araling Panlipunan",
     type: "Lecture",
@@ -214,7 +214,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "20",
+    id: "20",
     code: "SOC8",
     title: "Student Organizations & Clubs",
     type: "Lecture",
@@ -227,7 +227,7 @@ const subjects: ISubject[] = [
 
   // Grade 9
   {
-    _id: "21",
+    id: "21",
     code: "MAPEH9",
     title: "Music, Arts, PE & Health",
     type: "Lecture",
@@ -238,7 +238,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "22",
+    id: "22",
     code: "Sci9",
     title: "Science",
     type: "Lecture",
@@ -249,7 +249,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "23",
+    id: "23",
     code: "HR9",
     title: "Homeroom",
     type: "Lecture",
@@ -260,7 +260,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "24",
+    id: "24",
     code: "Eng9",
     title: "English",
     type: "Lecture",
@@ -271,7 +271,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "25",
+    id: "25",
     code: "AP9",
     title: "Araling Panlipunan",
     type: "Lecture",
@@ -282,7 +282,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "26",
+    id: "26",
     code: "Math9",
     title: "Mathematics",
     type: "Lecture",
@@ -293,7 +293,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "27",
+    id: "27",
     code: "Fil9",
     title: "Filipino",
     type: "Lecture",
@@ -304,7 +304,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "28",
+    id: "28",
     code: "TLE9",
     title: "Tech and Livelihood Educ",
     type: "Lecture",
@@ -315,7 +315,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "29",
+    id: "29",
     code: "ESP9",
     title: "Edukasyon sa Pagpapakatao",
     type: "Lecture",
@@ -326,7 +326,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "30",
+    id: "30",
     code: "Com9",
     title: "Computer",
     type: "Lecture",
@@ -337,7 +337,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "31",
+    id: "31",
     code: "SOC9",
     title: "Student Organizations & Clubs",
     type: "Lecture",
@@ -350,7 +350,7 @@ const subjects: ISubject[] = [
 
   // Grade 10
   {
-    _id: "32",
+    id: "32",
     code: "MAPEH10",
     title: "Music, Arts, PE & Health",
     type: "Lecture",
@@ -361,7 +361,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "33",
+    id: "33",
     code: "HR10",
     title: "Homeroom",
     type: "Lecture",
@@ -372,7 +372,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "34",
+    id: "34",
     code: "Math10",
     title: "Mathematics",
     type: "Lecture",
@@ -383,7 +383,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "35",
+    id: "35",
     code: "Eng10",
     title: "English",
     type: "Lecture",
@@ -394,7 +394,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "36",
+    id: "36",
     code: "AP10",
     title: "Araling Panlipunan",
     type: "Lecture",
@@ -405,7 +405,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "37",
+    id: "37",
     code: "Com10",
     title: "Computer",
     type: "Lecture",
@@ -416,7 +416,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "38",
+    id: "38",
     code: "ESP10",
     title: "Edukasyon sa Pagpapakatao",
     type: "Lecture",
@@ -427,7 +427,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "39",
+    id: "39",
     code: "TLE10",
     title: "Tech and Livelihood Educ",
     type: "Lecture",
@@ -438,7 +438,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "40",
+    id: "40",
     code: "Fil10",
     title: "Filipino",
     type: "Lecture",
@@ -449,7 +449,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "41",
+    id: "41",
     code: "Sci10",
     title: "Science",
     type: "Lecture",
@@ -460,7 +460,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "42",
+    id: "42",
     code: "SOC10",
     title: "Student Organizations & Clubs",
     type: "Lecture",
@@ -474,7 +474,7 @@ const subjects: ISubject[] = [
   // Senior Highschool Grade Levels
   // ABM Grade 11
   {
-    _id: "43",
+    id: "43",
     code: "SOC-G11-1st",
     title: "Student Org & Clubs",
     type: "Lecture",
@@ -485,7 +485,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "44",
+    id: "44",
     code: "MIL",
     title: "Media and Information Literacy",
     type: "Lecture",
@@ -496,7 +496,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "45",
+    id: "45",
     code: "ORG-MGT",
     title: "Organization & Management",
     type: "Lecture",
@@ -507,7 +507,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "46",
+    id: "46",
     code: "BUS-MATH",
     title: "Business Mathematics",
     type: "Lecture",
@@ -518,7 +518,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "47",
+    id: "47",
     code: "PHILO",
     title: "Intro to the Philo of Human",
     type: "Lecture",
@@ -529,7 +529,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "48",
+    id: "48",
     code: "PEH1",
     title: "Physical Education & Health 1",
     type: "Lecture",
@@ -540,7 +540,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "49",
+    id: "49",
     code: "ORAL-COM",
     title: "Oral Communication",
     type: "Lecture",
@@ -551,7 +551,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "50",
+    id: "50",
     code: "GEN-MATH",
     title: "General Mathematics",
     type: "Lecture",
@@ -562,7 +562,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "51",
+    id: "51",
     code: "21st-LIT",
     title: "21st Century Literature",
     type: "Lecture",
@@ -573,7 +573,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "52",
+    id: "52",
     code: "HR-G11-1st",
     title: "Homeroom",
     type: "Lecture",
@@ -586,7 +586,7 @@ const subjects: ISubject[] = [
 
   // ABM Grade 12
   {
-    _id: "53",
+    id: "53",
     code: "SOC-G12-1st",
     title: "Student Org & Clubs",
     type: "Lecture",
@@ -597,7 +597,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "54",
+    id: "54",
     code: "PERS-DEV",
     title: "Personal Development",
     type: "Lecture",
@@ -608,7 +608,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "55",
+    id: "55",
     code: "PRAC-RES2",
     title: "Practical Research 2",
     type: "Lecture",
@@ -619,7 +619,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "56",
+    id: "56",
     code: "PAGBASA",
     title: "Pagbasa at Pagsusuri",
     type: "Lecture",
@@ -630,7 +630,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "57",
+    id: "57",
     code: "PHYS-SCI",
     title: "Physical Science",
     type: "Lecture",
@@ -641,7 +641,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "58",
+    id: "58",
     code: "PEH3",
     title: "Physical Education & Health 3",
     type: "Lecture",
@@ -652,7 +652,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "59",
+    id: "59",
     code: "Eng-Prof",
     title: "English for Academic & Prof",
     type: "Lecture",
@@ -663,7 +663,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "60",
+    id: "60",
     code: "BUS-FIN",
     title: "Business Finance",
     type: "Lecture",
@@ -674,7 +674,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "61",
+    id: "61",
     code: "FBA-BM2",
     title: "Funda of Accountancy, BM 2",
     type: "Lecture",
@@ -685,7 +685,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "62",
+    id: "62",
     code: "HR-G12-1st",
     title: "Homeroom",
     type: "Lecture",
@@ -696,7 +696,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "63",
+    id: "63",
     code: "FIL-LARANG",
     title: "Fil sa Piling Larang (Akad)",
     type: "Lecture",
@@ -709,7 +709,7 @@ const subjects: ISubject[] = [
 
   // HUMSS Grade 11
   {
-    _id: "64",
+    id: "64",
     code: "SOC-G11-1st",
     title: "Student Org & Clubs",
     type: "Lecture",
@@ -720,7 +720,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "65",
+    id: "65",
     code: "21st-LIT",
     title: "21st Century Literature",
     type: "Lecture",
@@ -731,7 +731,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "66",
+    id: "66",
     code: "MIL",
     title: "Media and Information Literacy",
     type: "Lecture",
@@ -742,7 +742,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "67",
+    id: "67",
     code: "GEN-MATH",
     title: "General Mathematics",
     type: "Lecture",
@@ -753,7 +753,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "68",
+    id: "68",
     code: "WORLD-REL",
     title: "Intro to World Rel & BS",
     type: "Lecture",
@@ -764,7 +764,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "69",
+    id: "69",
     code: "PHILO",
     title: "Intro to the Philo of Human",
     type: "Lecture",
@@ -775,7 +775,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "70",
+    id: "70",
     code: "SS-DISS",
     title: "Disciplines & Ideas in the SS",
     type: "Lecture",
@@ -786,7 +786,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "71",
+    id: "71",
     code: "ORAL-COM",
     title: "Oral Communication",
     type: "Lecture",
@@ -797,7 +797,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "72",
+    id: "72",
     code: "HR-G11-1st",
     title: "Homeroom",
     type: "Lecture",
@@ -808,7 +808,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "73",
+    id: "73",
     code: "PEH1",
     title: "Physical Education & Health 1",
     type: "Lecture",
@@ -821,7 +821,7 @@ const subjects: ISubject[] = [
 
   // HUMSS Grade 12
   {
-    _id: "74",
+    id: "74",
     code: "SOC-G12-1st",
     title: "Student Org & Clubs",
     type: "Lecture",
@@ -832,7 +832,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "75",
+    id: "75",
     code: "PEH3",
     title: "Physical Education & Health 3",
     type: "Lecture",
@@ -843,7 +843,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "76",
+    id: "76",
     code: "FIL-LARANG",
     title: "Fil sa Piling Larang (Akad)",
     type: "Lecture",
@@ -854,7 +854,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "77",
+    id: "77",
     code: "PRAC-RES2",
     title: "Practical Research 2",
     type: "Lecture",
@@ -865,7 +865,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "78",
+    id: "78",
     code: "PERS-DEV",
     title: "Personal Development",
     type: "Lecture",
@@ -876,7 +876,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "79",
+    id: "79",
     code: "PHIL-POL",
     title: "Philippine Politics & Gov",
     type: "Lecture",
@@ -887,7 +887,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "80",
+    id: "80",
     code: "PAGBASA",
     title: "Pagbasa at Pagsusuri",
     type: "Lecture",
@@ -898,7 +898,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "81",
+    id: "81",
     code: "CRE-NON",
     title: "Creative Nonfiction",
     type: "Lecture",
@@ -909,7 +909,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "82",
+    id: "82",
     code: "Eng-Prof",
     title: "English for Academic & Prof",
     type: "Lecture",
@@ -920,7 +920,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "83",
+    id: "83",
     code: "HR-G12-1st",
     title: "Homeroom",
     type: "Lecture",
@@ -931,7 +931,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "84",
+    id: "84",
     code: "PHYS-SCI",
     title: "Physical Science",
     type: "Lecture",
@@ -944,7 +944,7 @@ const subjects: ISubject[] = [
 
   // ITMAWD Grade 11
   {
-    _id: "85",
+    id: "85",
     code: "SOC-G11-1st",
     title: "Student Org & Clubs",
     type: "Lecture",
@@ -955,7 +955,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "86",
+    id: "86",
     code: "GEN-MATH",
     title: "General Mathematics",
     type: "Lecture",
@@ -966,7 +966,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "87",
+    id: "87",
     code: "PEH1",
     title: "Physical Education & Health 1",
     type: "Lecture",
@@ -977,7 +977,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "88",
+    id: "88",
     code: "MIL",
     title: "Media and Information Literacy",
     type: "Lecture",
@@ -988,7 +988,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "89",
+    id: "89",
     code: "21st-LIT",
     title: "21st Century Literature",
     type: "Lecture",
@@ -999,7 +999,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "90",
+    id: "90",
     code: "ORAL-COM",
     title: "Oral Communication",
     type: "Lecture",
@@ -1010,7 +1010,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "91",
+    id: "91",
     code: "HR-G11-1st",
     title: "Homeroom",
     type: "Lecture",
@@ -1021,7 +1021,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "92",
+    id: "92",
     code: "PHILO",
     title: "Intro to the Philo of Human",
     type: "Lecture",
@@ -1032,7 +1032,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "93",
+    id: "93",
     code: "CP-WEB-PROG2",
     title: "Computer/Web Programming 2",
     type: "Lecture",
@@ -1043,7 +1043,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "94",
+    id: "94",
     code: "CP-WEB-PROG1",
     title: "Computer/Web Programming 1",
     type: "Lecture",
@@ -1056,7 +1056,7 @@ const subjects: ISubject[] = [
 
   // ITMAWD Grade 12
   {
-    _id: "95",
+    id: "95",
     code: "SOC-G12-1st",
     title: "Student Org & Clubs",
     type: "Lecture",
@@ -1067,7 +1067,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "96",
+    id: "96",
     code: "CP-WEB-PROG4",
     title: "Computer/Web Programming 4",
     type: "Lecture",
@@ -1078,7 +1078,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "97",
+    id: "97",
     code: "CP-WEB-PROG5",
     title: "Computer/Web Programming 5",
     type: "Lecture",
@@ -1089,7 +1089,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "98",
+    id: "98",
     code: "Eng-Prof",
     title: "English for Academic & Prof",
     type: "Lecture",
@@ -1100,7 +1100,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "99",
+    id: "99",
     code: "PAGBASA",
     title: "Pagbasa at Pagsusuri",
     type: "Lecture",
@@ -1111,7 +1111,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "100",
+    id: "100",
     code: "PHYS-SCI",
     title: "Physical Science",
     type: "Lecture",
@@ -1122,7 +1122,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "101",
+    id: "101",
     code: "FIL-LARANG-T",
     title: "Fil sa Piling Larang (Tech)",
     type: "Lecture",
@@ -1133,7 +1133,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "102",
+    id: "102",
     code: "PERS-DEV",
     title: "Personal Development",
     type: "Lecture",
@@ -1144,7 +1144,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "103",
+    id: "103",
     code: "HR-G12-1st",
     title: "Homeroom",
     type: "Lecture",
@@ -1155,7 +1155,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "104",
+    id: "104",
     code: "PRAC-RES2",
     title: "Practical Research 2",
     type: "Lecture",
@@ -1166,7 +1166,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "105",
+    id: "105",
     code: "PEH3",
     title: "Physical Education & Health 3",
     type: "Lecture",
@@ -1179,7 +1179,7 @@ const subjects: ISubject[] = [
 
   // STEM Grade 11
   {
-    _id: "106",
+    id: "106",
     code: "SOC-G11-1st",
     title: "Student Org & Clubs",
     type: "Lecture",
@@ -1190,7 +1190,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "107",
+    id: "107",
     code: "PEH1",
     title: "Physical Education & Health 1",
     type: "Lecture",
@@ -1201,7 +1201,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "108",
+    id: "108",
     code: "ORAL-COM",
     title: "Oral Communication",
     type: "Lecture",
@@ -1212,7 +1212,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "109",
+    id: "109",
     code: "21st-LIT",
     title: "21st Century Literature",
     type: "Lecture",
@@ -1223,7 +1223,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "110",
+    id: "110",
     code: "BIO1",
     title: "General Biology 1",
     type: "Lecture",
@@ -1234,7 +1234,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "111",
+    id: "111",
     code: "PHILO",
     title: "Intro to the Philo of Human",
     type: "Lecture",
@@ -1245,7 +1245,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "112",
+    id: "112",
     code: "GEN-MATH",
     title: "General Mathematics",
     type: "Lecture",
@@ -1256,7 +1256,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "113",
+    id: "113",
     code: "MIL",
     title: "Media and Information Literacy",
     type: "Lecture",
@@ -1267,7 +1267,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "114",
+    id: "114",
     code: "PRE-CAL",
     title: "Pre-Calculus",
     type: "Lecture",
@@ -1278,7 +1278,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "115",
+    id: "115",
     code: "HR-G11-1st",
     title: "Homeroom",
     type: "Lecture",
@@ -1291,7 +1291,7 @@ const subjects: ISubject[] = [
 
   // STEM Grade 12
   {
-    _id: "116",
+    id: "116",
     code: "SOC-G12-1st",
     title: "Student Org & Clubs",
     type: "Lecture",
@@ -1302,7 +1302,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "117",
+    id: "117",
     code: "CHEM1",
     title: "General Chemistry 1",
     type: "Lecture",
@@ -1313,7 +1313,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "118",
+    id: "118",
     code: "PRAC-RES2",
     title: "Practical Research 2",
     type: "Lecture",
@@ -1324,7 +1324,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "119",
+    id: "119",
     code: "PERS-DEV",
     title: "Personal Development",
     type: "Lecture",
@@ -1335,7 +1335,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "120",
+    id: "120",
     code: "Eng-Prof",
     title: "English for Academic & Prof",
     type: "Lecture",
@@ -1346,7 +1346,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "121",
+    id: "121",
     code: "PEH3",
     title: "Physical Education & Health 3",
     type: "Lecture",
@@ -1357,7 +1357,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "122",
+    id: "122",
     code: "PAGBASA",
     title: "Pagbasa at Pagsusuri",
     type: "Lecture",
@@ -1368,7 +1368,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "123",
+    id: "123",
     code: "DRRR",
     title: "Disaster Readiness & Risk Redu",
     type: "Lecture",
@@ -1379,7 +1379,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "124",
+    id: "124",
     code: "FIL-LARANG",
     title: "Fil sa Piling Larang (Akad)",
     type: "Lecture",
@@ -1390,7 +1390,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "125",
+    id: "125",
     code: "HR-G12-1st",
     title: "Homeroom",
     type: "Lecture",
@@ -1401,7 +1401,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "126",
+    id: "126",
     code: "PHYSICS1",
     title: "General Physics 1",
     type: "Lecture",
@@ -1415,7 +1415,7 @@ const subjects: ISubject[] = [
   // Tertiary Grade Levels
   // BSAIS 1st year
   {
-    _id: "127",
+    id: "127",
     code: "CONTEMP",
     title: "The Contemporary World",
     type: "Lecture",
@@ -1426,7 +1426,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "128",
+    id: "128",
     code: "NSTP1",
     title: "NSTP 1",
     type: "Lecture",
@@ -1437,7 +1437,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "129",
+    id: "129",
     code: "PHIL-HIST",
     title: "Readings in Philippine History",
     type: "Lecture",
@@ -1448,7 +1448,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "130",
+    id: "130",
     code: "UTS",
     title: "Understanding the Self",
     type: "Lecture",
@@ -1459,7 +1459,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "131",
+    id: "131",
     code: "STS",
     title: "Science, Technology, & Society",
     type: "Lecture",
@@ -1470,7 +1470,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "132",
+    id: "132",
     code: "POP-CULT",
     title: "Philippine Popular Culture",
     type: "Lecture",
@@ -1481,7 +1481,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "133",
+    id: "133",
     code: "BASIC-ACC",
     title: "Basic Accounting",
     type: "Lecture",
@@ -1492,7 +1492,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "134",
+    id: "134",
     code: "EUTH1",
     title: "Euthenics 1",
     type: "Lecture",
@@ -1503,7 +1503,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "135",
+    id: "135",
     code: "PATHFIT1",
     title: "P.E./PATHFIT 1: (MCT)",
     type: "Lecture",
@@ -1516,7 +1516,7 @@ const subjects: ISubject[] = [
 
   // BSAIS 2nd year
   {
-    _id: "136",
+    id: "136",
     code: "PATHFIT3",
     title: "P.E./PATHFIT 3: (I & DS)",
     type: "Lecture",
@@ -1527,7 +1527,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "137",
+    id: "137",
     code: "STRAT-MGT",
     title: "Strategic Management",
     type: "Lecture",
@@ -1538,7 +1538,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "138",
+    id: "138",
     code: "GREAT-BKS",
     title: "Great Books",
     type: "Lecture",
@@ -1549,7 +1549,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "139",
+    id: "139",
     code: "BUS-LAW",
     title: "Business Laws and Regulations",
     type: "Lecture",
@@ -1560,7 +1560,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "140",
+    id: "140",
     code: "PURP-COMM",
     title: "Purposive Communication",
     type: "Lecture",
@@ -1571,7 +1571,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "141",
+    id: "141",
     code: "RIZAL",
     title: "Rizal's Life and Works",
     type: "Lecture",
@@ -1582,7 +1582,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "142",
+    id: "142",
     code: "INT-ACC1",
     title: "Intermediate Accounting 1",
     type: "Lecture",
@@ -1593,7 +1593,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "143",
+    id: "143",
     code: "INT-ACC1-LAB",
     title: "Intermediate Accounting 1",
     type: "Laboratory",
@@ -1604,7 +1604,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "144",
+    id: "144",
     code: "IT-TOOLS",
     title: "IT App Tools in Business",
     type: "Lecture",
@@ -1615,7 +1615,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "145",
+    id: "145",
     code: "IT-TOOLS-LAB",
     title: "IT App Tools in Business",
     type: "Laboratory",
@@ -1626,7 +1626,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "146",
+    id: "146",
     code: "MGR-ECO",
     title: "Managerial Economics",
     type: "Lecture",
@@ -1639,7 +1639,7 @@ const subjects: ISubject[] = [
 
   // BSAIS 3rd year
   {
-    _id: "147",
+    id: "147",
     code: "ECON-DEV",
     title: "Economic Development",
     type: "Lecture",
@@ -1650,7 +1650,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "148",
+    id: "148",
     code: "GOV",
     title: "Governance, Bus Ethic, RM & IC",
     type: "Lecture",
@@ -1661,7 +1661,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "149",
+    id: "149",
     code: "INT-BUSI",
     title: "International Business & Trade",
     type: "Lecture",
@@ -1672,7 +1672,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "150",
+    id: "150",
     code: "ISAD",
     title: "Info Sys Analysis & Design",
     type: "Lecture",
@@ -1683,7 +1683,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "151",
+    id: "151",
     code: "ISAD-LAB",
     title: "Info Sys Analysis & Design",
     type: "Laboratory",
@@ -1694,7 +1694,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "152",
+    id: "152",
     code: "INT-ACC3",
     title: "Intermediate Accounting 3",
     type: "Lecture",
@@ -1705,7 +1705,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "153",
+    id: "153",
     code: "INT-ACC3-LAB",
     title: "Intermediate Accounting 3",
     type: "Laboratory",
@@ -1716,7 +1716,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "154",
+    id: "154",
     code: "COST-ACC",
     title: "Cost Accounting and Control",
     type: "Lecture",
@@ -1727,7 +1727,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "155",
+    id: "155",
     code: "FIN-MKT",
     title: "Financial Markets",
     type: "Lecture",
@@ -1738,7 +1738,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "156",
+    id: "156",
     code: "STAT-APP",
     title: "Stat Analysis w/ Soft App",
     type: "Lecture",
@@ -1749,7 +1749,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "157",
+    id: "157",
     code: "STAT-APP-LAB",
     title: "Stat Analysis w/ Soft App",
     type: "Laboratory",
@@ -1762,7 +1762,7 @@ const subjects: ISubject[] = [
 
   // BSAIS 4th year
   {
-    _id: "158",
+    id: "158",
     code: "BUSI-ANALYTICS",
     title: "Business Analytics",
     type: "Lecture",
@@ -1773,7 +1773,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "159",
+    id: "159",
     code: "HRM",
     title: "Human Resource Management",
     type: "Lecture",
@@ -1784,7 +1784,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "160",
+    id: "160",
     code: "MGT-SCI",
     title: "Management Science",
     type: "Lecture",
@@ -1795,7 +1795,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "161",
+    id: "161",
     code: "EUTH2",
     title: "Euthenics 2",
     type: "Lecture",
@@ -1806,7 +1806,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "162",
+    id: "162",
     code: "INFO-SEC",
     title: "Information Security & Mgt",
     type: "Lecture",
@@ -1817,7 +1817,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "163",
+    id: "163",
     code: "INFO-SEC-LAB",
     title: "Information Security & Mgt",
     type: "Laboratory",
@@ -1828,7 +1828,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "164",
+    id: "164",
     code: "STRAT-BUSI",
     title: "Strategic Business Analysis",
     type: "Lecture",
@@ -1839,7 +1839,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "165",
+    id: "165",
     code: "MGT-REPORT",
     title: "Management Reporting",
     type: "Lecture",
@@ -1850,7 +1850,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "166",
+    id: "166",
     code: "FIN-MODEL",
     title: "Financial Modeling",
     type: "Lecture",
@@ -1863,7 +1863,7 @@ const subjects: ISubject[] = [
 
   // BSBA 1st year
   {
-    _id: "167",
+    id: "167",
     code: "MICRO",
     title: "Basic Microeconomics",
     type: "Lecture",
@@ -1874,7 +1874,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "168",
+    id: "168",
     code: "NSTP1",
     title: "NSTP 1",
     type: "Lecture",
@@ -1885,7 +1885,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "169",
+    id: "169",
     code: "PHIL-HIST",
     title: "Readings in Philippine History",
     type: "Lecture",
@@ -1896,7 +1896,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "170",
+    id: "170",
     code: "EUTH1",
     title: "Euthenics 1",
     type: "Lecture",
@@ -1907,7 +1907,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "171",
+    id: "171",
     code: "CONTEMP",
     title: "The Contemporary World",
     type: "Lecture",
@@ -1918,7 +1918,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "172",
+    id: "172",
     code: "UTS",
     title: "Understanding the Self",
     type: "Lecture",
@@ -1929,7 +1929,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "173",
+    id: "173",
     code: "PATHFIT1",
     title: "P.E./PATHFIT 1: (MCT)",
     type: "Lecture",
@@ -1942,7 +1942,7 @@ const subjects: ISubject[] = [
 
   // BSBA 2nd year
   {
-    _id: "174",
+    id: "174",
     code: "PATHFIT3",
     title: "P.E./PATHFIT 3: (I & DS)",
     type: "Lecture",
@@ -1953,7 +1953,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "175",
+    id: "175",
     code: "FACIL-MGT",
     title: "Facilities Management",
     type: "Lecture",
@@ -1964,7 +1964,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "176",
+    id: "176",
     code: "COSTING",
     title: "Costing and Pricing",
     type: "Lecture",
@@ -1975,7 +1975,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "177",
+    id: "177",
     code: "COSTING-LAB",
     title: "Costing and Pricing",
     type: "Laboratory",
@@ -1986,7 +1986,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "178",
+    id: "178",
     code: "PURP-COMM",
     title: "Purposive Communication",
     type: "Lecture",
@@ -1997,7 +1997,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "179",
+    id: "179",
     code: "POP-CULT",
     title: "Philippine Popular Culture",
     type: "Lecture",
@@ -2008,7 +2008,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "180",
+    id: "180",
     code: "RIZAL",
     title: "Rizal's Life and Works",
     type: "Lecture",
@@ -2021,7 +2021,7 @@ const subjects: ISubject[] = [
 
   // BSBA 3rd year
   {
-    _id: "181",
+    id: "181",
     code: "INT-BUSI",
     title: "International Business & Trade",
     type: "Lecture",
@@ -2032,7 +2032,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "182",
+    id: "182",
     code: "GOV-SOC",
     title: "Good Governance & Social Resp",
     type: "Lecture",
@@ -2043,7 +2043,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "183",
+    id: "183",
     code: "GREAT-BKS",
     title: "Great Books",
     type: "Lecture",
@@ -2054,7 +2054,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "184",
+    id: "184",
     code: "OPS-MGT",
     title: "Operations Management (TQM)",
     type: "Lecture",
@@ -2065,7 +2065,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "185",
+    id: "185",
     code: "BUSI-RES",
     title: "Business Research",
     type: "Lecture",
@@ -2076,7 +2076,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "186",
+    id: "186",
     code: "MGR-ACC",
     title: "Managerial Accounting",
     type: "Lecture",
@@ -2087,7 +2087,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "187",
+    id: "187",
     code: "MGR-ACC-LAB",
     title: "Managerial Accounting",
     type: "Laboratory",
@@ -2100,7 +2100,7 @@ const subjects: ISubject[] = [
 
   // BSBA 4th year
   {
-    _id: "188",
+    id: "188",
     code: "EUTH2",
     title: "Euthenics 2",
     type: "Lecture",
@@ -2111,7 +2111,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "189",
+    id: "189",
     code: "ENT-MGT",
     title: "Entrepreneurial Management",
     type: "Lecture",
@@ -2122,7 +2122,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "190",
+    id: "190",
     code: "MKT-MGT",
     title: "Marketing Management",
     type: "Lecture",
@@ -2133,7 +2133,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "191",
+    id: "191",
     code: "SPEC-TOPIC",
     title: "Special Topics in Oper Mgt",
     type: "Lecture",
@@ -2144,7 +2144,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "192",
+    id: "192",
     code: "FIN-MGT",
     title: "Financial Management",
     type: "Lecture",
@@ -2155,7 +2155,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "193",
+    id: "193",
     code: "FEAS-STUDY",
     title: "Feasibility Study",
     type: "Lecture",
@@ -2168,7 +2168,7 @@ const subjects: ISubject[] = [
 
   // BSCPE 1st year
   {
-    _id: "194",
+    id: "194",
     code: "CONTEMP",
     title: "The Contemporary World",
     type: "Lecture",
@@ -2179,7 +2179,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "195",
+    id: "195",
     code: "NSTP1",
     title: "NSTP 1",
     type: "Lecture",
@@ -2190,7 +2190,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "196",
+    id: "196",
     code: "MATH-MOD",
     title: "Math in the Modern World",
     type: "Lecture",
@@ -2201,7 +2201,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "197",
+    id: "197",
     code: "PROG-LOGIC",
     title: "Programming Logic and Design",
     type: "Lecture",
@@ -2212,7 +2212,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "198",
+    id: "198",
     code: "PROG-LOGIC-LAB",
     title: "Programming Logic and Design",
     type: "Laboratory",
@@ -2223,7 +2223,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "199",
+    id: "199",
     code: "COL-CALC",
     title: "College Calc (Differential)",
     type: "Lecture",
@@ -2234,7 +2234,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "200",
+    id: "200",
     code: "UTS",
     title: "Understanding the Self",
     type: "Lecture",
@@ -2245,7 +2245,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "201",
+    id: "201",
     code: "EUTH1",
     title: "Euthenics 1",
     type: "Lecture",
@@ -2256,7 +2256,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "202",
+    id: "202",
     code: "PATHFIT1",
     title: "P.E./PATHFIT 1: (MCT)",
     type: "Lecture",
@@ -2267,7 +2267,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "203",
+    id: "203",
     code: "CPE-DISC",
     title: "Computer Engg as a Discipline",
     type: "Lecture",
@@ -2278,7 +2278,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "204",
+    id: "204",
     code: "CHEM-ENG",
     title: "Chemistry for Engineers",
     type: "Lecture",
@@ -2291,7 +2291,7 @@ const subjects: ISubject[] = [
 
   // BSCPE 2nd year
   {
-    _id: "205",
+    id: "205",
     code: "ENT-MIND",
     title: "The Entrepreneurial Mind",
     type: "Lecture",
@@ -2302,7 +2302,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "206",
+    id: "206",
     code: "PHIL-HIST",
     title: "Readings in Philippine History",
     type: "Lecture",
@@ -2313,7 +2313,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "207",
+    id: "207",
     code: "DATA-STRUCT",
     title: "Data Structures and Algorithms",
     type: "Lecture",
@@ -2324,7 +2324,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "208",
+    id: "208",
     code: "DATA-STRUCT-LAB",
     title: "Data Structures and Algorithms",
     type: "Laboratory",
@@ -2335,7 +2335,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "209",
+    id: "209",
     code: "ELEC-CIRC",
     title: "Fundamentals of Elec Circ",
     type: "Lecture",
@@ -2346,7 +2346,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "210",
+    id: "210",
     code: "ELEC-CIRC-LAB",
     title: "Fundamentals of Elec Circ",
     type: "Laboratory",
@@ -2357,7 +2357,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "211",
+    id: "211",
     code: "RIZAL",
     title: "Rizal's Life and Works",
     type: "Lecture",
@@ -2368,7 +2368,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "212",
+    id: "212",
     code: "PATHFIT3",
     title: "P.E./PATHFIT 3: (I & DS)",
     type: "Lecture",
@@ -2379,7 +2379,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "213",
+    id: "213",
     code: "EMER-TECH",
     title: "Emerging Technologies in CpE",
     type: "Lecture",
@@ -2390,7 +2390,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "214",
+    id: "214",
     code: "EMER-TECH-LAB",
     title: "Emerging Technologies in CpE",
     type: "Laboratory",
@@ -2401,7 +2401,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "215",
+    id: "215",
     code: "DIFF-EQ",
     title: "Differential Equations",
     type: "Lecture",
@@ -2412,7 +2412,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "216",
+    id: "216",
     code: "OS",
     title: "Operating Systems",
     type: "Lecture",
@@ -2425,7 +2425,7 @@ const subjects: ISubject[] = [
 
   // BSCPE 3rd year
   {
-    _id: "217",
+    id: "217",
     code: "LOGIC-CIRC",
     title: "Logic Circuits and Design",
     type: "Lecture",
@@ -2436,7 +2436,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "218",
+    id: "218",
     code: "LOGIC-CIRC-LAB",
     title: "Logic Circuits and Design",
     type: "Laboratory",
@@ -2447,7 +2447,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "219",
+    id: "219",
     code: "ENG-ECON",
     title: "Engineering Economics",
     type: "Lecture",
@@ -2458,7 +2458,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "220",
+    id: "220",
     code: "FEED-CONTROL",
     title: "Feedback and Control Systems",
     type: "Lecture",
@@ -2469,7 +2469,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "221",
+    id: "221",
     code: "COMP-ARCH",
     title: "Computer Systems Architecture",
     type: "Lecture",
@@ -2480,7 +2480,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "222",
+    id: "222",
     code: "COMP-ARCH-LAB",
     title: "Computer Systems Architecture",
     type: "Laboratory",
@@ -2491,7 +2491,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "223",
+    id: "223",
     code: "CAD",
     title: "Computer-Aided Drafting",
     type: "Lecture",
@@ -2502,7 +2502,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "224",
+    id: "224",
     code: "CAD-LAB",
     title: "Computer-Aided Drafting",
     type: "Laboratory",
@@ -2513,7 +2513,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "225",
+    id: "225",
     code: "DATA-COMM",
     title: "Data & Digital Comm (Data Com)",
     type: "Lecture",
@@ -2524,7 +2524,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "226",
+    id: "226",
     code: "CPE-DRAFT",
     title: "Computer Engg Drafting & Des",
     type: "Lecture",
@@ -2535,7 +2535,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "227",
+    id: "227",
     code: "CPE-DRAFT-LAB",
     title: "Computer Engg Drafting & Des",
     type: "Laboratory",
@@ -2546,7 +2546,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "228",
+    id: "228",
     code: "RES-METH",
     title: "Methods of Research",
     type: "Lecture",
@@ -2557,7 +2557,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "229",
+    id: "229",
     code: "MIXED-SIG",
     title: "Funda of Mixed Signals & Sens",
     type: "Lecture",
@@ -2568,7 +2568,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "230",
+    id: "230",
     code: "MIXED-SIG-LAB",
     title: "Funda of Mixed Signals & Sens",
     type: "Laboratory",
@@ -2581,7 +2581,7 @@ const subjects: ISubject[] = [
 
   // BSCPE 4th year
   {
-    _id: "231",
+    id: "231",
     code: "ROBOT-ASS",
     title: "Robot Assembly and Programming",
     type: "Lecture",
@@ -2592,7 +2592,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "232",
+    id: "232",
     code: "ROBOT-ASS-LAB",
     title: "Robot Assembly and Programming",
     type: "Laboratory",
@@ -2603,7 +2603,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "233",
+    id: "233",
     code: "CPE-LAW",
     title: "CpE Laws & Profnl Practice",
     type: "Lecture",
@@ -2614,7 +2614,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "234",
+    id: "234",
     code: "NET-SEC",
     title: "Computer Network and Security",
     type: "Lecture",
@@ -2625,7 +2625,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "235",
+    id: "235",
     code: "NET-SEC-LAB",
     title: "Computer Network and Security",
     type: "Laboratory",
@@ -2636,7 +2636,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "236",
+    id: "236",
     code: "EUTH2",
     title: "Euthenics 2",
     type: "Lecture",
@@ -2647,7 +2647,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "237",
+    id: "237",
     code: "CAPSTONE2",
     title: "Capstone Design 2",
     type: "Lecture",
@@ -2658,7 +2658,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "238",
+    id: "238",
     code: "COMP-ORG",
     title: "Computer Architecture and Org",
     type: "Lecture",
@@ -2669,7 +2669,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "239",
+    id: "239",
     code: "COMP-ORG-LAB",
     title: "Computer Architecture and Org",
     type: "Laboratory",
@@ -2680,7 +2680,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "240",
+    id: "240",
     code: "EMBEDDED",
     title: "Embedded Systems",
     type: "Lecture",
@@ -2691,7 +2691,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "241",
+    id: "241",
     code: "EMBEDDED-LAB",
     title: "Embedded Systems",
     type: "Laboratory",
@@ -2702,7 +2702,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "242",
+    id: "242",
     code: "SEMINARS",
     title: "Seminars and Fieldtrips",
     type: "Lecture",
@@ -2715,7 +2715,7 @@ const subjects: ISubject[] = [
 
   // BSHM 1st year
   {
-    _id: "243",
+    id: "243",
     code: "PHIL-HIST",
     title: "Readings in Philippine History",
     type: "Lecture",
@@ -2726,7 +2726,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "244",
+    id: "244",
     code: "UTS",
     title: "Understanding the Self",
     type: "Lecture",
@@ -2737,7 +2737,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "245",
+    id: "245",
     code: "MACRO-TH",
     title: "Macro Prspctv of Toursm & Hosp",
     type: "Lecture",
@@ -2748,7 +2748,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "246",
+    id: "246",
     code: "NSTP1",
     title: "NSTP 1",
     type: "Lecture",
@@ -2759,7 +2759,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "247",
+    id: "247",
     code: "RISK-MGT",
     title: "Risk Mgt as Applied to SSS",
     type: "Lecture",
@@ -2770,7 +2770,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "248",
+    id: "248",
     code: "MATH-MOD",
     title: "Math in the Modern World",
     type: "Lecture",
@@ -2781,7 +2781,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "249",
+    id: "249",
     code: "EUTH1",
     title: "Euthenics 1",
     type: "Lecture",
@@ -2792,7 +2792,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "250",
+    id: "250",
     code: "PATHFIT1",
     title: "P.E./PATHFIT 1: (MCT)",
     type: "Lecture",
@@ -2805,7 +2805,7 @@ const subjects: ISubject[] = [
 
   // BSHM 2nd year
   {
-    _id: "251",
+    id: "251",
     code: "FOR-LANG1",
     title: "Foreign Language 1",
     type: "Lecture",
@@ -2816,7 +2816,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "252",
+    id: "252",
     code: "PHIL-CUIS",
     title: "Phil Reg Cuis w/ Food SD",
     type: "Lecture",
@@ -2827,7 +2827,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "253",
+    id: "253",
     code: "PHIL-CUIS-LAB",
     title: "Phil Reg Cuis w/ Food SD",
     type: "Laboratory",
@@ -2838,7 +2838,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "254",
+    id: "254",
     code: "HOTEL-FRONT",
     title: "Hotel Front Ofc Operations Mgt",
     type: "Lecture",
@@ -2849,7 +2849,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "255",
+    id: "255",
     code: "ART-APP",
     title: "Art Appreciation",
     type: "Lecture",
@@ -2860,7 +2860,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "256",
+    id: "256",
     code: "QUAL-SERV",
     title: "Quality Serv Mgt Tour & Hosp",
     type: "Lecture",
@@ -2871,7 +2871,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "257",
+    id: "257",
     code: "PATHFIT3",
     title: "P.E./PATHFIT 3: (I & DS)",
     type: "Lecture",
@@ -2882,7 +2882,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "258",
+    id: "258",
     code: "LODGING-OPS",
     title: "Fundamentals in Lodging Oper",
     type: "Lecture",
@@ -2893,7 +2893,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "259",
+    id: "259",
     code: "LODGING-OPS-LAB",
     title: "Fundamentals in Lodging Oper",
     type: "Laboratory",
@@ -2906,7 +2906,7 @@ const subjects: ISubject[] = [
 
   // BSHM 3rd year
   {
-    _id: "260",
+    id: "260",
     code: "OPS-MGT",
     title: "Operations Management (TQM)",
     type: "Lecture",
@@ -2917,7 +2917,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "261",
+    id: "261",
     code: "MULT-DIV",
     title: "Multicultural Diversity in WTP",
     type: "Lecture",
@@ -2928,7 +2928,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "262",
+    id: "262",
     code: "GREAT-BKS",
     title: "Great Books",
     type: "Lecture",
@@ -2939,7 +2939,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "263",
+    id: "263",
     code: "PROF-DEV",
     title: "Profe Dev & Applied Ethics",
     type: "Lecture",
@@ -2950,7 +2950,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "264",
+    id: "264",
     code: "TH-MKTG",
     title: "Tourism & Hospitality Mrktg",
     type: "Lecture",
@@ -2961,7 +2961,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "265",
+    id: "265",
     code: "ENT-MIND",
     title: "The Entrepreneurial Mind",
     type: "Lecture",
@@ -2972,7 +2972,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "266",
+    id: "266",
     code: "PASTRY-ARTS",
     title: "Pastry Arts and Bakery Mgt",
     type: "Lecture",
@@ -2983,7 +2983,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "267",
+    id: "267",
     code: "PASTRY-ARTS-LAB",
     title: "Pastry Arts and Bakery Mgt",
     type: "Laboratory",
@@ -2994,7 +2994,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "268",
+    id: "268",
     code: "BUSI-TOOLS",
     title: "Applied Busi Tools & Tech Hosp",
     type: "Lecture",
@@ -3005,7 +3005,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "269",
+    id: "269",
     code: "BUSI-TOOLS-LAB",
     title: "Applied Busi Tools & Tech Hosp",
     type: "Laboratory",
@@ -3018,7 +3018,7 @@ const subjects: ISubject[] = [
 
   // BSHM 4th year
   {
-    _id: "270",
+    id: "270",
     code: "EUTH2",
     title: "Euthenics 2",
     type: "Lecture",
@@ -3029,7 +3029,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "271",
+    id: "271",
     code: "SPEC-CUIS",
     title: "Specialty Cuisine w/ Food Exh",
     type: "Lecture",
@@ -3040,7 +3040,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "272",
+    id: "272",
     code: "SPEC-CUIS-LAB",
     title: "Specialty Cuisine w/ Food Exh",
     type: "Laboratory",
@@ -3051,7 +3051,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "273",
+    id: "273",
     code: "CONTEMP",
     title: "The Contemporary World",
     type: "Lecture",
@@ -3062,7 +3062,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "274",
+    id: "274",
     code: "HOSP-RES",
     title: "Research in Hospitality",
     type: "Lecture",
@@ -3073,7 +3073,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "275",
+    id: "275",
     code: "RIZAL",
     title: "Rizal's Life and Works",
     type: "Lecture",
@@ -3086,7 +3086,7 @@ const subjects: ISubject[] = [
 
   // BSIT 1st year
   {
-    _id: "276",
+    id: "276",
     code: "EUTH1",
     title: "Euthenics 1",
     type: "Lecture",
@@ -3097,7 +3097,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "277",
+    id: "277",
     code: "POP-CULT",
     title: "Philippine Popular Culture",
     type: "Lecture",
@@ -3108,7 +3108,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "278",
+    id: "278",
     code: "UTS",
     title: "Understanding the Self",
     type: "Lecture",
@@ -3119,7 +3119,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "279",
+    id: "279",
     code: "NSTP1",
     title: "NSTP 1",
     type: "Lecture",
@@ -3130,7 +3130,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "280",
+    id: "280",
     code: "PURP-COMM",
     title: "Purposive Communication",
     type: "Lecture",
@@ -3141,7 +3141,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "281",
+    id: "281",
     code: "INTRO-COMP",
     title: "Introduction to Computing",
     type: "Lecture",
@@ -3152,7 +3152,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "282",
+    id: "282",
     code: "INTRO-COMP-LAB",
     title: "Introduction to Computing",
     type: "Laboratory",
@@ -3163,7 +3163,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "283",
+    id: "283",
     code: "COMP-PROG1",
     title: "Computer Programming 1",
     type: "Lecture",
@@ -3174,7 +3174,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "284",
+    id: "284",
     code: "COMP-PROG1-LAB",
     title: "Computer Programming 1",
     type: "Laboratory",
@@ -3185,7 +3185,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "285",
+    id: "285",
     code: "PATHFIT1",
     title: "P.E./PATHFIT 1: (MCT)",
     type: "Lecture",
@@ -3196,7 +3196,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "286",
+    id: "286",
     code: "CONTEMP",
     title: "The Contemporary World",
     type: "Lecture",
@@ -3209,7 +3209,7 @@ const subjects: ISubject[] = [
 
   // BSIT 2nd year
   {
-    _id: "287",
+    id: "287",
     code: "PATHFIT3",
     title: "P.E./PATHFIT 3: (I & DS)",
     type: "Lecture",
@@ -3220,7 +3220,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "288",
+    id: "288",
     code: "OOP",
     title: "Object-Oriented Programming",
     type: "Lecture",
@@ -3231,7 +3231,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "289",
+    id: "289",
     code: "OOP-LAB",
     title: "Object-Oriented Programming",
     type: "Laboratory",
@@ -3242,7 +3242,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "290",
+    id: "290",
     code: "PLAT-TECH",
     title: "Platform Technology (OS)",
     type: "Lecture",
@@ -3253,7 +3253,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "291",
+    id: "291",
     code: "PLAT-TECH-LAB",
     title: "Platform Technology (OS)",
     type: "Laboratory",
@@ -3264,7 +3264,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "292",
+    id: "292",
     code: "HCI",
     title: "Human-Computer Interaction",
     type: "Lecture",
@@ -3275,7 +3275,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "293",
+    id: "293",
     code: "HCI-LAB",
     title: "Human-Computer Interaction",
     type: "Laboratory",
@@ -3286,7 +3286,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "294",
+    id: "294",
     code: "PHIL-HIST",
     title: "Readings in Philippine History",
     type: "Lecture",
@@ -3297,7 +3297,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "295",
+    id: "295",
     code: "RIZAL",
     title: "Rizal's Life and Works",
     type: "Lecture",
@@ -3308,7 +3308,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "296",
+    id: "296",
     code: "DATA-STRUCT",
     title: "Data Structures and Algorithms",
     type: "Lecture",
@@ -3319,7 +3319,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "297",
+    id: "297",
     code: "DATA-STRUCT-LAB",
     title: "Data Structures and Algorithms",
     type: "Laboratory",
@@ -3330,7 +3330,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "298",
+    id: "298",
     code: "COMM-PRIN",
     title: "Principles of Communication",
     type: "Lecture",
@@ -3343,7 +3343,7 @@ const subjects: ISubject[] = [
 
   // BSIT 3rd year
   {
-    _id: "299",
+    id: "299",
     code: "ADV-DB",
     title: "Advanced Database Systems",
     type: "Lecture",
@@ -3354,7 +3354,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "300",
+    id: "300",
     code: "ADV-DB-LAB",
     title: "Advanced Database Systems",
     type: "Laboratory",
@@ -3365,7 +3365,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "301",
+    id: "301",
     code: "ENT-ARCH",
     title: "Enterprise Architecture",
     type: "Lecture",
@@ -3376,7 +3376,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "302",
+    id: "302",
     code: "ENT-ARCH-LAB",
     title: "Enterprise Architecture",
     type: "Laboratory",
@@ -3387,7 +3387,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "303",
+    id: "303",
     code: "PROB-ISS",
     title: "Prof Issues in Info Sys & Tech",
     type: "Lecture",
@@ -3398,7 +3398,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "304",
+    id: "304",
     code: "ADV-SYS",
     title: "Advance Sys Integration & Arch",
     type: "Lecture",
@@ -3409,7 +3409,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "305",
+    id: "305",
     code: "ADV-SYS-LAB",
     title: "Advance Sys Integration & Arch",
     type: "Laboratory",
@@ -3420,7 +3420,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "306",
+    id: "306",
     code: "DATA-COMM",
     title: "Data & Digital Comm (Data Com)",
     type: "Lecture",
@@ -3431,7 +3431,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "307",
+    id: "307",
     code: "APP-DEV",
     title: "App Dev & Emerging Tech",
     type: "Lecture",
@@ -3442,7 +3442,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "308",
+    id: "308",
     code: "APP-DEV-LAB",
     title: "App Dev & Emerging Tech",
     type: "Laboratory",
@@ -3453,7 +3453,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "309",
+    id: "309",
     code: "EVENT-PROG",
     title: "Event-Driven Programming",
     type: "Lecture",
@@ -3464,7 +3464,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "310",
+    id: "310",
     code: "EVENT-PROG-LAB",
     title: "Event-Driven Programming",
     type: "Laboratory",
@@ -3477,7 +3477,7 @@ const subjects: ISubject[] = [
 
   // BSIT 4th year
   {
-    _id: "311",
+    id: "311",
     code: "GAME-DEV",
     title: "Game Development",
     type: "Lecture",
@@ -3488,7 +3488,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "312",
+    id: "312",
     code: "GAME-DEV-LAB",
     title: "Game Development",
     type: "Laboratory",
@@ -3499,7 +3499,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "313",
+    id: "313",
     code: "CAPSTONE2",
     title: "IT Capstone Project 2",
     type: "Lecture",
@@ -3510,7 +3510,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "314",
+    id: "314",
     code: "EUTH2",
     title: "Euthenics 2",
     type: "Lecture",
@@ -3521,7 +3521,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "315",
+    id: "315",
     code: "NET-TECH2",
     title: "Network Technology 2",
     type: "Lecture",
@@ -3532,7 +3532,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "316",
+    id: "316",
     code: "NET-TECH2-LAB",
     title: "Network Technology 2",
     type: "Laboratory",
@@ -3543,7 +3543,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "317",
+    id: "317",
     code: "INFO-SEC",
     title: "Info Assurance & Sec (DP)",
     type: "Lecture",
@@ -3554,7 +3554,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "318",
+    id: "318",
     code: "INFO-SEC-LAB",
     title: "Info Assurance & Sec (DP)",
     type: "Laboratory",
@@ -3565,7 +3565,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "319",
+    id: "319",
     code: "COMP-GRAPH",
     title: "Computer Graphics Programming",
     type: "Lecture",
@@ -3576,7 +3576,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "320",
+    id: "320",
     code: "COMP-GRAPH-LAB",
     title: "Computer Graphics Programming",
     type: "Laboratory",
@@ -3587,7 +3587,7 @@ const subjects: ISubject[] = [
     semester: "1st Semester",
   },
   {
-    _id: "321",
+    id: "321",
     code: "IT-SVC",
     title: "IT Service Management",
     type: "Lecture",

@@ -10,16 +10,16 @@ export function getScheduledSubjectById(
 ): IScheduledSubject | undefined {
   const scheduledSubjects = getScheduledSubjectStore();
   return scheduledSubjects.find(
-    (scheduledSubject) => scheduledSubject._id === id
+    (scheduledSubject) => scheduledSubject.id === id
   );
 }
 
 export function addScheduledSubject(
-  scheduledSubject: Omit<IScheduledSubject, "_id">
+  scheduledSubject: Omit<IScheduledSubject, "id">
 ): IScheduledSubject {
   const newScheduledSubject = {
     ...scheduledSubject,
-    _id: Date.now().toString(),
+    id: Date.now().toString(),
   };
   getScheduledSubjectStore().push(newScheduledSubject);
   return newScheduledSubject;
@@ -31,7 +31,7 @@ export function updateScheduledSubject(
 ): IScheduledSubject | null {
   const scheduledSubjects = getScheduledSubjectStore();
   const index = scheduledSubjects.findIndex(
-    (scheduledSubject) => scheduledSubject._id === id
+    (scheduledSubject) => scheduledSubject.id === id
   );
   if (index === -1) return null;
   scheduledSubjects[index] = { ...scheduledSubjects[index], ...updates };
@@ -41,7 +41,7 @@ export function updateScheduledSubject(
 export function deleteScheduledSubject(id: string): boolean {
   const scheduledSubjects = getScheduledSubjectStore();
   const index = scheduledSubjects.findIndex(
-    (scheduledSubject) => scheduledSubject._id === id
+    (scheduledSubject) => scheduledSubject.id === id
   );
   if (index === -1) return false;
   scheduledSubjects.splice(index, 1);

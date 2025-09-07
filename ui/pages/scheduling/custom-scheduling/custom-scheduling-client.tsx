@@ -65,7 +65,7 @@ export default function CustomScheduleClient() {
             onNoteChange={setNote}
             items={customList}
             onRemove={(id) =>
-              setCustomList((p) => p.filter((x) => x._id !== id))
+              setCustomList((p) => p.filter((x) => x.id !== id))
             }
             onReplaceList={(list) => setCustomList(list)}
           />

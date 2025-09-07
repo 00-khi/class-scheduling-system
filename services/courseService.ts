@@ -7,11 +7,11 @@ export function getCourses(): ICourse[] {
 
 export function getCourseById(id: string): ICourse | undefined {
   const courses = getCourseStore();
-  return courses.find((course) => course._id === id);
+  return courses.find((course) => course.id === id);
 }
 
-export function addCourse(course: Omit<ICourse, "_id">): ICourse {
-  const newCourse = { ...course, _id: Date.now().toString() };
+export function addCourse(course: Omit<ICourse, "id">): ICourse {
+  const newCourse = { ...course, id: Date.now().toString() };
   getCourseStore().push(newCourse);
   return newCourse;
 }
@@ -21,7 +21,7 @@ export function updateCourse(
   updates: Partial<ICourse>
 ): ICourse | null {
   const courses = getCourseStore();
-  const index = courses.findIndex((course) => course._id === id);
+  const index = courses.findIndex((course) => course.id === id);
   if (index === -1) return null;
   courses[index] = { ...courses[index], ...updates };
   return courses[index];
@@ -29,7 +29,7 @@ export function updateCourse(
 
 export function deleteCourse(id: string): boolean {
   const courses = getCourseStore();
-  const index = courses.findIndex((course) => course._id === id);
+  const index = courses.findIndex((course) => course.id === id);
   if (index === -1) return false;
   courses.splice(index, 1);
   return true;

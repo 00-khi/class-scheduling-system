@@ -70,7 +70,7 @@ export default function SelectInstructor({
         </SelectTrigger>
         <SelectContent>
           {academicQualifications.map((d) => (
-            <SelectItem key={d._id} value={d._id!}>
+            <SelectItem key={d.id} value={d.id!}>
               {d.name}
             </SelectItem>
           ))}
@@ -86,7 +86,7 @@ export default function SelectInstructor({
         </SelectTrigger>
         <SelectContent>
           {filteredInstructors().map((ins) => (
-            <SelectItem key={ins._id} value={ins._id!}>
+            <SelectItem key={ins.id} value={ins.id!}>
               {ins.name}
             </SelectItem>
           ))}

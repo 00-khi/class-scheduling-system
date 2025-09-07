@@ -98,12 +98,12 @@ export function ScheduledSubjectsTable({
       })
       .map((s) => {
         const asg = getAssignedSubjectById(s.assignedSubjectId);
-        const subj = subjects.find((x) => x._id === asg?.subjectId);
+        const subj = subjects.find((x) => x.id === asg?.subjectId);
 
-        const room = rooms.find((r) => r._id === s.roomId);
+        const room = rooms.find((r) => r.id === s.roomId);
 
         const requiredMinutes = (subj?.units || 0) * 60;
-        const scheduledMinutes = totalScheduledInMinutes.get(asg?._id!) || 0;
+        const scheduledMinutes = totalScheduledInMinutes.get(asg?.id!) || 0;
 
         return { ...s, subject: subj, room, requiredMinutes, scheduledMinutes };
       });
@@ -244,8 +244,8 @@ export function ScheduledSubjectsTable({
         isOpen={isDeleteOpen}
         onClose={() => setIsDeleteOpen(false)}
         onConfirm={() => {
-          if (toDelete?._id) {
-            const ok = deleteScheduledSubject(toDelete._id);
+          if (toDelete?.id) {
+            const ok = deleteScheduledSubject(toDelete.id);
             if (ok) {
               toast.success("Schedule deleted");
               onChange();
