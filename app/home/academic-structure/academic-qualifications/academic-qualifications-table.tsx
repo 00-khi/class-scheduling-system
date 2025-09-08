@@ -139,6 +139,7 @@ export default function AcademicQualificationsTable() {
       const msg = error instanceof Error ? error.message : "Unexpected error";
       toast.error(msg);
       console.error("Error updating academic qualification:", error);
+      return false;
     } finally {
       setIsSubmitting(false);
     }
@@ -150,6 +151,7 @@ export default function AcademicQualificationsTable() {
     try {
       if (!id) {
         toast.error("Error deleting academic qualification: Invalid ID");
+        setIsDeleteDialogOpen(false);
         return;
       }
       const deleted = await deleteAcademicQualification(id);
