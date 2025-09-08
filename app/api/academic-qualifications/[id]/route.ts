@@ -68,7 +68,7 @@ export const PUT = createApiHandler(
 // DELETE /api/academic-qualifications/[id]
 export const DELETE = createApiHandler(
   async (request: Request, { params }: { params: { id: string } }) => {
-    const { id } = params;
+    const { id } = await params;
     const numericId = parseInt(id);
 
     if (isNaN(numericId)) {
