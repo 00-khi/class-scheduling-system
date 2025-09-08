@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { IAcademicQualification } from "@/lib/types";
 import { NextResponse } from "next/server";
 import { createApiHandler } from "@/lib/api-handler";
+import { capitalizeEachWord, toUppercase } from "@/lib/utils";
 
 export const GET = createApiHandler(async () => {
   const academicQualifications = await prisma.academicQualification.findMany();
@@ -24,8 +25,8 @@ export const POST = createApiHandler(async (request) => {
 
   const newAcademicQualification = await prisma.academicQualification.create({
     data: {
-      code: body.code,
-      name: body.name,
+      code: toUppercase(body.code),
+      name: capitalizeEachWord(body.name),
     },
   });
 

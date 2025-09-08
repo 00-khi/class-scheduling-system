@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { createApiHandler } from "@/lib/api-handler";
 import { IAcademicQualification } from "@/lib/types";
+import { capitalizeEachWord, toUppercase } from "@/lib/utils";
 
 // GET /api/academic-qualifications/[id]
 export const GET = createApiHandler(
@@ -54,6 +55,15 @@ export const PUT = createApiHandler(
 
     // Use object destructuring to remove the 'id' property from the body
     const { id: _, ...data } = await request.json();
+
+    // Apply formatting to 'code' and 'name' if they exist in the request body
+    // This ensures we only format the fields that are being updated.
+    if (data.code) {
+      data.code = toUppercase(data.code);
+    }
+    if (data.name) {
+      data.name = capitalizeEachWord(data.name);
+    }
 
     const updatedAcademicQualification =
       await prisma.academicQualification.update({
