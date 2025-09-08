@@ -54,7 +54,7 @@ export function ConfirmDeleteDialog({
             Cancel
           </AlertDialogCancel>
           <Button // Use a standard Button component here
-            className="bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60"
+            variant="destructive"
             onClick={onConfirm}
             disabled={isDeleting}
           >
