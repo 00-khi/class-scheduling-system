@@ -420,13 +420,16 @@ function DataTableClearFilters({ className }: DataTableClearFiltersProps) {
 // Selected Delete Button
 interface DataTableDeleteSelectedProps {
   onDeleteSelected?: (ids: string[]) => void;
+  isDeletingSelected: boolean;
 }
 
 function DataTableDeleteSelected({
   onDeleteSelected,
+  isDeletingSelected,
 }: DataTableDeleteSelectedProps) {
   const { table } = useDataTableContext();
   const [selectedRowsCount, setSelectedRowsCount] = useState(0);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const selectedRows = table.getSelectedRowModel().rows;
 
@@ -434,17 +437,18 @@ function DataTableDeleteSelected({
     setSelectedRowsCount(selectedRows.length);
   }, [selectedRows.length]);
 
-  if (selectedRowsCount === 0) return null;
+  if (selectedRowsCount === 0 || selectedRowsCount < 2) return null;
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async () => {
     if (!onDeleteSelected) return;
-    const ids = selectedRows.map((row) => (row.original as any).id); // assumes each row has `id`
-    onDeleteSelected(ids);
-    table.resetRowSelection(); // clear selection after delete
+    const ids = selectedRows.map((row) => (row.original as any).id);
+    await onDeleteSelected(ids);
+    table.resetRowSelection(); 
+    setIsDialogOpen(false);
   };
 
   return (
-    <AlertDialog>
+    <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <AlertDialogTrigger asChild>
         <Button className="bg-transparent" variant="outline">
           <TrashIcon
@@ -476,13 +480,16 @@ function DataTableDeleteSelected({
           </AlertDialogHeader>
         </div>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction
-            className="bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60"
+          <AlertDialogCancel disabled={isDeletingSelected}>
+            Cancel
+          </AlertDialogCancel>
+          <Button
+            variant="destructive"
             onClick={handleConfirmDelete}
+            disabled={isDeletingSelected}
           >
-            Delete
-          </AlertDialogAction>
+            {isDeletingSelected ? "Deleting..." : "Delete"}
+          </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
