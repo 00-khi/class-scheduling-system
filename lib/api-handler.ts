@@ -8,7 +8,7 @@ type HandlerFunction = (...args: any[]) => Promise<NextResponse>;
 function handlePrismaError(error: unknown) {
   if (error instanceof Prisma.PrismaClientKnownRequestError) {
     console.error("Prisma Error Code:", error.code);
-    console.error("Prisma Error Message:", error.message);
+    // console.error("Prisma Error Message:", error.message);
 
     switch (error.code) {
       case "P2002": // Unique constraint violation
