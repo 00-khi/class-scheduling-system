@@ -1,47 +1,33 @@
 import { prisma } from "@/lib/prisma";
 import { IAcademicQualification } from "@/lib/types";
 import { NextResponse } from "next/server";
+import { createApiHandler } from "@/lib/api-handler";
 
-// GET /api/academic-qualifications
-export async function GET() {
-  try {
-    const academicQualifications =
-      await prisma.academicQualification.findMany();
-    return NextResponse.json(academicQualifications);
-  } catch (error) {
-    console.error("API Error:", error);
+export const GET = createApiHandler(async () => {
+  const academicQualifications = await prisma.academicQualification.findMany();
+  return NextResponse.json(academicQualifications);
+});
+
+export const POST = createApiHandler(async (request) => {
+  if (!request) {
+    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+  }
+
+  const body: Omit<IAcademicQualification, "id"> = await request.json();
+
+  if (!body.code || !body.name) {
     return NextResponse.json(
-      { error: "Internal server error." },
-      { status: 500 }
+      { error: "Missing required fields." },
+      { status: 400 }
     );
   }
-}
 
-// POST /api/academic-qualifications
-export async function POST(request: Request) {
-  try {
-    const body: Omit<IAcademicQualification, "id"> = await request.json();
+  const newAcademicQualification = await prisma.academicQualification.create({
+    data: {
+      code: body.code,
+      name: body.name,
+    },
+  });
 
-    if (!body.code || !body.name) {
-      return NextResponse.json(
-        { error: "Missing required fields." },
-        { status: 400 }
-      );
-    }
-
-    const newAcademicQualification = await prisma.academicQualification.create({
-      data: {
-        code: body.code,
-        name: body.name,
-      },
-    });
-
-    return NextResponse.json(newAcademicQualification, { status: 201 });
-  } catch (error) {
-    console.error("API Error:", error);
-    return NextResponse.json(
-      { error: "Internal server error." },
-      { status: 500 }
-    );
-  }
-}
+  return NextResponse.json(newAcademicQualification, { status: 201 });
+});
