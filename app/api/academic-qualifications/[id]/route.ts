@@ -8,7 +8,7 @@ import { IAcademicQualification } from "@/lib/types";
 // GET /api/academic-qualifications/[id]
 export const GET = createApiHandler(
   async (request: Request, { params }: { params: { id: string } }) => {
-    const { id } = params;
+    const { id } = await params;
     const numericId = parseInt(id);
 
     if (isNaN(numericId)) {
@@ -38,7 +38,7 @@ export const GET = createApiHandler(
 // PUT /api/academic-qualifications/[id]
 export const PUT = createApiHandler(
   async (request: Request, { params }: { params: { id: string } }) => {
-    const { id } = params;
+    const { id } = await params;
     const numericId = parseInt(id);
 
     if (isNaN(numericId)) {
