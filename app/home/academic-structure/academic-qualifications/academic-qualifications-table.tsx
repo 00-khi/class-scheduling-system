@@ -68,8 +68,6 @@ export default function AcademicQualificationsTable() {
     fetchData();
   }, []);
 
-  console.log(academicQualifications);
-
   // ADD DATA
   const handleAddAcademicQualification = async (
     academicQualificationData: Omit<IAcademicQualification, "id">
@@ -198,8 +196,6 @@ export default function AcademicQualificationsTable() {
       instructors: number;
     };
   };
-
-  console.log(academicQualifications);
 
   const columns: ColumnDef<IAcademicQualificationRow>[] = [
     {
