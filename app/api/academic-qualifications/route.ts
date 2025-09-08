@@ -7,7 +7,7 @@ export async function GET() {
   try {
     const academicQualifications =
       await prisma.academicQualification.findMany();
-    return NextResponse.json({ data: academicQualifications });
+    return NextResponse.json(academicQualifications);
   } catch (error) {
     console.error("API Error:", error);
     return NextResponse.json(
