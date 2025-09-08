@@ -198,6 +198,7 @@ export default function AcademicQualificationsTable() {
     {
       id: "instructors",
       header: "Instructors",
+      accessorFn: (row) => row._count?.instructors ?? 0,
       cell: ({ row }) => {
         const count = row.original._count?.instructors ?? 0;
         return <Badge variant="secondary">{count}</Badge>;
