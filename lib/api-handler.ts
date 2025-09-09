@@ -1,9 +1,14 @@
 // lib/api-handler.ts
 
-import { NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { Prisma } from "@prisma/client";
 
-type HandlerFunction = (...args: any[]) => Promise<NextResponse>;
+// type HandlerFunction<T extends any[]> = (...args: T) => Promise<NextResponse>;
+
+type NextRouteHandler = (
+  request: NextRequest,
+  context: { params: Promise<Record<string, string>> }
+) => Promise<NextResponse>;
 
 function handlePrismaError(error: unknown) {
   if (error instanceof Prisma.PrismaClientKnownRequestError) {
@@ -50,10 +55,10 @@ function handlePrismaError(error: unknown) {
   );
 }
 
-export function createApiHandler(handlerFunction: HandlerFunction) {
-  return async (...args: any[]) => {
+export function createApiHandler(handlerFunction: NextRouteHandler): NextRouteHandler {
+  return async (request, context) => {
     try {
-      const response = await handlerFunction(...args);
+      const response = await handlerFunction(request, context);
       return response;
     } catch (error) {
       return handlePrismaError(error);
