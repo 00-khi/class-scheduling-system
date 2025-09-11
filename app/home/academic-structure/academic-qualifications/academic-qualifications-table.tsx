@@ -30,6 +30,7 @@ import { toast } from "sonner";
 import { ConfirmDeleteDialog } from "@/ui/components/comfirm-delete-dialog";
 import { DataForm } from "@/ui/components/data-form";
 import { Badge } from "@/ui/shadcn/badge";
+import { RowActions } from "@/ui/components/row-actions";
 
 export default function AcademicQualificationsTable() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
@@ -275,13 +276,13 @@ export default function AcademicQualificationsTable() {
       header: () => <span className="sr-only">Actions</span>,
       cell: ({ row }) => (
         <RowActions
-          academicQualification={row.original}
-          onEdit={(acadQual) => {
-            setEditingAcademicQualification(acadQual);
+          item={row.original}
+          onEdit={(item) => {
+            setEditingAcademicQualification(item);
             setIsEditDialogOpen(true);
           }}
-          onDelete={(acadQual) => {
-            setAcademicQualificationToDelete(acadQual);
+          onDelete={(item) => {
+            setAcademicQualificationToDelete(item);
             setIsDeleteDialogOpen(true);
           }}
         />
@@ -360,37 +361,6 @@ export default function AcademicQualificationsTable() {
         itemName={academicQualificationToDelete?.name}
         isDeleting={isDeleting}
       />
-    </div>
-  );
-}
-
-function RowActions({
-  academicQualification,
-  onEdit,
-  onDelete,
-}: {
-  academicQualification: TAcademicQualification;
-  onEdit: (acadQual: TAcademicQualification) => void;
-  onDelete: (acadQual: TAcademicQualification) => void;
-}) {
-  return (
-    <div className="flex justify-end gap-2">
-      {/* Edit Button */}
-      <Button
-        size="icon"
-        variant="ghost"
-        onClick={() => onEdit(academicQualification)}
-      >
-        <EditIcon size={16} />
-      </Button>
-      {/* Delete Button */}
-      <Button
-        size="icon"
-        variant="ghost"
-        onClick={() => onDelete(academicQualification)}
-      >
-        <TrashIcon size={16} />
-      </Button>
     </div>
   );
 }
