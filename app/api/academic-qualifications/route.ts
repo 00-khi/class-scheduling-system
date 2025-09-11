@@ -5,7 +5,16 @@ import { createApiHandler } from "@/lib/api-handler";
 import { capitalizeEachWord, toUppercase } from "@/lib/utils";
 
 export const GET = createApiHandler(async () => {
-  const academicQualifications = await prisma.academicQualification.findMany();
+  const academicQualifications = await prisma.academicQualification.findMany({
+    include: {
+      _count: {
+        select: {
+          instructors: true,
+        },
+      },
+    },
+    orderBy: { updatedAt: "desc" },
+  });
   return NextResponse.json(academicQualifications);
 });
 

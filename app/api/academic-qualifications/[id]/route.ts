@@ -48,8 +48,8 @@ export const PUT = createApiHandler(async (request, context) => {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
 
-  // Use object destructuring to remove the 'id' property from the body
-  const { id: _, ...data } = await request.json();
+  // Use object destructuring to remove the 'id' property from the body, and '_count'
+  const { id: _, _count, ...data } = await request.json();
 
   // Apply formatting to 'code' and 'name' if they exist in the request body
   // This ensures we only format the fields that are being updated.
@@ -63,7 +63,7 @@ export const PUT = createApiHandler(async (request, context) => {
   const updatedAcademicQualification =
     await prisma.academicQualification.update({
       where: { id: numericId },
-      data, // Pass the new 'data' object without the 'id'
+      data, // Pass the new 'data' object without the 'id' and '_count' 
     });
 
   return NextResponse.json(updatedAcademicQualification);
