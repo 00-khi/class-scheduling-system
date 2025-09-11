@@ -178,7 +178,7 @@ function DataFormSelect({
     <div className="space-y-2">
       <Label htmlFor={name}>{label}</Label>
       <Select
-        value={formData?.[name] || ""}
+        value={String(formData?.[name]) || ""}
         onValueChange={handleChange}
         disabled={disabled || isLoading}
         required={required}
