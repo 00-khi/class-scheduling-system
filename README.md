@@ -36,7 +36,6 @@ Developed as a capstone project for **STI College Legazpi**.
 
 3. **Set up Prisma:**
    ```bash
-   pnpm dlx prisma generate
    pnpm dlx prisma migrate dev --name init
    ```
 
