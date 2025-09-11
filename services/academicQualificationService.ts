@@ -2,7 +2,7 @@ import { IAcademicQualification } from "@/lib/types";
 
 const API_BASE_URL = "/api/academic-qualifications";
 
-export async function getAcademicQualification(): Promise<
+export async function getAcademicQualifications(): Promise<
   IAcademicQualification[]
 > {
   const response = await fetch(API_BASE_URL);
