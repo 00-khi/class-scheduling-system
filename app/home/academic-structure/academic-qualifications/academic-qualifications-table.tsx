@@ -38,6 +38,13 @@ import {
   DataTableToolbarGroup,
 } from "@/ui/components/data-table-components";
 import { EntityForm } from "@/ui/components/entity-form";
+import {
+  handleAddEntity,
+  handleDeleteEntity,
+  handleDeleteSelectedEntities,
+  handleUpdateEntity,
+} from "@/lib/crud-handler";
+import { FailedDeletionDialog } from "@/ui/components/failed-deletion-dialog";
 
 export default function AcademicQualificationsTable() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
@@ -53,6 +60,10 @@ export default function AcademicQualificationsTable() {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [academicQualificationToDelete, setAcademicQualificationToDelete] =
     useState<TAcademicQualification | null>(null);
+
+  const [failedDialogOpen, setFailedDialogOpen] = useState(false);
+  const [failedReasons, setFailedReasons] = useState<string[]>([]);
+  const [failedCount, setFailedCount] = useState(0);
 
   // DATA STORE
   const [academicQualifications, setAcademicQualifications] = useState<
@@ -76,150 +87,27 @@ export default function AcademicQualificationsTable() {
     fetchData();
   }, []);
 
-  // ADD DATA
-  const handleAddAcademicQualification = async (
-    academicQualificationData: Omit<TAcademicQualification, "id">
-  ) => {
-    if (!academicQualificationData.code) {
-      toast.error("Academic qualification code is required");
-      return false;
-    }
-
-    if (!academicQualificationData.name) {
-      toast.error("Academic qualification name is required");
-      return false;
-    }
-
-    setIsSubmitting(true);
-    try {
-      await addAcademicQualification(academicQualificationData);
-
-      toast.success("Academic qualification added successfully");
-
-      fetchData();
-
-      setIsAddDialogOpen(false);
-      return true;
-    } catch (error) {
-      const msg = error instanceof Error ? error.message : "Unexpected error";
-      toast.error(msg);
-      console.error("Error adding academic qualification:", error);
-      return false;
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  // UPDATE
-  const handleUpdateAcademicQualification = async (
-    academicQualificationData: TAcademicQualification
-  ) => {
-    if (!academicQualificationData.id) {
+  // Generic validator for Academic Qualification
+  const validateAcademicQualification = (
+    data: Partial<TAcademicQualification>,
+    requireId = false
+  ): boolean => {
+    if (requireId && !data.id) {
       toast.error("Invalid ID");
       return false;
     }
 
-    if (!academicQualificationData.code) {
+    if (!data.code) {
       toast.error("Academic qualification code is required");
       return false;
     }
 
-    if (!academicQualificationData.name) {
+    if (!data.name) {
       toast.error("Academic qualification name is required");
       return false;
     }
 
-    setIsSubmitting(true);
-    try {
-      const { id, ...data } = academicQualificationData;
-
-      await updateAcademicQualification(id, data);
-      toast.success(`Academic qualification updated successfully`);
-
-      fetchData();
-
-      setIsEditDialogOpen(false);
-      setEditingAcademicQualification(null);
-      return true;
-    } catch (error) {
-      const msg = error instanceof Error ? error.message : "Unexpected error";
-      toast.error(msg);
-      console.error("Error updating academic qualification:", error);
-      return false;
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  // DELETE
-  const handleDeleteAcademicQualification = async (id: number) => {
-    setIsDeleting(true);
-    try {
-      if (!id) {
-        toast.error("Error deleting academic qualification: Invalid ID");
-        setIsDeleteDialogOpen(false);
-        return;
-      }
-      const deleted = await deleteAcademicQualification(id);
-      if (deleted) {
-        toast.success("Academic qualification deleted successfully");
-        fetchData();
-
-        setAcademicQualificationToDelete(null);
-
-        setIsDeleteDialogOpen(false);
-      } else {
-        toast.error("Failed to delete academic qualification");
-      }
-    } catch (error) {
-      const msg = error instanceof Error ? error.message : "Unexpected error";
-      toast.error(msg);
-      console.error("Error deleting academic qualification:", error);
-    } finally {
-      setIsDeleting(false);
-    }
-  };
-
-  // DELETE SELECTED
-  const handleDeleteSelectedAcademicQualifications = async (ids: number[]) => {
-    setIsDeletingSelected(true);
-    try {
-      const deletePromises = ids.map((id) => deleteAcademicQualification(id));
-      const results = await Promise.allSettled(deletePromises);
-
-      const successfulDeletions = results.filter(
-        (result) => result.status === "fulfilled"
-      ).length;
-
-      const failedDeletions = results.filter(
-        (result) => result.status === "rejected"
-      ).length;
-
-      if (successfulDeletions > 0) {
-        toast.success(
-          `${successfulDeletions} academic qualifications deleted successfully.`
-        );
-      }
-
-      if (failedDeletions > 0) {
-        const failedReasons = results
-          .filter((result) => result.status === "rejected")
-          .map((result) => (result as PromiseRejectedResult).reason.message)
-          .join(", ");
-        toast.error(
-          `Failed to delete ${failedDeletions} qualifications. ${failedReasons}`
-        );
-        console.error("Failed deletion reasons:", failedReasons);
-      }
-
-      fetchData(); // Always refresh data to reflect successful deletions
-    } catch (error) {
-      const msg = error instanceof Error ? error.message : "Unexpected error.";
-      toast.error(msg);
-      console.error("Error during batch deletion process:", error);
-    } finally {
-      setIsDeletingSelected(false);
-    }
+    return true;
   };
 
   type TAcademicQualificationRow = TAcademicQualification & {
@@ -318,7 +206,18 @@ export default function AcademicQualificationsTable() {
             </DataTableToolbarGroup>
             <DataTableToolbarGroup>
               <DataTable.DeleteSelected
-                onDeleteSelected={handleDeleteSelectedAcademicQualifications}
+                onDeleteSelected={(ids) => {
+                  return handleDeleteSelectedEntities(
+                    "Academic Qualifications",
+                    ids,
+                    deleteAcademicQualification,
+                    fetchData,
+                    setIsDeletingSelected,
+                    setFailedReasons,
+                    setFailedCount,
+                    setFailedDialogOpen
+                  );
+                }}
                 isDeletingSelected={isDeletingSelected}
               />
               <Button onClick={() => setIsAddDialogOpen(true)}>
@@ -334,10 +233,20 @@ export default function AcademicQualificationsTable() {
       )}
 
       {/* Add Form */}
-      <EntityForm
+      <EntityForm<Omit<TAcademicQualification, "id">>
         isOpen={isAddDialogOpen}
         onClose={() => setIsAddDialogOpen(false)}
-        onSubmit={handleAddAcademicQualification}
+        onSubmit={(data) => {
+          return handleAddEntity(
+            "Academic Qualification",
+            data,
+            addAcademicQualification,
+            fetchData,
+            setIsSubmitting,
+            setIsAddDialogOpen,
+            validateAcademicQualification
+          );
+        }}
         isLoading={isSubmitting}
         title="Add Academic Qualification"
       >
@@ -361,7 +270,20 @@ export default function AcademicQualificationsTable() {
           setIsEditDialogOpen(false);
           setEditingAcademicQualification(null);
         }}
-        onSubmit={handleUpdateAcademicQualification}
+        onSubmit={(data) => {
+          return handleUpdateEntity(
+            "Academic Qualification",
+            data,
+            updateAcademicQualification,
+            fetchData,
+            setIsSubmitting,
+            () => {
+              setIsEditDialogOpen(false);
+              setEditingAcademicQualification(null);
+            },
+            validateAcademicQualification
+          );
+        }}
         isLoading={isSubmitting}
         title="Edit Academic Qualification"
       >
@@ -383,11 +305,28 @@ export default function AcademicQualificationsTable() {
         onClose={() => setIsDeleteDialogOpen(false)}
         onConfirm={() => {
           if (academicQualificationToDelete?.id) {
-            handleDeleteAcademicQualification(academicQualificationToDelete.id);
+            return handleDeleteEntity(
+              "Academic Qualification",
+              academicQualificationToDelete.id,
+              deleteAcademicQualification,
+              fetchData,
+              setIsDeleting,
+              () => {
+                setAcademicQualificationToDelete(null);
+                setIsDeleteDialogOpen(false);
+              }
+            );
           }
         }}
         itemName={academicQualificationToDelete?.name}
         isDeleting={isDeleting}
+      />
+
+      <FailedDeletionDialog
+        open={failedDialogOpen}
+        onClose={() => setFailedDialogOpen(false)}
+        failedCount={failedCount}
+        failedReasons={failedReasons}
       />
     </DataTableSection>
   );
