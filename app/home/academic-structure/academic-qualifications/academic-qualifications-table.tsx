@@ -31,6 +31,7 @@ import { ConfirmDeleteDialog } from "@/ui/components/comfirm-delete-dialog";
 import { DataForm } from "@/ui/components/data-form";
 import { Badge } from "@/ui/shadcn/badge";
 import { RowActions } from "@/ui/components/row-actions";
+import { DataTableSkeleton } from "@/ui/components/data-table-skeleton";
 
 export default function AcademicQualificationsTable() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
@@ -295,12 +296,7 @@ export default function AcademicQualificationsTable() {
   return (
     <div className="space-y-3">
       {loading ? (
-        <div className="flex items-center justify-center">
-          <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-          <span className="ml-2 text-sm text-muted-foreground">
-            Loading please wait...
-          </span>
-        </div>
+        <DataTableSkeleton columnCount={4} rowCount={5} />
       ) : (
         <DataTable data={academicQualifications} columns={columns}>
           {/* Toolbar */}
