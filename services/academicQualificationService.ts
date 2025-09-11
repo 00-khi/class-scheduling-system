@@ -69,7 +69,7 @@ export async function updateAcademicQualification(
   updates: Partial<
     Omit<TAcademicQualification, "id" | "createdAt" | "updatedAt">
   >
-): Promise<TAcademicQualification | null> {
+): Promise<TAcademicQualification> {
   const response = await fetch(`${API_BASE_URL}/${id}`, {
     method: "PUT",
     headers: {
