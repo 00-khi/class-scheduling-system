@@ -212,13 +212,13 @@ export default function AcademicQualificationsTable() {
     }
   };
 
-  type IAcademicQualificationRow = TAcademicQualification & {
+  type TAcademicQualificationRow = TAcademicQualification & {
     _count?: {
       instructors: number;
     };
   };
 
-  const columns: ColumnDef<IAcademicQualificationRow>[] = [
+  const columns: ColumnDef<TAcademicQualificationRow>[] = [
     {
       id: "select",
       header: ({ table }) => (
