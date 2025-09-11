@@ -37,6 +37,7 @@ import {
   DataTableToolbar,
   DataTableToolbarGroup,
 } from "@/ui/components/data-table-components";
+import { EntityForm } from "@/ui/components/entity-form";
 
 export default function AcademicQualificationsTable() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
@@ -332,14 +333,28 @@ export default function AcademicQualificationsTable() {
         </DataTable>
       )}
 
-      <AcademicQualificationForm
+      {/* Add Form */}
+      <EntityForm
         isOpen={isAddDialogOpen}
         onClose={() => setIsAddDialogOpen(false)}
         onSubmit={handleAddAcademicQualification}
         isLoading={isSubmitting}
-      />
+        title="Add Academic Qualification"
+      >
+        <DataForm.Input
+          name="code"
+          label="Academic Qualification Code"
+          placeholder="e.g., IT"
+        />
+        <DataForm.Input
+          name="name"
+          label="Academic Qualification Name"
+          placeholder="e.g., Information Technology"
+        />
+      </EntityForm>
 
-      <AcademicQualificationForm
+      {/* Edit Form */}
+      <EntityForm
         item={editingAcademicQualification || undefined}
         isOpen={isEditDialogOpen}
         onClose={() => {
@@ -348,7 +363,19 @@ export default function AcademicQualificationsTable() {
         }}
         onSubmit={handleUpdateAcademicQualification}
         isLoading={isSubmitting}
-      />
+        title="Edit Academic Qualification"
+      >
+        <DataForm.Input
+          name="code"
+          label="Academic Qualification Code"
+          placeholder="e.g., IT"
+        />
+        <DataForm.Input
+          name="name"
+          label="Academic Qualification Name"
+          placeholder="e.g., Information Technology"
+        />
+      </EntityForm>
 
       {/* Delete Dialog */}
       <ConfirmDeleteDialog
@@ -363,44 +390,5 @@ export default function AcademicQualificationsTable() {
         isDeleting={isDeleting}
       />
     </DataTableSection>
-  );
-}
-
-function AcademicQualificationForm({
-  isOpen,
-  item,
-  onClose,
-  onSubmit,
-  isLoading,
-}: {
-  isOpen: boolean;
-  item?: TAcademicQualification;
-  onClose: () => void;
-  onSubmit: (data: TAcademicQualification) => void;
-  isLoading?: boolean;
-}) {
-  return (
-    <DataForm<TAcademicQualification>
-      item={item}
-      isOpen={isOpen}
-      onClose={onClose}
-      onSubmit={onSubmit}
-      isLoading={isLoading}
-      title={{
-        add: "Add Academic Qualification",
-        edit: "Edit Academic Qualification",
-      }}
-    >
-      <DataForm.Input
-        name="code"
-        label="Academic Qualification Code"
-        placeholder="e.g., IT"
-      />
-      <DataForm.Input
-        name="name"
-        label="Academic Qualification Name"
-        placeholder="e.g., Information Technology"
-      />
-    </DataForm>
   );
 }
