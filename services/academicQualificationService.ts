@@ -19,7 +19,7 @@ export async function getAcademicQualification(): Promise<
 }
 
 export async function getAcademicQualificationById(
-  id: string
+  id: number
 ): Promise<IAcademicQualification | undefined> {
   const response = await fetch(`${API_BASE_URL}/${id}`);
 
@@ -39,7 +39,7 @@ export async function getAcademicQualificationById(
 }
 
 export async function addAcademicQualification(
-  academicQualification: Omit<IAcademicQualification, "id">
+  academicQualification: Omit<IAcademicQualification, "id" | "createdAt" | "updatedAt">
 ): Promise<IAcademicQualification> {
   const response = await fetch(API_BASE_URL, {
     method: "POST",
@@ -60,8 +60,8 @@ export async function addAcademicQualification(
 }
 
 export async function updateAcademicQualification(
-  id: string,
-  updates: Partial<IAcademicQualification>
+  id: number,
+  updates: Partial<Omit<IAcademicQualification, "id" | "createdAt" | "updatedAt">>
 ): Promise<IAcademicQualification | null> {
   const response = await fetch(`${API_BASE_URL}/${id}`, {
     method: "PUT",
@@ -87,7 +87,7 @@ export async function updateAcademicQualification(
 }
 
 export async function deleteAcademicQualification(
-  id: string
+  id: number
 ): Promise<boolean> {
   const response = await fetch(`${API_BASE_URL}/${id}`, {
     method: "DELETE",
