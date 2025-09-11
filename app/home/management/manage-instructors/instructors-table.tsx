@@ -1,45 +1,48 @@
 "use client";
 
-import { DataTable } from "@/ui/components/data-table";
-import { useEffect, useState } from "react";
-import { ColumnDef } from "@tanstack/react-table";
 import {
-  EllipsisIcon,
-  PlusIcon,
-  Loader2,
-  EditIcon,
-  TrashIcon,
-} from "lucide-react";
-import { Button } from "@/ui/shadcn/button";
-import { Checkbox } from "@/ui/shadcn/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/ui/shadcn/dropdown-menu";
-import {
-  TInstructor,
-  TAcademicQualification,
-} from "@/lib/types";
-import {
-  getInstructors,
-  addInstructor,
-  updateInstructor,
-  deleteInstructor,
-} from "@/services/instructorService";
+  handleAddEntity,
+  handleDeleteEntity,
+  handleDeleteSelectedEntities,
+  handleUpdateEntity,
+} from "@/lib/crud-handler";
+import { TAcademicQualification, TInstructor } from "@/lib/types";
 import { getAcademicQualifications } from "@/services/academicQualificationService";
-import { toast } from "sonner";
+import {
+  addInstructor,
+  deleteInstructor,
+  getInstructors,
+  updateInstructor,
+} from "@/services/instructorService";
 import { ConfirmDeleteDialog } from "@/ui/components/comfirm-delete-dialog";
 import { DataForm } from "@/ui/components/data-form";
+import { DataTable } from "@/ui/components/data-table";
+import {
+  DataTableSection,
+  DataTableSkeleton,
+  DataTableToolbar,
+  DataTableToolbarGroup,
+} from "@/ui/components/data-table-components";
+import { EntityForm } from "@/ui/components/entity-form";
+import { FailedDeletionDialog } from "@/ui/components/failed-deletion-dialog";
+import { RowActions } from "@/ui/components/row-actions";
 import { Badge } from "@/ui/shadcn/badge";
+import { Button } from "@/ui/shadcn/button";
+import { Checkbox } from "@/ui/shadcn/checkbox";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/tooltip";
+import { InstructorStatus } from "@prisma/client";
+import { ColumnDef } from "@tanstack/react-table";
+import { PlusIcon } from "lucide-react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function InstructorsTable() {
+  const ENTITY_NAME = "Instructor";
+
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [editingInstructor, setEditingInstructor] =
-    useState(null);
+    useState<TInstructor | null>(null);
 
   const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -48,21 +51,24 @@ export default function InstructorsTable() {
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [instructorToDelete, setInstructorToDelete] =
-    useState(null);
+    useState<TInstructor | null>(null);
+
+  const [failedDialogOpen, setFailedDialogOpen] = useState(false);
+  const [failedReasons, setFailedReasons] = useState<string[]>([]);
+  const [failedCount, setFailedCount] = useState(0);
 
   // DATA STORE
-  const [instructors, setInstructors] = useState([]);
-  const [academicQualifications, setAcademicQualifications] = useState([]);
+  const [instructors, setInstructors] = useState<TInstructor[]>([]);
+  const [academicQualifications, setAcademicQualifications] = useState<
+    TAcademicQualification[]
+  >([]);
 
   // FETCH DATA
   const fetchData = async () => {
     setLoading(true);
 
     const [fetchedInstructors, fetchedAcademicQualifications] =
-      await Promise.all([
-        getInstructors(),
-        getAcademicQualifications(),
-      ]);
+      await Promise.all([getInstructors(), getAcademicQualifications()]);
 
     setInstructors(fetchedInstructors);
     setAcademicQualifications(fetchedAcademicQualifications);
@@ -74,146 +80,38 @@ export default function InstructorsTable() {
     fetchData();
   }, []);
 
-  // ADD DATA
-  const handleAddInstructor = async (
-    instructorData
-  ) => {
-    if (!instructorData.name) {
-      toast.error("Instructor name is required");
-      return false;
-    }
-
-    if (!instructorData.academicQualificationId) {
-      toast.error("Academic Qualification is required");
-      return false;
-    }
-
-    if (!instructorData.status) {
-      toast.error("Instructor status is required");
-      return false;
-    }
-
-    setIsSubmitting(true);
-    try {
-      await addInstructor(instructorData);
-
-      toast.success("Instructor added successfully");
-
-      fetchData();
-
-      setIsAddDialogOpen(false);
-      return true;
-    } catch (error) {
-      const msg = error instanceof Error ? error.message : "Unexpected error";
-      toast.error(msg);
-      console.error("Error adding instructor:", error);
-      return false;
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  // UPDATE
-  const handleUpdateInstructor = async (
-    instructorData
-  ) => {
-    if (!instructorData.id) {
+  const validateInstructor = (
+    data: Partial<TInstructor>,
+    requireId = false
+  ): boolean => {
+    if (requireId && !data.id) {
       toast.error("Invalid ID");
       return false;
     }
 
-    setIsSubmitting(true);
-    try {
-      const { id, ...data } = instructorData;
-
-      await updateInstructor(id, data);
-      toast.success(`Instructor updated successfully`);
-
-      fetchData();
-
-      setIsEditDialogOpen(false);
-      setEditingInstructor(null);
-      return true;
-    } catch (error) {
-      const msg = error instanceof Error ? error.message : "Unexpected error";
-      toast.error(msg);
-      console.error("Error updating instructor:", error);
+    if (!data.name) {
+      toast.error(`${ENTITY_NAME} Name is required.`);
       return false;
-    } finally {
-      setIsSubmitting(false);
     }
+
+    if (!data.academicQualificationId) {
+      toast.error(`Academic Qualifications is required.`);
+      return false;
+    }
+
+    if (!data.status) {
+      toast.error(`Status is required.`);
+      return false;
+    }
+
+    return true;
   };
 
-  // DELETE
-  const handleDeleteInstructor = async (id) => {
-    setIsDeleting(true);
-    try {
-      if (!id) {
-        toast.error("Error deleting instructor: Invalid ID");
-        setIsDeleteDialogOpen(false);
-        return;
-      }
-      const deleted = await deleteInstructor(id);
-      if (deleted) {
-        toast.success("Instructor deleted successfully");
-        fetchData();
-
-        setInstructorToDelete(null);
-
-        setIsDeleteDialogOpen(false);
-      } else {
-        toast.error("Failed to delete instructor");
-      }
-    } catch (error) {
-      const msg = error instanceof Error ? error.message : "Unexpected error";
-      toast.error(msg);
-      console.error("Error deleting instructor:", error);
-    } finally {
-      setIsDeleting(false);
-    }
+  type TInstructorRow = TInstructor & {
+    academicQualification?: TAcademicQualification;
   };
 
-  // DELETE SELECTED
-  const handleDeleteSelectedInstructors = async (ids) => {
-    setIsDeletingSelected(true);
-    try {
-      const deletePromises = ids.map((id) => deleteInstructor(id));
-      const results = await Promise.allSettled(deletePromises);
-
-      const successfulDeletions = results.filter(
-        (result) => result.status === "fulfilled"
-      ).length;
-
-      const failedDeletions = results.filter(
-        (result) => result.status === "rejected"
-      ).length;
-
-      if (successfulDeletions > 0) {
-        toast.success(
-          `${successfulDeletions} instructors deleted successfully.`
-        );
-      }
-
-      if (failedDeletions > 0) {
-        const failedReasons = results
-          .filter((result) => result.status === "rejected")
-          .map((result) => result.reason?.message || "Unknown error")
-          .join(", ");
-        toast.error(`Failed to delete ${failedDeletions} instructors. ${failedReasons}`);
-        console.error("Failed deletion reasons:", failedReasons);
-      }
-
-      fetchData();
-    } catch (error) {
-      const msg = error instanceof Error ? error.message : "Unexpected error.";
-      toast.error(msg);
-      console.error("Error during batch deletion process:", error);
-    } finally {
-      setIsDeletingSelected(false);
-    }
-  };
-
-  const columns = [
+  const columns: ColumnDef<TInstructorRow>[] = [
     {
       id: "select",
       header: ({ table }) => (
@@ -242,24 +140,30 @@ export default function InstructorsTable() {
       cell: ({ row }) => (
         <div className="font-medium">{row.getValue("name")}</div>
       ),
+      enableHiding: false,
     },
     {
       header: "Status",
       accessorKey: "status",
-      cell: ({ row }) => {
-        const status = row.getValue("status");
-        return <Badge variant="secondary">{status}</Badge>;
-      },
+      cell: ({ row }) => (
+        <Badge variant="secondary">{row.getValue("status")}</Badge>
+      ),
     },
     {
       header: "Academic Qualification",
-      accessorKey: "academicQualification.name",
+      accessorFn: (row) => row.academicQualification?.name || "N/A",
       cell: ({ row }) => {
-        const qualification = row.original.academicQualification;
         return (
-          <Badge variant="outline">
-            {qualification ? qualification.name : "N/A"}
-          </Badge>
+          <Tooltip>
+            <TooltipTrigger>
+              <Badge variant="outline">
+                {row.original.academicQualification?.code || "N/A"}
+              </Badge>
+            </TooltipTrigger>
+            <TooltipContent>
+              {row.original.academicQualification?.name || "N/A"}
+            </TooltipContent>
+          </Tooltip>
         );
       },
     },
@@ -268,13 +172,13 @@ export default function InstructorsTable() {
       header: () => <span className="sr-only">Actions</span>,
       cell: ({ row }) => (
         <RowActions
-          instructor={row.original}
-          onEdit={(instructor) => {
-            setEditingInstructor(instructor);
+          item={row.original}
+          onEdit={(item) => {
+            setEditingInstructor(item);
             setIsEditDialogOpen(true);
           }}
-          onDelete={(instructor) => {
-            setInstructorToDelete(instructor);
+          onDelete={(item) => {
+            setInstructorToDelete(item);
             setIsDeleteDialogOpen(true);
           }}
         />
@@ -284,20 +188,40 @@ export default function InstructorsTable() {
     },
   ];
 
+  const academicQualificationOptions = academicQualifications.map((aq) => ({
+    label: aq.name,
+    value: String(aq.id),
+  }));
+
+  const statusOptions = Object.values(InstructorStatus).map((status) => ({
+    value: status,
+    label: status,
+    // label: formatStatusLabel(status),
+  }));
+
+  // function formatStatusLabel(status: InstructorStatus): string {
+  //   switch (status) {
+  //     case "PT":
+  //       return "Part-Time";
+  //     case "PTFL":
+  //       return "Part-Time (Full Load)";
+  //     case "PROBY":
+  //       return "Probationary";
+  //     case "FT":
+  //       return "Full-Time";
+  //     default:
+  //       return status;
+  //   }
+  // }
+
   return (
-    <div className="space-y-3">
+    <DataTableSection>
       {loading ? (
-        <div className="flex items-center justify-center">
-          <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-          <span className="ml-2 text-sm text-muted-foreground">
-            Loading please wait...
-          </span>
-        </div>
+        <DataTableSkeleton columnCount={4} rowCount={5} />
       ) : (
         <DataTable data={instructors} columns={columns}>
-          {/* Toolbar */}
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="flex flex-wrap items-center gap-3">
+          <DataTableToolbar>
+            <DataTableToolbarGroup>
               <DataTable.Search
                 column="name"
                 placeholder="Search"
@@ -305,43 +229,115 @@ export default function InstructorsTable() {
               />
               <DataTable.ClearFilters />
               <DataTable.ViewOptions />
-            </div>
-            <div className="flex flex-wrap items-center gap-3">
+            </DataTableToolbarGroup>
+            <DataTableToolbarGroup>
               <DataTable.DeleteSelected
-                onDeleteSelected={handleDeleteSelectedInstructors}
+                onDeleteSelected={(ids) => {
+                  return handleDeleteSelectedEntities(
+                    ENTITY_NAME,
+                    ids,
+                    deleteInstructor,
+                    fetchData,
+                    setIsDeletingSelected,
+                    setFailedReasons,
+                    setFailedCount,
+                    setFailedDialogOpen
+                  );
+                }}
                 isDeletingSelected={isDeletingSelected}
               />
               <Button onClick={() => setIsAddDialogOpen(true)}>
                 <PlusIcon className="-ms-1 opacity-60" size={16} />
-                Add Instructor
+                Add {ENTITY_NAME}
               </Button>
-            </div>
-          </div>
+            </DataTableToolbarGroup>
+          </DataTableToolbar>
 
           <DataTable.Content />
           <DataTable.Pagination />
         </DataTable>
       )}
 
-      <InstructorForm
-        academicQualifications={academicQualifications}
+      {/* Add Form */}
+      <EntityForm<Omit<TInstructor, "id">>
         isOpen={isAddDialogOpen}
         onClose={() => setIsAddDialogOpen(false)}
-        onSubmit={handleAddInstructor}
+        onSubmit={(data) => {
+          return handleAddEntity(
+            ENTITY_NAME,
+            data,
+            addInstructor,
+            fetchData,
+            setIsSubmitting,
+            setIsAddDialogOpen,
+            validateInstructor
+          );
+        }}
         isLoading={isSubmitting}
-      />
+        title={`Add ${ENTITY_NAME}`}
+      >
+        <DataForm.Input
+          name="name"
+          label={`${ENTITY_NAME} Name`}
+          placeholder="e.g., Joe Smith"
+        />
+        <DataForm.Select
+          name="status"
+          label="Status"
+          placeholder="Select status"
+          options={statusOptions}
+        />
+        <DataForm.Select
+          name="academicQualificationId"
+          label="Academic Qualification"
+          placeholder="Select qualification"
+          options={academicQualificationOptions}
+        />
+      </EntityForm>
 
-      <InstructorForm
-        academicQualifications={academicQualifications}
+      {/* Edit Form */}
+      <EntityForm
         item={editingInstructor || undefined}
         isOpen={isEditDialogOpen}
         onClose={() => {
           setIsEditDialogOpen(false);
           setEditingInstructor(null);
         }}
-        onSubmit={handleUpdateInstructor}
+        onSubmit={(data) => {
+          return handleUpdateEntity(
+            ENTITY_NAME,
+            data,
+            updateInstructor,
+            fetchData,
+            setIsSubmitting,
+            () => {
+              setIsEditDialogOpen(false);
+              setEditingInstructor(null);
+            },
+            validateInstructor
+          );
+        }}
         isLoading={isSubmitting}
-      />
+        title={`Edit ${ENTITY_NAME}`}
+      >
+        <DataForm.Input
+          name="name"
+          label={`${ENTITY_NAME} Name`}
+          placeholder="e.g., Joe Smith"
+        />
+        <DataForm.Select
+          name="status"
+          label="Status"
+          placeholder="Select status"
+          options={statusOptions}
+        />
+        <DataForm.Select
+          name="academicQualificationId"
+          label="Academic Qualification"
+          placeholder="Select qualification"
+          options={academicQualificationOptions}
+        />
+      </EntityForm>
 
       {/* Delete Dialog */}
       <ConfirmDeleteDialog
@@ -349,90 +345,29 @@ export default function InstructorsTable() {
         onClose={() => setIsDeleteDialogOpen(false)}
         onConfirm={() => {
           if (instructorToDelete?.id) {
-            handleDeleteInstructor(instructorToDelete.id);
+            return handleDeleteEntity(
+              ENTITY_NAME,
+              instructorToDelete.id,
+              deleteInstructor,
+              fetchData,
+              setIsDeleting,
+              () => {
+                setInstructorToDelete(null);
+                setIsDeleteDialogOpen(false);
+              }
+            );
           }
         }}
         itemName={instructorToDelete?.name}
         isDeleting={isDeleting}
       />
-    </div>
-  );
-}
 
-function RowActions({
-  instructor,
-  onEdit,
-  onDelete,
-}) {
-  return (
-    <div className="flex justify-end gap-2">
-      {/* Edit Button */}
-      <Button
-        size="icon"
-        variant="ghost"
-        onClick={() => onEdit(instructor)}
-      >
-        <EditIcon size={16} />
-      </Button>
-      {/* Delete Button */}
-      <Button
-        size="icon"
-        variant="ghost"
-        onClick={() => onDelete(instructor)}
-      >
-        <TrashIcon size={16} />
-      </Button>
-    </div>
-  );
-}
-
-function InstructorForm({
-  isOpen,
-  item,
-  onClose,
-  onSubmit,
-  isLoading,
-  academicQualifications,
-}) {
-  const statusOptions = Object.keys(InstructorStatus).map((key) => ({
-    label: key,
-    value: InstructorStatus[key],
-  }));
-
-  const academicQualificationOptions = academicQualifications.map(
-    (qualification) => ({
-      label: qualification.name,
-      value: qualification.id,
-    })
-  );
-
-  return (
-    <DataForm
-      item={item}
-      isOpen={isOpen}
-      onClose={onClose}
-      onSubmit={onSubmit}
-      isLoading={isLoading}
-      title={{
-        add: "Add Instructor",
-        edit: "Edit Instructor",
-      }}
-    >
-      <DataForm.Input
-        name="name"
-        label="Name"
-        placeholder="e.g., Jane Doe"
+      <FailedDeletionDialog
+        open={failedDialogOpen}
+        onClose={() => setFailedDialogOpen(false)}
+        failedCount={failedCount}
+        failedReasons={failedReasons}
       />
-      <DataForm.Select
-        name="academicQualificationId"
-        label="Academic Qualification"
-        options={academicQualificationOptions}
-      />
-      <DataForm.Select
-        name="status"
-        label="Status"
-        options={statusOptions}
-      />
-    </DataForm>
+    </DataTableSection>
   );
 }
