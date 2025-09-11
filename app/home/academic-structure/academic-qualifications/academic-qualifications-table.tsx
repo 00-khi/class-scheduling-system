@@ -31,7 +31,12 @@ import { ConfirmDeleteDialog } from "@/ui/components/comfirm-delete-dialog";
 import { DataForm } from "@/ui/components/data-form";
 import { Badge } from "@/ui/shadcn/badge";
 import { RowActions } from "@/ui/components/row-actions";
-import { DataTableSkeleton } from "@/ui/components/data-table-components";
+import {
+  DataTableSection,
+  DataTableSkeleton,
+  DataTableToolbar,
+  DataTableToolbarGroup,
+} from "@/ui/components/data-table-components";
 
 export default function AcademicQualificationsTable() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
@@ -294,14 +299,14 @@ export default function AcademicQualificationsTable() {
   ];
 
   return (
-    <div className="space-y-3">
+    <DataTableSection>
       {loading ? (
         <DataTableSkeleton columnCount={4} rowCount={5} />
       ) : (
         <DataTable data={academicQualifications} columns={columns}>
           {/* Toolbar */}
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="flex flex-wrap items-center gap-3">
+          <DataTableToolbar>
+            <DataTableToolbarGroup>
               <DataTable.Search
                 column="name"
                 placeholder="Search"
@@ -309,8 +314,8 @@ export default function AcademicQualificationsTable() {
               />
               <DataTable.ClearFilters />
               <DataTable.ViewOptions />
-            </div>
-            <div className="flex flex-wrap items-center gap-3">
+            </DataTableToolbarGroup>
+            <DataTableToolbarGroup>
               <DataTable.DeleteSelected
                 onDeleteSelected={handleDeleteSelectedAcademicQualifications}
                 isDeletingSelected={isDeletingSelected}
@@ -319,8 +324,8 @@ export default function AcademicQualificationsTable() {
                 <PlusIcon className="-ms-1 opacity-60" size={16} />
                 Add Academic Qualification
               </Button>
-            </div>
-          </div>
+            </DataTableToolbarGroup>
+          </DataTableToolbar>
 
           <DataTable.Content />
           <DataTable.Pagination />
@@ -357,7 +362,7 @@ export default function AcademicQualificationsTable() {
         itemName={academicQualificationToDelete?.name}
         isDeleting={isDeleting}
       />
-    </div>
+    </DataTableSection>
   );
 }
 
