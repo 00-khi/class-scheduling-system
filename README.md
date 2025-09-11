@@ -69,4 +69,4 @@ The **Automated Class Scheduling System** was developed as part of a capstone pr
 The system is intended **only for academic demonstration and evaluation purposes**.
 Any **commercial use, reproduction, modification, or redistribution** is strictly prohibited.
 
-For full license details, refer to the [`LICENSE.md`](./LICENSE.md) file in this repository.
+For full license details, refer to the [`LICENSE.md`](./LICENSE.md) file in this repository. 
