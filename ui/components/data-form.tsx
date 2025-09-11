@@ -30,17 +30,17 @@ interface DataFormProps<T> {
   onClose: () => void;
   onSubmit: (data: T) => Promise<boolean | void> | void;
   isLoading?: boolean;
-  title?: { add: string; edit: string };
+  title?: string;
   children: ReactNode;
 }
 
-function DataFormBase<T extends { id?: number }>({
+function DataFormBase<T>({
   item,
   isOpen,
   onClose,
   onSubmit,
   isLoading = false,
-  title = { add: "Add Item", edit: "Edit Item" },
+  title = "Item Form",
   children,
 }: DataFormProps<T>) {
   const [formData, setFormData] = useState<T>(item || ({} as T));
@@ -62,7 +62,7 @@ function DataFormBase<T extends { id?: number }>({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{item ? title.edit : title.add}</DialogTitle>
+          <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
