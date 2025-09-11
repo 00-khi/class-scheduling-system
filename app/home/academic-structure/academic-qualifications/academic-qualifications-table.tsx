@@ -262,8 +262,12 @@ export default function AcademicQualificationsTable() {
       id: "instructors",
       header: "Instructors",
       accessorFn: (row) => row._count?.instructors || 0,
-      cell: ({ getValue }) => {
-        return <Badge variant="secondary">{getValue<number>()}</Badge>;
+      cell: ({ row }) => {
+        return (
+          <Badge variant="secondary">
+            {row.original._count?.instructors || 0}
+          </Badge>
+        );
       },
     },
     {
