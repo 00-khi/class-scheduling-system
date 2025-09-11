@@ -47,6 +47,8 @@ import {
 import { FailedDeletionDialog } from "@/ui/components/failed-deletion-dialog";
 
 export default function AcademicQualificationsTable() {
+  const ENTITY_NAME = "Academic Qualification";
+
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [editingAcademicQualification, setEditingAcademicQualification] =
@@ -98,12 +100,12 @@ export default function AcademicQualificationsTable() {
     }
 
     if (!data.code) {
-      toast.error("Academic qualification code is required");
+      toast.error(`${ENTITY_NAME} Code is required.`);
       return false;
     }
 
     if (!data.name) {
-      toast.error("Academic qualification name is required");
+      toast.error(`${ENTITY_NAME} Name is required.`);
       return false;
     }
 
@@ -208,7 +210,7 @@ export default function AcademicQualificationsTable() {
               <DataTable.DeleteSelected
                 onDeleteSelected={(ids) => {
                   return handleDeleteSelectedEntities(
-                    "Academic Qualifications",
+                    ENTITY_NAME,
                     ids,
                     deleteAcademicQualification,
                     fetchData,
@@ -222,7 +224,7 @@ export default function AcademicQualificationsTable() {
               />
               <Button onClick={() => setIsAddDialogOpen(true)}>
                 <PlusIcon className="-ms-1 opacity-60" size={16} />
-                Add Academic Qualification
+                Add {ENTITY_NAME}
               </Button>
             </DataTableToolbarGroup>
           </DataTableToolbar>
@@ -238,7 +240,7 @@ export default function AcademicQualificationsTable() {
         onClose={() => setIsAddDialogOpen(false)}
         onSubmit={(data) => {
           return handleAddEntity(
-            "Academic Qualification",
+            ENTITY_NAME,
             data,
             addAcademicQualification,
             fetchData,
@@ -248,16 +250,16 @@ export default function AcademicQualificationsTable() {
           );
         }}
         isLoading={isSubmitting}
-        title="Add Academic Qualification"
+        title={`Add ${ENTITY_NAME}`}
       >
         <DataForm.Input
           name="code"
-          label="Academic Qualification Code"
+          label={`${ENTITY_NAME} Code`}
           placeholder="e.g., IT"
         />
         <DataForm.Input
           name="name"
-          label="Academic Qualification Name"
+          label={`${ENTITY_NAME} Name`}
           placeholder="e.g., Information Technology"
         />
       </EntityForm>
@@ -272,7 +274,7 @@ export default function AcademicQualificationsTable() {
         }}
         onSubmit={(data) => {
           return handleUpdateEntity(
-            "Academic Qualification",
+            ENTITY_NAME,
             data,
             updateAcademicQualification,
             fetchData,
@@ -285,16 +287,16 @@ export default function AcademicQualificationsTable() {
           );
         }}
         isLoading={isSubmitting}
-        title="Edit Academic Qualification"
+        title={`Edit ${ENTITY_NAME}`}
       >
         <DataForm.Input
           name="code"
-          label="Academic Qualification Code"
+          label={`${ENTITY_NAME} Code`}
           placeholder="e.g., IT"
         />
         <DataForm.Input
           name="name"
-          label="Academic Qualification Name"
+          label={`${ENTITY_NAME} Name`}
           placeholder="e.g., Information Technology"
         />
       </EntityForm>
@@ -306,7 +308,7 @@ export default function AcademicQualificationsTable() {
         onConfirm={() => {
           if (academicQualificationToDelete?.id) {
             return handleDeleteEntity(
-              "Academic Qualification",
+              ENTITY_NAME,
               academicQualificationToDelete.id,
               deleteAcademicQualification,
               fetchData,
