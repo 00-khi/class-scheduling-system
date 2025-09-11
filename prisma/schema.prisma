@@ -39,7 +39,7 @@ model AcademicQualification {
 
 model Instructor {
   id   Int    @id @default(autoincrement())
-  name String
+  name String @unique
   status InstructorStatus
 
   createdAt DateTime @default(now())
