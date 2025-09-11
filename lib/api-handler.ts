@@ -31,7 +31,7 @@ function handlePrismaError(error: unknown) {
         );
 
       case "P2003": // Foreign key constraint failed
-        const foreignKeyMessage = `Foreign key constraint. Operation failed.`;
+        const foreignKeyMessage = `Foreign key constraint error.`;
         return NextResponse.json(
           { error: foreignKeyMessage },
           { status: 400 } // Bad Request
@@ -41,7 +41,7 @@ function handlePrismaError(error: unknown) {
 
       default: // All other known Prisma errors
         return NextResponse.json(
-          { error: "Database operation failed. Please try again." },
+          { error: "Database operation failed." },
           { status: 500 } // Internal Server Error
         );
     }
