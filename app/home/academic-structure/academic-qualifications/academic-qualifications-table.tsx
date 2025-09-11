@@ -198,7 +198,9 @@ export default function AcademicQualificationsTable() {
           .filter((result) => result.status === "rejected")
           .map((result) => (result as PromiseRejectedResult).reason.message)
           .join(", ");
-        toast.error(`Failed to delete ${failedDeletions} qualifications. ${failedReasons}`);
+        toast.error(
+          `Failed to delete ${failedDeletions} qualifications. ${failedReasons}`
+        );
         console.error("Failed deletion reasons:", failedReasons);
       }
 
@@ -254,6 +256,7 @@ export default function AcademicQualificationsTable() {
       cell: ({ row }) => (
         <div className="font-medium">{row.getValue("name")}</div>
       ),
+      enableHiding: false,
     },
     {
       id: "instructors",
