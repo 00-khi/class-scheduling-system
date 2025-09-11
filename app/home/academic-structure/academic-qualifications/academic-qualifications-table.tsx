@@ -21,7 +21,7 @@ import {
 } from "@/ui/shadcn/dropdown-menu";
 import { IAcademicQualification } from "@/lib/types";
 import {
-  getAcademicQualification,
+  getAcademicQualifications,
   addAcademicQualification,
   updateAcademicQualification,
   deleteAcademicQualification,
@@ -56,7 +56,7 @@ export default function AcademicQualificationsTable() {
     setLoading(true);
 
     const [fetchedAcademicQualifications] = await Promise.all([
-      getAcademicQualification(),
+      getAcademicQualifications(),
     ]);
 
     setAcademicQualifications(fetchedAcademicQualifications);
