@@ -23,7 +23,7 @@ export const POST = createApiHandler(async (request) => {
   const rawData = await request.json();
 
   const name = capitalizeEachWord(rawData.name);
-  const academicQualificationId = rawData.academicQualificationId;
+  const academicQualificationId = parseInt(rawData.academicQualificationId);
   const status = rawData.status as InstructorStatus;
 
   const data = { name, academicQualificationId, status };
@@ -31,6 +31,13 @@ export const POST = createApiHandler(async (request) => {
   const validStatuses = Object.values(InstructorStatus);
 
   console.log(data);
+
+  if (isNaN(academicQualificationId)) {
+    return NextResponse.json(
+      { error: "Invalid academic qualification ID." },
+      { status: 400 }
+    );
+  }
 
   if (!name || !academicQualificationId || !status) {
     return NextResponse.json(
