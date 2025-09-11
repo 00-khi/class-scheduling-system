@@ -1,9 +1,9 @@
-import { IAcademicQualification } from "@/lib/types";
+import { TAcademicQualification } from "@/lib/types";
 
 const API_BASE_URL = "/api/academic-qualifications";
 
 export async function getAcademicQualifications(): Promise<
-  IAcademicQualification[]
+  TAcademicQualification[]
 > {
   const response = await fetch(API_BASE_URL);
 
@@ -20,7 +20,7 @@ export async function getAcademicQualifications(): Promise<
 
 export async function getAcademicQualificationById(
   id: number
-): Promise<IAcademicQualification | undefined> {
+): Promise<TAcademicQualification | undefined> {
   const response = await fetch(`${API_BASE_URL}/${id}`);
 
   if (response.status === 404) {
@@ -40,10 +40,10 @@ export async function getAcademicQualificationById(
 
 export async function addAcademicQualification(
   academicQualification: Omit<
-    IAcademicQualification,
+    TAcademicQualification,
     "id" | "createdAt" | "updatedAt"
   >
-): Promise<IAcademicQualification> {
+): Promise<TAcademicQualification> {
   const response = await fetch(API_BASE_URL, {
     method: "POST",
     headers: {
@@ -65,9 +65,9 @@ export async function addAcademicQualification(
 export async function updateAcademicQualification(
   id: number,
   updates: Partial<
-    Omit<IAcademicQualification, "id" | "createdAt" | "updatedAt">
+    Omit<TAcademicQualification, "id" | "createdAt" | "updatedAt">
   >
-): Promise<IAcademicQualification | null> {
+): Promise<TAcademicQualification | null> {
   const response = await fetch(`${API_BASE_URL}/${id}`, {
     method: "PUT",
     headers: {

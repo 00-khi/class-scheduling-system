@@ -19,23 +19,27 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/ui/shadcn/dropdown-menu";
-import { TAcademicQualification } from "@/lib/types";
 import {
-  getAcademicQualifications,
-  addAcademicQualification,
-  updateAcademicQualification,
-  deleteAcademicQualification,
-} from "@/services/academicQualificationService";
+  TInstructor,
+  TAcademicQualification,
+} from "@/lib/types";
+import {
+  getInstructors,
+  addInstructor,
+  updateInstructor,
+  deleteInstructor,
+} from "@/services/instructorService";
+import { getAcademicQualifications } from "@/services/academicQualificationService";
 import { toast } from "sonner";
 import { ConfirmDeleteDialog } from "@/ui/components/comfirm-delete-dialog";
 import { DataForm } from "@/ui/components/data-form";
 import { Badge } from "@/ui/shadcn/badge";
 
-export default function AcademicQualificationsTable() {
+export default function InstructorsTable() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [editingAcademicQualification, setEditingAcademicQualification] =
-    useState<TAcademicQualification | null>(null);
+  const [editingInstructor, setEditingInstructor] =
+    useState(null);
 
   const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -43,22 +47,24 @@ export default function AcademicQualificationsTable() {
   const [isDeletingSelected, setIsDeletingSelected] = useState(false);
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [academicQualificationToDelete, setAcademicQualificationToDelete] =
-    useState<TAcademicQualification | null>(null);
+  const [instructorToDelete, setInstructorToDelete] =
+    useState(null);
 
   // DATA STORE
-  const [academicQualifications, setAcademicQualifications] = useState<
-    TAcademicQualification[]
-  >([]);
+  const [instructors, setInstructors] = useState([]);
+  const [academicQualifications, setAcademicQualifications] = useState([]);
 
   // FETCH DATA
   const fetchData = async () => {
     setLoading(true);
 
-    const [fetchedAcademicQualifications] = await Promise.all([
-      getAcademicQualifications(),
-    ]);
+    const [fetchedInstructors, fetchedAcademicQualifications] =
+      await Promise.all([
+        getInstructors(),
+        getAcademicQualifications(),
+      ]);
 
+    setInstructors(fetchedInstructors);
     setAcademicQualifications(fetchedAcademicQualifications);
 
     setLoading(false);
@@ -69,24 +75,29 @@ export default function AcademicQualificationsTable() {
   }, []);
 
   // ADD DATA
-  const handleAddAcademicQualification = async (
-    academicQualificationData: Omit<TAcademicQualification, "id">
+  const handleAddInstructor = async (
+    instructorData
   ) => {
-    if (!academicQualificationData.code) {
-      toast.error("Academic qualification code is required");
+    if (!instructorData.name) {
+      toast.error("Instructor name is required");
       return false;
     }
 
-    if (!academicQualificationData.name) {
-      toast.error("Academic qualification name is required");
+    if (!instructorData.academicQualificationId) {
+      toast.error("Academic Qualification is required");
+      return false;
+    }
+
+    if (!instructorData.status) {
+      toast.error("Instructor status is required");
       return false;
     }
 
     setIsSubmitting(true);
     try {
-      await addAcademicQualification(academicQualificationData);
+      await addInstructor(instructorData);
 
-      toast.success("Academic qualification added successfully");
+      toast.success("Instructor added successfully");
 
       fetchData();
 
@@ -95,7 +106,7 @@ export default function AcademicQualificationsTable() {
     } catch (error) {
       const msg = error instanceof Error ? error.message : "Unexpected error";
       toast.error(msg);
-      console.error("Error adding academic qualification:", error);
+      console.error("Error adding instructor:", error);
       return false;
     } finally {
       setIsSubmitting(false);
@@ -103,40 +114,30 @@ export default function AcademicQualificationsTable() {
   };
 
   // UPDATE
-  const handleUpdateAcademicQualification = async (
-    academicQualificationData: TAcademicQualification
+  const handleUpdateInstructor = async (
+    instructorData
   ) => {
-    if (!academicQualificationData.id) {
+    if (!instructorData.id) {
       toast.error("Invalid ID");
-      return false;
-    }
-
-    if (!academicQualificationData.code) {
-      toast.error("Academic qualification code is required");
-      return false;
-    }
-
-    if (!academicQualificationData.name) {
-      toast.error("Academic qualification name is required");
       return false;
     }
 
     setIsSubmitting(true);
     try {
-      const { id, ...data } = academicQualificationData;
+      const { id, ...data } = instructorData;
 
-      await updateAcademicQualification(id, data);
-      toast.success(`Academic qualification updated successfully`);
+      await updateInstructor(id, data);
+      toast.success(`Instructor updated successfully`);
 
       fetchData();
 
       setIsEditDialogOpen(false);
-      setEditingAcademicQualification(null);
+      setEditingInstructor(null);
       return true;
     } catch (error) {
       const msg = error instanceof Error ? error.message : "Unexpected error";
       toast.error(msg);
-      console.error("Error updating academic qualification:", error);
+      console.error("Error updating instructor:", error);
       return false;
     } finally {
       setIsSubmitting(false);
@@ -144,39 +145,39 @@ export default function AcademicQualificationsTable() {
   };
 
   // DELETE
-  const handleDeleteAcademicQualification = async (id: number) => {
+  const handleDeleteInstructor = async (id) => {
     setIsDeleting(true);
     try {
       if (!id) {
-        toast.error("Error deleting academic qualification: Invalid ID");
+        toast.error("Error deleting instructor: Invalid ID");
         setIsDeleteDialogOpen(false);
         return;
       }
-      const deleted = await deleteAcademicQualification(id);
+      const deleted = await deleteInstructor(id);
       if (deleted) {
-        toast.success("Academic qualification deleted successfully");
+        toast.success("Instructor deleted successfully");
         fetchData();
 
-        setAcademicQualificationToDelete(null);
+        setInstructorToDelete(null);
 
         setIsDeleteDialogOpen(false);
       } else {
-        toast.error("Failed to delete academic qualification");
+        toast.error("Failed to delete instructor");
       }
     } catch (error) {
       const msg = error instanceof Error ? error.message : "Unexpected error";
       toast.error(msg);
-      console.error("Error deleting academic qualification:", error);
+      console.error("Error deleting instructor:", error);
     } finally {
       setIsDeleting(false);
     }
   };
 
   // DELETE SELECTED
-  const handleDeleteSelectedAcademicQualifications = async (ids: number[]) => {
+  const handleDeleteSelectedInstructors = async (ids) => {
     setIsDeletingSelected(true);
     try {
-      const deletePromises = ids.map((id) => deleteAcademicQualification(id));
+      const deletePromises = ids.map((id) => deleteInstructor(id));
       const results = await Promise.allSettled(deletePromises);
 
       const successfulDeletions = results.filter(
@@ -189,20 +190,20 @@ export default function AcademicQualificationsTable() {
 
       if (successfulDeletions > 0) {
         toast.success(
-          `${successfulDeletions} academic qualifications deleted successfully.`
+          `${successfulDeletions} instructors deleted successfully.`
         );
       }
 
       if (failedDeletions > 0) {
         const failedReasons = results
           .filter((result) => result.status === "rejected")
-          .map((result) => (result as PromiseRejectedResult).reason.message)
+          .map((result) => result.reason?.message || "Unknown error")
           .join(", ");
-        toast.error(`Failed to delete ${failedDeletions} qualifications. ${failedReasons}`);
+        toast.error(`Failed to delete ${failedDeletions} instructors. ${failedReasons}`);
         console.error("Failed deletion reasons:", failedReasons);
       }
 
-      fetchData(); // Always refresh data to reflect successful deletions
+      fetchData();
     } catch (error) {
       const msg = error instanceof Error ? error.message : "Unexpected error.";
       toast.error(msg);
@@ -212,13 +213,7 @@ export default function AcademicQualificationsTable() {
     }
   };
 
-  type IAcademicQualificationRow = TAcademicQualification & {
-    _count?: {
-      instructors: number;
-    };
-  };
-
-  const columns: ColumnDef<IAcademicQualificationRow>[] = [
+  const columns = [
     {
       id: "select",
       header: ({ table }) => (
@@ -242,13 +237,6 @@ export default function AcademicQualificationsTable() {
       enableHiding: false,
     },
     {
-      header: "Code",
-      accessorKey: "code",
-      cell: ({ row }) => (
-        <Badge variant="outline">{row.getValue("code")}</Badge>
-      ),
-    },
-    {
       header: "Name",
       accessorKey: "name",
       cell: ({ row }) => (
@@ -256,12 +244,23 @@ export default function AcademicQualificationsTable() {
       ),
     },
     {
-      id: "instructors",
-      header: "Instructors",
-      accessorKey: "_count.instructors",
+      header: "Status",
+      accessorKey: "status",
       cell: ({ row }) => {
-        const count = row.original._count?.instructors ?? 0;
-        return <Badge variant="secondary">{count}</Badge>;
+        const status = row.getValue("status");
+        return <Badge variant="secondary">{status}</Badge>;
+      },
+    },
+    {
+      header: "Academic Qualification",
+      accessorKey: "academicQualification.name",
+      cell: ({ row }) => {
+        const qualification = row.original.academicQualification;
+        return (
+          <Badge variant="outline">
+            {qualification ? qualification.name : "N/A"}
+          </Badge>
+        );
       },
     },
     {
@@ -269,13 +268,13 @@ export default function AcademicQualificationsTable() {
       header: () => <span className="sr-only">Actions</span>,
       cell: ({ row }) => (
         <RowActions
-          academicQualification={row.original}
-          onEdit={(acadQual) => {
-            setEditingAcademicQualification(acadQual);
+          instructor={row.original}
+          onEdit={(instructor) => {
+            setEditingInstructor(instructor);
             setIsEditDialogOpen(true);
           }}
-          onDelete={(acadQual) => {
-            setAcademicQualificationToDelete(acadQual);
+          onDelete={(instructor) => {
+            setInstructorToDelete(instructor);
             setIsDeleteDialogOpen(true);
           }}
         />
@@ -295,7 +294,7 @@ export default function AcademicQualificationsTable() {
           </span>
         </div>
       ) : (
-        <DataTable data={academicQualifications} columns={columns}>
+        <DataTable data={instructors} columns={columns}>
           {/* Toolbar */}
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex flex-wrap items-center gap-3">
@@ -309,12 +308,12 @@ export default function AcademicQualificationsTable() {
             </div>
             <div className="flex flex-wrap items-center gap-3">
               <DataTable.DeleteSelected
-                onDeleteSelected={handleDeleteSelectedAcademicQualifications}
+                onDeleteSelected={handleDeleteSelectedInstructors}
                 isDeletingSelected={isDeletingSelected}
               />
               <Button onClick={() => setIsAddDialogOpen(true)}>
                 <PlusIcon className="-ms-1 opacity-60" size={16} />
-                Add Academic Qualification
+                Add Instructor
               </Button>
             </div>
           </div>
@@ -324,21 +323,23 @@ export default function AcademicQualificationsTable() {
         </DataTable>
       )}
 
-      <AcademicQualificationForm
+      <InstructorForm
+        academicQualifications={academicQualifications}
         isOpen={isAddDialogOpen}
         onClose={() => setIsAddDialogOpen(false)}
-        onSubmit={handleAddAcademicQualification}
+        onSubmit={handleAddInstructor}
         isLoading={isSubmitting}
       />
 
-      <AcademicQualificationForm
-        item={editingAcademicQualification || undefined}
+      <InstructorForm
+        academicQualifications={academicQualifications}
+        item={editingInstructor || undefined}
         isOpen={isEditDialogOpen}
         onClose={() => {
           setIsEditDialogOpen(false);
-          setEditingAcademicQualification(null);
+          setEditingInstructor(null);
         }}
-        onSubmit={handleUpdateAcademicQualification}
+        onSubmit={handleUpdateInstructor}
         isLoading={isSubmitting}
       />
 
@@ -347,11 +348,11 @@ export default function AcademicQualificationsTable() {
         isOpen={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
         onConfirm={() => {
-          if (academicQualificationToDelete?.id) {
-            handleDeleteAcademicQualification(academicQualificationToDelete.id);
+          if (instructorToDelete?.id) {
+            handleDeleteInstructor(instructorToDelete.id);
           }
         }}
-        itemName={academicQualificationToDelete?.name}
+        itemName={instructorToDelete?.name}
         isDeleting={isDeleting}
       />
     </div>
@@ -359,13 +360,9 @@ export default function AcademicQualificationsTable() {
 }
 
 function RowActions({
-  academicQualification,
+  instructor,
   onEdit,
   onDelete,
-}: {
-  academicQualification: TAcademicQualification;
-  onEdit: (acadQual: TAcademicQualification) => void;
-  onDelete: (acadQual: TAcademicQualification) => void;
 }) {
   return (
     <div className="flex justify-end gap-2">
@@ -373,7 +370,7 @@ function RowActions({
       <Button
         size="icon"
         variant="ghost"
-        onClick={() => onEdit(academicQualification)}
+        onClick={() => onEdit(instructor)}
       >
         <EditIcon size={16} />
       </Button>
@@ -381,7 +378,7 @@ function RowActions({
       <Button
         size="icon"
         variant="ghost"
-        onClick={() => onDelete(academicQualification)}
+        onClick={() => onDelete(instructor)}
       >
         <TrashIcon size={16} />
       </Button>
@@ -389,40 +386,52 @@ function RowActions({
   );
 }
 
-function AcademicQualificationForm({
+function InstructorForm({
   isOpen,
   item,
   onClose,
   onSubmit,
   isLoading,
-}: {
-  isOpen: boolean;
-  item?: TAcademicQualification;
-  onClose: () => void;
-  onSubmit: (data: TAcademicQualification) => void;
-  isLoading?: boolean;
+  academicQualifications,
 }) {
+  const statusOptions = Object.keys(InstructorStatus).map((key) => ({
+    label: key,
+    value: InstructorStatus[key],
+  }));
+
+  const academicQualificationOptions = academicQualifications.map(
+    (qualification) => ({
+      label: qualification.name,
+      value: qualification.id,
+    })
+  );
+
   return (
-    <DataForm<TAcademicQualification>
+    <DataForm
       item={item}
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={onSubmit}
       isLoading={isLoading}
       title={{
-        add: "Add Academic Qualification",
-        edit: "Edit Academic Qualification",
+        add: "Add Instructor",
+        edit: "Edit Instructor",
       }}
     >
       <DataForm.Input
-        name="code"
-        label="Academic Qualification Code"
-        placeholder="e.g., IT"
-      />
-      <DataForm.Input
         name="name"
-        label="Academic Qualification Name"
-        placeholder="e.g., Information Technology"
+        label="Name"
+        placeholder="e.g., Jane Doe"
+      />
+      <DataForm.Select
+        name="academicQualificationId"
+        label="Academic Qualification"
+        options={academicQualificationOptions}
+      />
+      <DataForm.Select
+        name="status"
+        label="Status"
+        options={statusOptions}
       />
     </DataForm>
   );

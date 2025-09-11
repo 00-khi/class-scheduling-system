@@ -1,6 +1,6 @@
 import { InstructorStatus } from "@prisma/client";
 
-export type IAcademicQualification = {
+export type TAcademicQualification = {
   id: number;
   code: string; // e.g., "IT", "HM"
   name: string; // e.g., "Information Technology", "Hospitality Management"
@@ -8,26 +8,26 @@ export type IAcademicQualification = {
   updatedAt: Date;
 };
 
-export type IInstructor = {
+export type TInstructor = {
   id: number;
   name: string; // e.g., "Lebrawn Hayme"
   academicQualificationId: number; // ID of the academic qualification this instructor belongs to
   status: InstructorStatus;
 };
 
-// export type IAcademicLevel = {
+// export type TAcademicLevel = {
 //   id: string;
 //   code: string; // e.g., "JHS", "SHS", "TER"
 //   name: string; // e.g., "Junior High School", "Senior High School", "Tertiary"
 // };
 
-// export type IRoom = {
+// export type TRoom = {
 //   id?: string;
 //   name: string; // e.g., "Room 101", "Lab A", "Gym 1"
 //   type: "Lecture" | "Laboratory";
 // };
 
-// export type ICourse = {
+// export type TCourse = {
 //   id?: string;
 //   code: string; // e.g., "BSIT", "BSA", "BSED", "JHS-GL"
 //   name: string; // e.g., "Bachelor of Science in Information Technology", "Bachelor of Science in Accountancy", "Bachelor of Secondary Education", "Junior High School Grade Levels"
@@ -37,13 +37,13 @@ export type IInstructor = {
 
 // // wag mo na to lagyan ng service tas data store
 // // only represents in a course
-// export type IYearLevel = {
+// export type TYearLevel = {
 //   id?: string;
 //   name: string;
 //   code: string;
 // };
 
-// export type ISection = {
+// export type TSection = {
 //   id?: string;
 //   name: string; // e.g., "BSIT101A", "MWA101A"
 //   academicLevelId: string; // ID of the academic level this section belongs to
@@ -51,7 +51,7 @@ export type IInstructor = {
 //   yearLevelId: string; // ID of the year level inside the course
 // };
 
-// export type ISubject = {
+// export type TSubject = {
 //   id?: string;
 //   code: string; // e.g., "CS101", "MATH101", "ENG101"
 //   title: string; // e.g., "Introduction to Computer Science", "Calculus I", "English Literature"
@@ -65,13 +65,13 @@ export type IInstructor = {
 
 // // -------------------- RELATIONSHIPS --------------------
 
-// export type IAssignedSubject = {
+// export type TAssignedSubject = {
 //   id?: string;
 //   subjectId: string; // Links to subject ID, e.g. subject "3" assigned to section "2"
 //   sectionId: string; // Links to section ID this assigned subject belongs to
 // };
 
-// export type IScheduledSubject = {
+// export type TScheduledSubject = {
 //   id?: string;
 //   assignedSubjectId: string; // Links to assigned subject this scheduled subject belongs to
 //   roomId: string; // ID of the room this scheduled subject belongs to
@@ -80,7 +80,7 @@ export type IInstructor = {
 //   endTime: string; // e.g. "15:00"
 // };
 
-// export type IScheduleOfInstructor = {
+// export type TScheduleOfInstructor = {
 //   id?: string;
 //   assignedSubjectId: string; // Links to assigned subject this assigned instructor belongs to
 //   instructorId: string; // Links to instructor this schedule of intructor ha ano daw, naubusan na ko ng english
