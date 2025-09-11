@@ -419,7 +419,7 @@ function DataTableClearFilters({ className }: DataTableClearFiltersProps) {
 
 // Selected Delete Button
 interface DataTableDeleteSelectedProps {
-  onDeleteSelected?: (ids: string[]) => void;
+  onDeleteSelected?: (ids: number[]) => void;
   isDeletingSelected: boolean;
 }
 

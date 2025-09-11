@@ -144,7 +144,7 @@ export default function AcademicQualificationsTable() {
   };
 
   // DELETE
-  const handleDeleteAcademicQualification = async (id: string) => {
+  const handleDeleteAcademicQualification = async (id: number) => {
     setIsDeleting(true);
     try {
       if (!id) {
@@ -173,7 +173,7 @@ export default function AcademicQualificationsTable() {
   };
 
   // DELETE SELECTED
-  const handleDeleteSelectedAcademicQualifications = async (ids: string[]) => {
+  const handleDeleteSelectedAcademicQualifications = async (ids: number[]) => {
     setIsDeletingSelected(true);
     try {
       const deletePromises = ids.map((id) => deleteAcademicQualification(id));

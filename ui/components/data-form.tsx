@@ -34,7 +34,7 @@ interface DataFormProps<T> {
   children: ReactNode;
 }
 
-function DataFormBase<T extends { id?: string }>({
+function DataFormBase<T extends { id?: number }>({
   item,
   isOpen,
   onClose,
