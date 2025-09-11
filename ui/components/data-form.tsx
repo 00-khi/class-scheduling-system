@@ -174,11 +174,13 @@ function DataFormSelect({
     }
   };
 
+  console.log(formData?.[name])
+
   return (
     <div className="space-y-2">
       <Label htmlFor={name}>{label}</Label>
       <Select
-        value={String(formData?.[name]) || ""}
+        value={formData?.[name] != null ? String(formData[name]) : ""}
         onValueChange={handleChange}
         disabled={disabled || isLoading}
         required={required}
