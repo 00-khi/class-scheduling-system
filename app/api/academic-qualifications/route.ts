@@ -30,7 +30,7 @@ export const POST = createApiHandler(async (request) => {
 
   const data = { code, name };
 
-  if (!code || !name || code === " " || name === " ") {
+  if (!code || !name) {
     return NextResponse.json(
       { error: "Missing required fields." },
       { status: 400 }

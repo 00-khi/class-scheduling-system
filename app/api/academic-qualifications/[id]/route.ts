@@ -54,8 +54,9 @@ export const PUT = createApiHandler(async (request, context) => {
   const name = capitalizeEachWord(rawData.name);
 
   const data = { code, name };
+  console.log(data);
 
-  if (!code || !name || code === " " || name === " ") {
+  if (!code || !name) {
     return NextResponse.json(
       { error: "Missing required fields." },
       { status: 400 }
