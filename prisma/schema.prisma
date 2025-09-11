@@ -14,13 +14,41 @@ datasource db {
   url      = "file:./dev.db"
 }
 
+// ----- Enums -----
+
+enum InstructorStatus {
+  PT
+  PTFL
+  PROBY
+  FT
+}
+
+// ----- Models -----
+
 model AcademicQualification {
-  id Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   code String @unique
   name String @unique
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // RELATIONS
-  // instructors Instructor[]
+  // Relations
+  instructors Instructor[]
+}
+
+model Instructor {
+  id   Int    @id @default(autoincrement())
+  name String
+  status InstructorStatus
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Foreign keys
+  academicQualificationId Int
+
+  // Relations
+  academicQualification AcademicQualification? @relation(fields: [academicQualificationId], references: [id])
+  // schedules ScheduleOfInstructor[]
 }
