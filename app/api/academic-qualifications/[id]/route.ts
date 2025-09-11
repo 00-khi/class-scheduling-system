@@ -48,22 +48,24 @@ export const PUT = createApiHandler(async (request, context) => {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
 
-  // Use object destructuring to remove the 'id' property from the body, and '_count'
-  const { id: _, _count, ...data } = await request.json();
+  const rawData = await request.json();
 
-  // Apply formatting to 'code' and 'name' if they exist in the request body
-  // This ensures we only format the fields that are being updated.
-  if (data.code) {
-    data.code = toUppercase(data.code);
-  }
-  if (data.name) {
-    data.name = capitalizeEachWord(data.name);
+  const code = toUppercase(rawData.code);
+  const name = capitalizeEachWord(rawData.name);
+
+  const data = { code, name };
+
+  if (!code || !name || code === " " || name === " ") {
+    return NextResponse.json(
+      { error: "Missing required fields." },
+      { status: 400 }
+    );
   }
 
   const updatedAcademicQualification =
     await prisma.academicQualification.update({
       where: { id: numericId },
-      data, // Pass the new 'data' object without the 'id' and '_count' 
+      data,
     });
 
   return NextResponse.json(updatedAcademicQualification);

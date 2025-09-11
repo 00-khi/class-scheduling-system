@@ -23,9 +23,14 @@ export const POST = createApiHandler(async (request) => {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
 
-  const body: Omit<IAcademicQualification, "id"> = await request.json();
+  const rawData = await request.json();
 
-  if (!body.code || !body.name) {
+  const code = toUppercase(rawData.code);
+  const name = capitalizeEachWord(rawData.name);
+
+  const data = { code, name };
+
+  if (!code || !name || code === " " || name === " ") {
     return NextResponse.json(
       { error: "Missing required fields." },
       { status: 400 }
@@ -33,10 +38,7 @@ export const POST = createApiHandler(async (request) => {
   }
 
   const newAcademicQualification = await prisma.academicQualification.create({
-    data: {
-      code: toUppercase(body.code),
-      name: capitalizeEachWord(body.name),
-    },
+    data,
   });
 
   return NextResponse.json(newAcademicQualification, { status: 201 });
