@@ -174,8 +174,6 @@ function DataFormSelect({
     }
   };
 
-  console.log(formData?.[name])
-
   return (
     <div className="space-y-2">
       <Label htmlFor={name}>{label}</Label>
