@@ -31,7 +31,7 @@ function handlePrismaError(error: unknown) {
         );
 
       case "P2003": // Foreign key constraint failed
-        const foreignKeyMessage = `Foreign key constraint failed on the field '${error.meta?.field_name}'.`;
+        const foreignKeyMessage = `Foreign key constraint. Operation failed.`;
         return NextResponse.json(
           { error: foreignKeyMessage },
           { status: 400 } // Bad Request
