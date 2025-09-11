@@ -1,17 +1,17 @@
 export type IAcademicQualification = {
-  id: string;
+  id: number;
   code: string; // e.g., "IT", "HM"
   name: string; // e.g., "Information Technology", "Hospitality Management"
   createdAt: Date;
   updatedAt: Date;
 };
 
-// export type IInstructor = {
-//   id?: string;
-//   name: string; // e.g., "Lebrawn Hayme"
-//   academicQualificationId: string; // ID of the academic qualification this instructor belongs to
-//   status: "PT" | "PTFL" | "PROBY" | "FT"; // PT = Part-Time, PTFL = Part-Time with Full Load, PROBY = Probationary, FT = Full-Time
-// };
+export type IInstructor = {
+  id: number;
+  name: string; // e.g., "Lebrawn Hayme"
+  academicQualificationId: number; // ID of the academic qualification this instructor belongs to
+  status: "PT" | "PTFL" | "PROBY" | "FT"; // PT = Part-Time, PTFL = Part-Time with Full Load, PROBY = Probationary, FT = Full-Time
+};
 
 // export type IAcademicLevel = {
 //   id: string;
