@@ -20,11 +20,11 @@ export function DataTableSkeleton({
     <>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-3">
-          <Skeleton className="h-9 w-55 bg-muted" />
-          <Skeleton className="h-9 w-25 bg-muted" />
+          <Skeleton className="h-9 w-55 bg-muted border" />
+          <Skeleton className="h-9 w-25 bg-muted border" />
         </div>
         <div className="flex flex-wrap items-center gap-3">
-          <Skeleton className="h-9 w-55 bg-muted" />
+          <Skeleton className="h-9 w-55 bg-muted border" />
         </div>
       </div>
       <Card className="overflow-hidden p-0">
@@ -43,7 +43,7 @@ export function DataTableSkeleton({
               <TableRow key={rowIndex}>
                 {Array.from({ length: columnCount }).map((_, colIndex) => (
                   <TableCell key={colIndex}>
-                    <Skeleton className="h-8 w-full bg-muted" />
+                    <Skeleton className="h-9 w-full bg-muted" />
                   </TableCell>
                 ))}
               </TableRow>
