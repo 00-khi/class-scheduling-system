@@ -1,3 +1,5 @@
+import { InstructorStatus } from "@prisma/client";
+
 export type IAcademicQualification = {
   id: number;
   code: string; // e.g., "IT", "HM"
@@ -10,7 +12,7 @@ export type IInstructor = {
   id: number;
   name: string; // e.g., "Lebrawn Hayme"
   academicQualificationId: number; // ID of the academic qualification this instructor belongs to
-  status: "PT" | "PTFL" | "PROBY" | "FT"; // PT = Part-Time, PTFL = Part-Time with Full Load, PROBY = Probationary, FT = Full-Time
+  status: InstructorStatus;
 };
 
 // export type IAcademicLevel = {
