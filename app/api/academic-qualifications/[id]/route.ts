@@ -88,5 +88,5 @@ export const DELETE = createApiHandler(async (request, context) => {
     where: { id: numericId },
   });
 
-  return NextResponse.json({ message: "Deleted successfully" });
+  return NextResponse.json({ message: "Academic qualification deleted successfully" });
 });
