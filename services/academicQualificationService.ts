@@ -1,52 +1,118 @@
-import { IAcademicQualification } from "@/types";
-import { getAcademicQualificationStore } from "@/lib/data-store/academicQualificationStore";
+import { TAcademicQualification } from "@/lib/types";
 
-export function getAcademicQualification(): IAcademicQualification[] {
-  return [...getAcademicQualificationStore()];
+const API_BASE_URL = "/api/academic-qualifications";
+
+export async function getAcademicQualifications(): Promise<
+  TAcademicQualification[]
+> {
+  const response = await fetch(API_BASE_URL);
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    const msg =
+      data.error ?? "Service Error: Failed to fetch academic qualifications.";
+    throw new Error(msg);
+  }
+
+  return data;
 }
 
-export function getAcademicQualificationById(
-  id: string
-): IAcademicQualification | undefined {
-  const academicQualifications = getAcademicQualificationStore();
-  return academicQualifications.find(
-    (academicQualification) => academicQualification._id === id
-  );
+export async function getAcademicQualificationById(
+  id: number
+): Promise<TAcademicQualification | undefined> {
+  const response = await fetch(`${API_BASE_URL}/${id}`);
+
+  if (response.status === 404) {
+    throw new Error("Academic qualification not found.");
+  }
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    const msg =
+      data.error ??
+      `Service Error: Failed to fetch academic qualification with ID ${id}.`;
+    throw new Error(msg);
+  }
+  
+  return data;
 }
 
-export function addAcademicQualification(
-  academicQualification: Omit<IAcademicQualification, "_id">
-): IAcademicQualification {
-  const newAcademicQualification = {
-    ...academicQualification,
-    _id: Date.now().toString(),
-  };
-  getAcademicQualificationStore().push(newAcademicQualification);
-  return newAcademicQualification;
+export async function addAcademicQualification(
+  academicQualification: Omit<
+    TAcademicQualification,
+    "id" | "createdAt" | "updatedAt"
+  >
+): Promise<TAcademicQualification> {
+  const response = await fetch(API_BASE_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(academicQualification),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    const msg =
+      data.error ?? "Service Error: Failed to add academic qualification.";
+    throw new Error(msg);
+  }
+
+  return data;
 }
 
-export function updateAcademicQualification(
-  id: string,
-  updates: Partial<IAcademicQualification>
-): IAcademicQualification | null {
-  const academicQualifications = getAcademicQualificationStore();
-  const index = academicQualifications.findIndex(
-    (academicQualification) => academicQualification._id === id
-  );
-  if (index === -1) return null;
-  academicQualifications[index] = {
-    ...academicQualifications[index],
-    ...updates,
-  };
-  return academicQualifications[index];
+export async function updateAcademicQualification(
+  id: number,
+  updates: Partial<
+    Omit<TAcademicQualification, "id" | "createdAt" | "updatedAt">
+  >
+): Promise<TAcademicQualification> {
+  const response = await fetch(`${API_BASE_URL}/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(updates),
+  });
+
+  if (response.status === 404) {
+    throw new Error("Academic qualification not found.");
+  }
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    const msg =
+      data.error ??
+      `Service Error: Failed to update academic qualification with ID ${id}.`;
+    throw new Error(msg);
+  }
+
+  return data;
 }
 
-export function deleteAcademicQualification(id: string): boolean {
-  const academicQualifications = getAcademicQualificationStore();
-  const index = academicQualifications.findIndex(
-    (academicQualification) => academicQualification._id === id
-  );
-  if (index === -1) return false;
-  academicQualifications.splice(index, 1);
+export async function deleteAcademicQualification(
+  id: number
+): Promise<boolean> {
+  const response = await fetch(`${API_BASE_URL}/${id}`, {
+    method: "DELETE",
+  });
+
+  if (response.status === 404) {
+    throw new Error("Academic qualification not found.");
+  }
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    const msg =
+      data.error ??
+      `Service Error: Failed to delete academic qualification with ID ${id}.`;
+    throw new Error(msg);
+  }
+
   return true;
 }

@@ -1,5 +1,5 @@
-import AcademicQualificationsTable from "@/ui/pages/academic-structure/academic-qualifications/academic-qualifications-table";
 import { MainSection } from "@/ui/components/main-section";
+import AcademicQualificationsTable from "./academic-qualifications-table";
 
 export default function AcademicQualifications() {
   return (

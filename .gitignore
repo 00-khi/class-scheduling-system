@@ -1,8 +1,5 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-#testing
-*.test.*
-
 # dependencies
 /node_modules
 /.pnp
@@ -42,3 +39,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+#testing
+*.test.*
+
+# database
+prisma/dev.db
+/lib/generated/prisma
+prisma/migrations/*
+!prisma/migrations/migration_lock.toml

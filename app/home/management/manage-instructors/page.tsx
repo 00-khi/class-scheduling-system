@@ -1,5 +1,5 @@
 import { MainSection } from "@/ui/components/main-section";
-import InstructorsTable from "@/ui/pages/management/manage-instructors/instructors-table";
+import InstructorsTable from "./instructors-table";
 
 export default function ManageInstructors() {
   return (

@@ -1,14 +1,8 @@
 # Automated Class Scheduling System
 
-To simplify and optimize class scheduling for educational institutions. 
+To simplify the process of creating and managing class schedules. This project was initiated after observing the challenges and inefficiencies faced by our client when preparing schedules without dedicated tools. Our system aims to reduce scheduling conflicts, and simplify repetitive tasks.
 
 Developed as a capstone project for **STI College Legazpi**.
-
----
-
-## Project Overview
-
-Designed to simplify the process of creating and managing class schedules in schools. This project was initiated after observing the challenges and inefficiencies faced by our client when preparing schedules without dedicated tools. Our system aims to reduce scheduling conflicts, and simplify repetitive tasks.
 
 ---
 
@@ -17,7 +11,7 @@ Designed to simplify the process of creating and managing class schedules in sch
 - Next.js (React framework)
 - TypeScript
 - Shadcn UI
-- MongoDB
+- SQLite
 
 ---
 
@@ -40,12 +34,17 @@ Designed to simplify the process of creating and managing class schedules in sch
    pnpm install
    ```
 
-3. **Run the development server:**
+3. **Set up Prisma:**
+   ```bash
+   pnpm dlx prisma migrate dev --name init
+   ```
+
+4. **Run the development server:**
    ```bash
    pnpm dev
    ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
@@ -59,14 +58,3 @@ Designed to simplify the process of creating and managing class schedules in sch
 
 **Client:**  
 STI College Legazpi
-
----
-
-## License
-
-The **Automated Class Scheduling System** was developed as part of a capstone project for **STI College Legazpi** and is protected under a **custom proprietary license**.
-
-The system is intended **only for academic demonstration and evaluation purposes**.
-Any **commercial use, reproduction, modification, or redistribution** is strictly prohibited.
-
-For full license details, refer to the [`LICENSE.md`](./LICENSE.md) file in this repository. 

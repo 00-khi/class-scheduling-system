@@ -7,17 +7,17 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/shadcn/components/ui/dialog";
-import { Button } from "@/shadcn/components/ui/button";
-import { Input } from "@/shadcn/components/ui/input";
-import { Label } from "@/shadcn/components/ui/label";
+} from "@/ui/shadcn/dialog";
+import { Button } from "@/ui/shadcn/button";
+import { Input } from "@/ui/shadcn/input";
+import { Label } from "@/ui/shadcn/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/shadcn/components/ui/select";
+} from "@/ui/shadcn/select";
 import React from "react";
 import { toast } from "sonner";
 
@@ -30,17 +30,17 @@ interface DataFormProps<T> {
   onClose: () => void;
   onSubmit: (data: T) => Promise<boolean | void> | void;
   isLoading?: boolean;
-  title?: { add: string; edit: string };
+  title?: string;
   children: ReactNode;
 }
 
-function DataFormBase<T extends { _id?: string }>({
+function DataFormBase<T>({
   item,
   isOpen,
   onClose,
   onSubmit,
   isLoading = false,
-  title = { add: "Add Item", edit: "Edit Item" },
+  title = "Item Form",
   children,
 }: DataFormProps<T>) {
   const [formData, setFormData] = useState<T>(item || ({} as T));
@@ -62,7 +62,7 @@ function DataFormBase<T extends { _id?: string }>({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{item ? title.edit : title.add}</DialogTitle>
+          <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -174,24 +174,34 @@ function DataFormSelect({
     }
   };
 
+  const hasOptions = options.length > 0;
+
   return (
     <div className="space-y-2">
       <Label htmlFor={name}>{label}</Label>
       <Select
-        value={formData?.[name] || ""}
+        value={formData?.[name] != null ? String(formData[name]) : ""}
         onValueChange={handleChange}
-        disabled={disabled || isLoading}
+        disabled={disabled || isLoading || !hasOptions}
         required={required}
       >
         <SelectTrigger className="w-full">
-          <SelectValue placeholder={`Select ${label}`} />
+          <SelectValue
+            placeholder={hasOptions ? `Select ${label}` : "No data found"}
+          />
         </SelectTrigger>
         <SelectContent>
-          {options.map((opt) => (
-            <SelectItem key={opt.value} value={opt.value}>
-              {opt.label}
+          {hasOptions ? (
+            options.map((opt) => (
+              <SelectItem key={opt.value} value={opt.value}>
+                {opt.label}
+              </SelectItem>
+            ))
+          ) : (
+            <SelectItem disabled value="-">
+              No data found
             </SelectItem>
-          ))}
+          )}
         </SelectContent>
       </Select>
     </div>
@@ -233,7 +243,7 @@ function DataFormArrayInput({
       ...prev,
       [name]: [
         ...(prev[name] || []),
-        { ...tempItem, _id: Date.now().toString() },
+        { ...tempItem, id: Date.now().toString() },
       ],
     }));
     setTempItem({});
@@ -242,7 +252,7 @@ function DataFormArrayInput({
   const handleDelete = (id: string) => {
     setFormData?.((prev: any) => ({
       ...prev,
-      [name]: prev[name]?.filter((i: any) => i._id !== id),
+      [name]: prev[name]?.filter((i: any) => i.id !== id),
     }));
   };
 
@@ -250,7 +260,7 @@ function DataFormArrayInput({
     setFormData?.((prev: any) => ({
       ...prev,
       [name]: prev[name]?.map((i: any) =>
-        i._id === id ? { ...i, [key]: value } : i
+        i.id === id ? { ...i, [key]: value } : i
       ),
     }));
   };
@@ -281,21 +291,21 @@ function DataFormArrayInput({
       <div className="space-y-2 mt-2">
         {(formData?.[name] || []).map((item: any) => (
           <div
-            key={item._id}
+            key={item.id}
             className="flex items-center gap-2 border rounded p-2"
           >
             {fields.map((f) => (
               <Input
                 key={f.name}
                 value={item[f.name]}
-                onChange={(e) => handleEdit(item._id, f.name, e.target.value)}
+                onChange={(e) => handleEdit(item.id, f.name, e.target.value)}
               />
             ))}
             <Button
               type="button"
               variant="destructive"
               size="sm"
-              onClick={() => handleDelete(item._id)}
+              onClick={() => handleDelete(item.id)}
             >
               Delete
             </Button>

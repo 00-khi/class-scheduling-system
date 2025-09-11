@@ -1,42 +1,102 @@
-import { IInstructor } from "@/types";
-import { getInstructorStore } from "@/lib/data-store/instructorStore";
+import { TInstructor } from "@/lib/types";
 
-export function getInstructors(): IInstructor[] {
-  return [...getInstructorStore()];
+const API_BASE_URL = "/api/instructors";
+
+export async function getInstructors(): Promise<TInstructor[]> {
+  const response = await fetch(API_BASE_URL);
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    const msg = data.error ?? "Service Error: Failed to fetch instructors.";
+    throw new Error(msg);
+  }
+
+  return data;
 }
 
-export function getInstructorById(id: string): IInstructor | undefined {
-  const instructors = getInstructorStore();
-  return instructors.find((instructor) => instructor._id === id);
+export async function getInstructorById(
+  id: number
+): Promise<TInstructor | undefined> {
+  const response = await fetch(`${API_BASE_URL}/${id}`);
+
+  if (response.status === 404) {
+    throw new Error("Instructor not found.");
+  }
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    const msg =
+      data.error ?? `Service Error: Failed to fetch instructor with ID ${id}.`;
+    throw new Error(msg);
+  }
+
+  return data;
 }
 
-export function addInstructor(
-  instructor: Omit<IInstructor, "_id">
-): IInstructor {
-  const newInstructor = { ...instructor, _id: Date.now().toString() };
-  getInstructorStore().push(newInstructor);
-  return newInstructor;
+export async function addInstructor(
+  instructor: Omit<TInstructor, "id" | "createdAt" | "updatedAt">
+): Promise<TInstructor> {
+  const response = await fetch(API_BASE_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(instructor),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    const msg = data.error ?? "Service Error: Failed to add instructor.";
+    throw new Error(msg);
+  }
+
+  return data;
 }
 
-export function updateInstructor(
-  id: string,
-  updates: Partial<IInstructor>
-): IInstructor | null {
-  const instructors = getInstructorStore();
-  const index = instructors.findIndex((instructor) => instructor._id === id);
-  if (index === -1) return null;
-  instructors[index] = { ...instructors[index], ...updates };
-  return instructors[index];
+export async function updateInstructor(
+  id: number,
+  instructor: Partial<Omit<TInstructor, "id" | "createdAt" | "updatedAt">>
+): Promise<TInstructor> {
+  const response = await fetch(`${API_BASE_URL}/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(instructor),
+  });
+
+  if (response.status === 404) {
+    throw new Error("Instructor not found.");
+  }
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    const msg = data.error ?? `Service Error: Failed to update instructor.`;
+    throw new Error(msg);
+  }
+
+  return data;
 }
 
-export function deleteInstructor(id: string): boolean {
-  const instructors = getInstructorStore();
-  const index = instructors.findIndex((instructor) => instructor._id === id);
-  if (index === -1) return false;
-  instructors.splice(index, 1);
+export async function deleteInstructor(id: number): Promise<boolean> {
+  const response = await fetch(`${API_BASE_URL}/${id}`, {
+    method: "DELETE",
+  });
+
+  if (response.status === 404) {
+    throw new Error("Instructor not found.");
+  }
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    const msg = data.error ?? "Service Error: Failed to delete instructor.";
+    throw new Error(msg);
+  }
+
   return true;
-}
-
-export function getInstructorCount(): number {
-  return getInstructorStore().length;
 }

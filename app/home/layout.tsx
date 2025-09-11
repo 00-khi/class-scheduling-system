@@ -1,6 +1,6 @@
-import { AppSidebar } from "@/shadcn/components/app-sidebar";
-import { SiteHeader } from "@/shadcn/components/site-header";
-import { SidebarInset, SidebarProvider } from "@/shadcn/components/ui/sidebar";
+import { AppSidebar } from "@/ui/components/shadcn/app-sidebar";
+import { SiteHeader } from "@/ui/components/shadcn/site-header";
+import { SidebarInset, SidebarProvider } from "@/ui/shadcn/sidebar";
 
 export const iframeHeight = "800px";
 export const description = "A sidebar with a header and a search form.";

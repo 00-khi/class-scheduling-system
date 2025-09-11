@@ -2,15 +2,15 @@
 
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/shadcn/components/ui/alert-dialog";
+} from "@/ui/shadcn/alert-dialog";
 import { CircleAlertIcon } from "lucide-react";
+import { Button } from "@/ui/shadcn/button";
 
 interface ConfirmDeleteDialogProps {
   isOpen: boolean;
@@ -18,7 +18,8 @@ interface ConfirmDeleteDialogProps {
   onConfirm: () => void;
   title?: string;
   description?: string;
-  itemName?: string; // optional: display item name
+  itemName?: string;
+  isDeleting: boolean;
 }
 
 export function ConfirmDeleteDialog({
@@ -28,9 +29,10 @@ export function ConfirmDeleteDialog({
   title = "Are you absolutely sure?",
   description = "This action cannot be undone.",
   itemName,
+  isDeleting,
 }: ConfirmDeleteDialogProps) {
   return (
-    <AlertDialog open={isOpen} onOpenChange={onClose}>
+    <AlertDialog open={isOpen}>
       <AlertDialogContent>
         <div className="flex flex-col gap-2 max-sm:items-center sm:flex-row sm:gap-4">
           <div
@@ -48,13 +50,16 @@ export function ConfirmDeleteDialog({
           </AlertDialogHeader>
         </div>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction
-            className="bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60"
+          <AlertDialogCancel disabled={isDeleting} onClick={onClose}>
+            Cancel
+          </AlertDialogCancel>
+          <Button // Use a standard Button component here
+            variant="destructive"
             onClick={onConfirm}
+            disabled={isDeleting}
           >
-            Delete
-          </AlertDialogAction>
+            {isDeleting ? "Deleting..." : "Delete"}
+          </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

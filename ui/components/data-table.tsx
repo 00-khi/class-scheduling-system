@@ -29,23 +29,23 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/shadcn/components/ui/table";
-import { Card } from "@/shadcn/components/ui/card";
-import { Input } from "@/shadcn/components/ui/input";
-import { Button } from "@/shadcn/components/ui/button";
+} from "@/ui/shadcn/table";
+import { Card } from "@/ui/shadcn/card";
+import { Input } from "@/ui/shadcn/input";
+import { Button } from "@/ui/shadcn/button";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/shadcn/components/ui/select";
+} from "@/ui/shadcn/select";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "@/shadcn/components/ui/dropdown-menu";
+} from "@/ui/shadcn/dropdown-menu";
 import {
   CircleAlertIcon,
   CircleX,
@@ -54,7 +54,7 @@ import {
   Search,
   TrashIcon,
 } from "lucide-react";
-import { cn } from "@/shadcn/lib/utils";
+import { cn } from "@/lib/shadcn/utils";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -65,7 +65,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/shadcn/components/ui/alert-dialog";
+} from "@/ui/shadcn/alert-dialog";
 
 // Context for sharing table state
 interface DataTableContextValue<TData> {
@@ -419,14 +419,17 @@ function DataTableClearFilters({ className }: DataTableClearFiltersProps) {
 
 // Selected Delete Button
 interface DataTableDeleteSelectedProps {
-  onDeleteSelected?: (ids: string[]) => void;
+  onDeleteSelected?: (ids: number[]) => void;
+  isDeletingSelected: boolean;
 }
 
 function DataTableDeleteSelected({
   onDeleteSelected,
+  isDeletingSelected,
 }: DataTableDeleteSelectedProps) {
   const { table } = useDataTableContext();
   const [selectedRowsCount, setSelectedRowsCount] = useState(0);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const selectedRows = table.getSelectedRowModel().rows;
 
@@ -434,17 +437,18 @@ function DataTableDeleteSelected({
     setSelectedRowsCount(selectedRows.length);
   }, [selectedRows.length]);
 
-  if (selectedRowsCount === 0) return null;
+  if (selectedRowsCount === 0 || selectedRowsCount < 2) return null;
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async () => {
     if (!onDeleteSelected) return;
-    const ids = selectedRows.map((row) => (row.original as any)._id); // assumes each row has `_id`
-    onDeleteSelected(ids);
-    table.resetRowSelection(); // clear selection after delete
+    const ids = selectedRows.map((row) => (row.original as any).id);
+    await onDeleteSelected(ids);
+    table.resetRowSelection(); 
+    setIsDialogOpen(false);
   };
 
   return (
-    <AlertDialog>
+    <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <AlertDialogTrigger asChild>
         <Button className="bg-transparent" variant="outline">
           <TrashIcon
@@ -476,13 +480,16 @@ function DataTableDeleteSelected({
           </AlertDialogHeader>
         </div>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction
-            className="bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60"
+          <AlertDialogCancel disabled={isDeletingSelected}>
+            Cancel
+          </AlertDialogCancel>
+          <Button
+            variant="destructive"
             onClick={handleConfirmDelete}
+            disabled={isDeletingSelected}
           >
-            Delete
-          </AlertDialogAction>
+            {isDeletingSelected ? "Deleting..." : "Delete"}
+          </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
