@@ -177,15 +177,36 @@ export default function AcademicQualificationsTable() {
     setIsDeletingSelected(true);
     try {
       const deletePromises = ids.map((id) => deleteAcademicQualification(id));
-      await Promise.all(deletePromises);
-      toast.success(
-        `${ids.length} academic qualifications deleted successfully.`
-      );
-      fetchData();
+      const results = await Promise.allSettled(deletePromises);
+
+      const successfulDeletions = results.filter(
+        (result) => result.status === "fulfilled"
+      ).length;
+
+      const failedDeletions = results.filter(
+        (result) => result.status === "rejected"
+      ).length;
+
+      if (successfulDeletions > 0) {
+        toast.success(
+          `${successfulDeletions} academic qualifications deleted successfully.`
+        );
+      }
+
+      if (failedDeletions > 0) {
+        const failedReasons = results
+          .filter((result) => result.status === "rejected")
+          .map((result) => (result as PromiseRejectedResult).reason.message)
+          .join(", ");
+        toast.error(`Failed to delete ${failedDeletions} qualifications. ${failedReasons}`);
+        console.error("Failed deletion reasons:", failedReasons);
+      }
+
+      fetchData(); // Always refresh data to reflect successful deletions
     } catch (error) {
       const msg = error instanceof Error ? error.message : "Unexpected error.";
       toast.error(msg);
-      console.error("Error deleting selected qualifications:", error);
+      console.error("Error during batch deletion process:", error);
     } finally {
       setIsDeletingSelected(false);
     }
