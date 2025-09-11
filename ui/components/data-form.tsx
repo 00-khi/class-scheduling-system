@@ -174,24 +174,34 @@ function DataFormSelect({
     }
   };
 
+  const hasOptions = options.length > 0;
+
   return (
     <div className="space-y-2">
       <Label htmlFor={name}>{label}</Label>
       <Select
         value={formData?.[name] != null ? String(formData[name]) : ""}
         onValueChange={handleChange}
-        disabled={disabled || isLoading}
+        disabled={disabled || isLoading || !hasOptions}
         required={required}
       >
         <SelectTrigger className="w-full">
-          <SelectValue placeholder={`Select ${label}`} />
+          <SelectValue
+            placeholder={hasOptions ? `Select ${label}` : "No data found"}
+          />
         </SelectTrigger>
         <SelectContent>
-          {options.map((opt) => (
-            <SelectItem key={opt.value} value={opt.value}>
-              {opt.label}
+          {hasOptions ? (
+            options.map((opt) => (
+              <SelectItem key={opt.value} value={opt.value}>
+                {opt.label}
+              </SelectItem>
+            ))
+          ) : (
+            <SelectItem disabled value="-">
+              No data found
             </SelectItem>
-          ))}
+          )}
         </SelectContent>
       </Select>
     </div>
