@@ -35,6 +35,7 @@ export async function getAcademicQualificationById(
       `Service Error: Failed to fetch academic qualification with ID ${id}.`;
     throw new Error(msg);
   }
+  
   return data;
 }
 
@@ -59,6 +60,7 @@ export async function addAcademicQualification(
       data.error ?? "Service Error: Failed to add academic qualification.";
     throw new Error(msg);
   }
+
   return data;
 }
 
@@ -76,11 +78,11 @@ export async function updateAcademicQualification(
     body: JSON.stringify(updates),
   });
 
-  const data = await response.json();
-
   if (response.status === 404) {
     throw new Error("Academic qualification not found.");
   }
+
+  const data = await response.json();
 
   if (!response.ok) {
     const msg =
@@ -88,6 +90,7 @@ export async function updateAcademicQualification(
       `Service Error: Failed to update academic qualification with ID ${id}.`;
     throw new Error(msg);
   }
+
   return data;
 }
 
@@ -110,5 +113,6 @@ export async function deleteAcademicQualification(
       `Service Error: Failed to delete academic qualification with ID ${id}.`;
     throw new Error(msg);
   }
+
   return true;
 }
