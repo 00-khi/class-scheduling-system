@@ -31,7 +31,7 @@ import { ConfirmDeleteDialog } from "@/ui/components/comfirm-delete-dialog";
 import { DataForm } from "@/ui/components/data-form";
 import { Badge } from "@/ui/shadcn/badge";
 import { RowActions } from "@/ui/components/row-actions";
-import { DataTableSkeleton } from "@/ui/components/data-table-skeleton";
+import { DataTableSkeleton } from "@/ui/components/data-table-components";
 
 export default function AcademicQualificationsTable() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
