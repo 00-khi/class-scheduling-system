@@ -270,25 +270,23 @@ export default function InstructorsTable() {
         isLoading={entityManagement.isSubmitting}
         title={`Edit ${ENTITY_NAME}`}
       >
-        <DataForm.Div>
-          <DataForm.Input
-            name="name"
-            label={`${ENTITY_NAME} Name`}
-            placeholder="e.g., Joe Smith"
-          />
-          <DataForm.Select
-            name="status"
-            label="Status"
-            placeholder="Select status"
-            options={statusOptions}
-          />
-          <DataForm.Select
-            name="academicQualificationId"
-            label="Academic Qualification"
-            placeholder="Select qualification"
-            options={academicQualificationOptions}
-          />
-        </DataForm.Div>
+        <DataForm.Input
+          name="name"
+          label={`${ENTITY_NAME} Name`}
+          placeholder="e.g., Joe Smith"
+        />
+        <DataForm.Select
+          name="status"
+          label="Status"
+          placeholder="Select status"
+          options={statusOptions}
+        />
+        <DataForm.Select
+          name="academicQualificationId"
+          label="Academic Qualification"
+          placeholder="Select qualification"
+          options={academicQualificationOptions}
+        />
       </EntityForm>
 
       {/* Delete Dialog */}
