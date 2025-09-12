@@ -3,17 +3,11 @@
 import * as React from "react";
 import {
   LayoutDashboard,
-  LogOut,
   School,
-  WandSparkles,
-  ClockPlus,
-  UserPen,
   Ticket,
-  NotebookPen,
   Sparkles,
   Settings,
   NotebookText,
-  Grid2X2Plus,
   BarChart3,
   Users,
   BookOpen,
@@ -22,7 +16,6 @@ import {
   Calendar,
   CalendarDays,
   Zap,
-  Megaphone,
   MapPin,
 } from "lucide-react";
 

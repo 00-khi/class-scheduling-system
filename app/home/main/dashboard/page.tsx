@@ -1,6 +1,5 @@
 import { InfoCardWrapper } from "./cards";
 import { Separator } from "@/ui/shadcn/separator";
-import { Card, CardDescription, CardHeader } from "@/ui/shadcn/card";
 import { MainSection } from "@/ui/components/main-section";
 
 export default function Dashboard() {

@@ -1,24 +1,11 @@
 "use client";
 
 import { DataTable } from "@/ui/components/data-table";
-import { useEffect, useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import {
-  EllipsisIcon,
   PlusIcon,
-  Loader2,
-  EditIcon,
-  TrashIcon,
 } from "lucide-react";
 import { Button } from "@/ui/shadcn/button";
-import { Checkbox } from "@/ui/shadcn/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/ui/shadcn/dropdown-menu";
 import { TAcademicQualification } from "@/lib/types";
 import {
   getAcademicQualifications,
@@ -30,7 +17,6 @@ import { toast } from "sonner";
 import { ConfirmDeleteDialog } from "@/ui/components/comfirm-delete-dialog";
 import { DataForm } from "@/ui/components/data-form";
 import { Badge } from "@/ui/shadcn/badge";
-import { RowActions } from "@/ui/components/row-actions";
 import {
   DataTableSection,
   DataTableSkeleton,

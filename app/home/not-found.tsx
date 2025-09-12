@@ -15,7 +15,7 @@ export default function NotFound() {
         <div className="w-16 h-1 rounded-full bg-muted"></div>
         <div>
           <h2 className="text-xl font-semibold tracking-tight">
-            Whoops! This page doesn't exist.
+            Whoops! This page doesn&apos;t exist.
           </h2>
           <p className="max-w-prose text-sm text-muted-foreground">
             It looks like the page you were trying to access has been moved or

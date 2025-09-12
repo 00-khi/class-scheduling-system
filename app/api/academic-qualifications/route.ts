@@ -1,5 +1,4 @@
 import { prisma } from "@/lib/prisma";
-import { TAcademicQualification } from "@/lib/types";
 import { NextResponse } from "next/server";
 import { createApiHandler } from "@/lib/api-handler";
 import { capitalizeEachWord, toUppercase } from "@/lib/utils";

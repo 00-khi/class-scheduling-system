@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
-import { TAcademicQualification } from "@/lib/types";
-import { TInstructor } from "@/lib/types";
 
 // Define a generic type for the entity
 type Entity = {

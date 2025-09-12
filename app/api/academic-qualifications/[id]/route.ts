@@ -3,7 +3,6 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { createApiHandler } from "@/lib/api-handler";
-import { TAcademicQualification } from "@/lib/types";
 import { capitalizeEachWord, toUppercase } from "@/lib/utils";
 
 // GET /api/academic-qualifications/[id]

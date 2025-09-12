@@ -29,15 +29,12 @@ import {
 } from "@/ui/components/data-table-components";
 import { EntityForm } from "@/ui/components/entity-form";
 import { FailedDeletionDialog } from "@/ui/components/failed-deletion-dialog";
-import { RowActions } from "@/ui/components/row-actions";
 import { Badge } from "@/ui/shadcn/badge";
 import { Button } from "@/ui/shadcn/button";
-import { Checkbox } from "@/ui/shadcn/checkbox";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/tooltip";
 import { InstructorStatus } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import { PlusIcon } from "lucide-react";
-import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useManageEntities } from "@/hooks/use-manage-entities";
 
