@@ -18,6 +18,10 @@ import { ConfirmDeleteDialog } from "@/ui/components/comfirm-delete-dialog";
 import { DataForm } from "@/ui/components/data-form";
 import { DataTable } from "@/ui/components/data-table";
 import {
+  getActionsColumn,
+  getSelectColumn,
+} from "@/ui/components/data-table-columns";
+import {
   DataTableSection,
   DataTableSkeleton,
   DataTableToolbar,
@@ -67,13 +71,19 @@ export default function InstructorsTable() {
   const fetchData = async () => {
     setLoading(true);
 
-    const [fetchedInstructors, fetchedAcademicQualifications] =
-      await Promise.all([getInstructors(), getAcademicQualifications()]);
+    try {
+      const [fetchedInstructors, fetchedAcademicQualifications] =
+        await Promise.all([getInstructors(), getAcademicQualifications()]);
 
-    setInstructors(fetchedInstructors);
-    setAcademicQualifications(fetchedAcademicQualifications);
+      setInstructors(fetchedInstructors);
+      setAcademicQualifications(fetchedAcademicQualifications);
 
-    setLoading(false);
+      setLoading(false);
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : "Unexpected error";
+      toast.error(msg);
+    } finally {
+    }
   };
 
   useEffect(() => {
@@ -112,28 +122,7 @@ export default function InstructorsTable() {
   };
 
   const columns: ColumnDef<TInstructorRow>[] = [
-    {
-      id: "select",
-      header: ({ table }) => (
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
-          }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
+    getSelectColumn<TInstructorRow>(),
     {
       header: "Name",
       accessorKey: "name",
@@ -167,25 +156,16 @@ export default function InstructorsTable() {
         );
       },
     },
-    {
-      id: "actions",
-      header: () => <span className="sr-only">Actions</span>,
-      cell: ({ row }) => (
-        <RowActions
-          item={row.original}
-          onEdit={(item) => {
-            setEditingInstructor(item);
-            setIsEditDialogOpen(true);
-          }}
-          onDelete={(item) => {
-            setInstructorToDelete(item);
-            setIsDeleteDialogOpen(true);
-          }}
-        />
-      ),
-      enableHiding: false,
-      enableSorting: false,
-    },
+    getActionsColumn<TInstructorRow>({
+      onEdit: (item) => {
+        setEditingInstructor(item);
+        setIsEditDialogOpen(true);
+      },
+      onDelete: (item) => {
+        setInstructorToDelete(item);
+        setIsDeleteDialogOpen(true);
+      },
+    }),
   ];
 
   const academicQualificationOptions = academicQualifications.map((aq) => ({

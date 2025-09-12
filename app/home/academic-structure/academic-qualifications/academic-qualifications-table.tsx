@@ -45,6 +45,10 @@ import {
   handleUpdateEntity,
 } from "@/lib/crud-handler";
 import { FailedDeletionDialog } from "@/ui/components/failed-deletion-dialog";
+import {
+  getActionsColumn,
+  getSelectColumn,
+} from "@/ui/components/data-table-columns";
 
 export default function AcademicQualificationsTable() {
   const ENTITY_NAME = "Academic Qualification";
@@ -76,13 +80,19 @@ export default function AcademicQualificationsTable() {
   const fetchData = async () => {
     setLoading(true);
 
-    const [fetchedAcademicQualifications] = await Promise.all([
-      getAcademicQualifications(),
-    ]);
+    try {
+      const [fetchedAcademicQualifications] = await Promise.all([
+        getAcademicQualifications(),
+      ]);
 
-    setAcademicQualifications(fetchedAcademicQualifications);
+      setAcademicQualifications(fetchedAcademicQualifications);
 
-    setLoading(false);
+      setLoading(false);
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : "Unexpected error";
+      toast.error(msg);
+    } finally {
+    }
   };
 
   useEffect(() => {
@@ -119,28 +129,7 @@ export default function AcademicQualificationsTable() {
   };
 
   const columns: ColumnDef<TAcademicQualificationRow>[] = [
-    {
-      id: "select",
-      header: ({ table }) => (
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
-          }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
+    getSelectColumn<TAcademicQualificationRow>(),
     {
       header: "Code",
       accessorKey: "code",
@@ -168,25 +157,16 @@ export default function AcademicQualificationsTable() {
         );
       },
     },
-    {
-      id: "actions",
-      header: () => <span className="sr-only">Actions</span>,
-      cell: ({ row }) => (
-        <RowActions
-          item={row.original}
-          onEdit={(item) => {
-            setEditingAcademicQualification(item);
-            setIsEditDialogOpen(true);
-          }}
-          onDelete={(item) => {
-            setAcademicQualificationToDelete(item);
-            setIsDeleteDialogOpen(true);
-          }}
-        />
-      ),
-      enableHiding: false,
-      enableSorting: false,
-    },
+    getActionsColumn<TAcademicQualificationRow>({
+      onEdit: (item) => {
+        setEditingAcademicQualification(item);
+        setIsEditDialogOpen(true);
+      },
+      onDelete: (item) => {
+        setAcademicQualificationToDelete(item);
+        setIsDeleteDialogOpen(true);
+      },
+    }),
   ];
 
   return (
