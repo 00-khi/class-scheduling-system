@@ -49,55 +49,53 @@ import {
   getActionsColumn,
   getSelectColumn,
 } from "@/ui/components/data-table-columns";
+import { useManageEntities } from "@/hooks/use-manage-entities";
 
 export default function AcademicQualificationsTable() {
   const ENTITY_NAME = "Academic Qualification";
 
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [editingAcademicQualification, setEditingAcademicQualification] =
-    useState<TAcademicQualification | null>(null);
+  const {
+    data,
 
-  const [loading, setLoading] = useState(true);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [isDeletingSelected, setIsDeletingSelected] = useState(false);
+    loading,
 
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [academicQualificationToDelete, setAcademicQualificationToDelete] =
-    useState<TAcademicQualification | null>(null);
+    isSubmitting,
+    setIsSubmitting,
 
-  const [failedDialogOpen, setFailedDialogOpen] = useState(false);
-  const [failedReasons, setFailedReasons] = useState<string[]>([]);
-  const [failedCount, setFailedCount] = useState(0);
+    isDeleting,
+    setIsDeleting,
 
-  // DATA STORE
-  const [academicQualifications, setAcademicQualifications] = useState<
-    TAcademicQualification[]
-  >([]);
+    isDeletingSelected,
+    setIsDeletingSelected,
 
-  // FETCH DATA
-  const fetchData = async () => {
-    setLoading(true);
+    isAddDialogOpen,
+    setIsAddDialogOpen,
 
-    try {
-      const [fetchedAcademicQualifications] = await Promise.all([
-        getAcademicQualifications(),
-      ]);
+    isEditDialogOpen,
+    setIsEditDialogOpen,
 
-      setAcademicQualifications(fetchedAcademicQualifications);
+    editingItem,
+    setEditingItem,
 
-      setLoading(false);
-    } catch (error) {
-      const msg = error instanceof Error ? error.message : "Unexpected error";
-      toast.error(msg);
-    } finally {
-    }
-  };
+    isDeleteDialogOpen,
+    setIsDeleteDialogOpen,
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+    itemToDelete,
+    setItemToDelete,
+
+    failedDialogOpen,
+    setFailedDialogOpen,
+
+    failedReasons,
+    setFailedReasons,
+
+    failedCount,
+    setFailedCount,
+
+    fetchData,
+  } = useManageEntities<TAcademicQualification>({
+    apiService: { fetch: getAcademicQualifications },
+  });
 
   // Generic validator for Academic Qualification
   const validateAcademicQualification = (
@@ -159,11 +157,11 @@ export default function AcademicQualificationsTable() {
     },
     getActionsColumn<TAcademicQualificationRow>({
       onEdit: (item) => {
-        setEditingAcademicQualification(item);
+        setEditingItem(item);
         setIsEditDialogOpen(true);
       },
       onDelete: (item) => {
-        setAcademicQualificationToDelete(item);
+        setItemToDelete(item);
         setIsDeleteDialogOpen(true);
       },
     }),
@@ -174,7 +172,7 @@ export default function AcademicQualificationsTable() {
       {loading ? (
         <DataTableSkeleton columnCount={4} rowCount={5} />
       ) : (
-        <DataTable data={academicQualifications} columns={columns}>
+        <DataTable data={data} columns={columns}>
           {/* Toolbar */}
           <DataTableToolbar>
             <DataTableToolbarGroup>
@@ -246,11 +244,11 @@ export default function AcademicQualificationsTable() {
 
       {/* Edit Form */}
       <EntityForm
-        item={editingAcademicQualification || undefined}
+        item={editingItem || undefined}
         isOpen={isEditDialogOpen}
         onClose={() => {
           setIsEditDialogOpen(false);
-          setEditingAcademicQualification(null);
+          setEditingItem(null);
         }}
         onSubmit={(data) => {
           return handleUpdateEntity(
@@ -261,7 +259,7 @@ export default function AcademicQualificationsTable() {
             setIsSubmitting,
             () => {
               setIsEditDialogOpen(false);
-              setEditingAcademicQualification(null);
+              setEditingItem(null);
             },
             validateAcademicQualification
           );
@@ -286,21 +284,21 @@ export default function AcademicQualificationsTable() {
         isOpen={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
         onConfirm={() => {
-          if (academicQualificationToDelete?.id) {
+          if (itemToDelete?.id) {
             return handleDeleteEntity(
               ENTITY_NAME,
-              academicQualificationToDelete.id,
+              itemToDelete.id,
               deleteAcademicQualification,
               fetchData,
               setIsDeleting,
               () => {
-                setAcademicQualificationToDelete(null);
+                setItemToDelete(null);
                 setIsDeleteDialogOpen(false);
               }
             );
           }
         }}
-        itemName={academicQualificationToDelete?.name}
+        itemName={itemToDelete?.name}
         isDeleting={isDeleting}
       />
 

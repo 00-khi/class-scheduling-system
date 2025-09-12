@@ -39,56 +39,60 @@ import { ColumnDef } from "@tanstack/react-table";
 import { PlusIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { useManageEntities } from "@/hooks/use-manage-entities";
 
 export default function InstructorsTable() {
   const ENTITY_NAME = "Instructor";
 
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [editingInstructor, setEditingInstructor] =
-    useState<TInstructor | null>(null);
+  const {
+    data,
+    relatedData,
 
-  const [loading, setLoading] = useState(true);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [isDeletingSelected, setIsDeletingSelected] = useState(false);
+    loading,
 
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [instructorToDelete, setInstructorToDelete] =
-    useState<TInstructor | null>(null);
+    isSubmitting,
+    setIsSubmitting,
 
-  const [failedDialogOpen, setFailedDialogOpen] = useState(false);
-  const [failedReasons, setFailedReasons] = useState<string[]>([]);
-  const [failedCount, setFailedCount] = useState(0);
+    isDeleting,
+    setIsDeleting,
 
-  // DATA STORE
-  const [instructors, setInstructors] = useState<TInstructor[]>([]);
-  const [academicQualifications, setAcademicQualifications] = useState<
-    TAcademicQualification[]
-  >([]);
+    isDeletingSelected,
+    setIsDeletingSelected,
 
-  // FETCH DATA
-  const fetchData = async () => {
-    setLoading(true);
+    isAddDialogOpen,
+    setIsAddDialogOpen,
 
-    try {
-      const [fetchedInstructors, fetchedAcademicQualifications] =
-        await Promise.all([getInstructors(), getAcademicQualifications()]);
+    isEditDialogOpen,
+    setIsEditDialogOpen,
 
-      setInstructors(fetchedInstructors);
-      setAcademicQualifications(fetchedAcademicQualifications);
+    editingItem,
+    setEditingItem,
 
-      setLoading(false);
-    } catch (error) {
-      const msg = error instanceof Error ? error.message : "Unexpected error";
-      toast.error(msg);
-    } finally {
-    }
-  };
+    isDeleteDialogOpen,
+    setIsDeleteDialogOpen,
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+    itemToDelete,
+    setItemToDelete,
+
+    failedDialogOpen,
+    setFailedDialogOpen,
+
+    failedReasons,
+    setFailedReasons,
+
+    failedCount,
+    setFailedCount,
+
+    fetchData,
+  } = useManageEntities<TInstructor>({
+    apiService: { fetch: getInstructors },
+    relatedApiServices: [
+      { key: "academicQualifications", fetch: getAcademicQualifications },
+      // Add more related data services here if needed
+    ],
+  });
+
+  const academicQualifications = relatedData.academicQualifications || [];
 
   const validateInstructor = (
     data: Partial<TInstructor>,
@@ -158,11 +162,11 @@ export default function InstructorsTable() {
     },
     getActionsColumn<TInstructorRow>({
       onEdit: (item) => {
-        setEditingInstructor(item);
+        setEditingItem(item);
         setIsEditDialogOpen(true);
       },
       onDelete: (item) => {
-        setInstructorToDelete(item);
+        setItemToDelete(item);
         setIsDeleteDialogOpen(true);
       },
     }),
@@ -199,7 +203,7 @@ export default function InstructorsTable() {
       {loading ? (
         <DataTableSkeleton columnCount={4} rowCount={5} />
       ) : (
-        <DataTable data={instructors} columns={columns}>
+        <DataTable data={data} columns={columns}>
           <DataTableToolbar>
             <DataTableToolbarGroup>
               <DataTable.Search
@@ -277,11 +281,11 @@ export default function InstructorsTable() {
 
       {/* Edit Form */}
       <EntityForm
-        item={editingInstructor || undefined}
+        item={editingItem || undefined}
         isOpen={isEditDialogOpen}
         onClose={() => {
           setIsEditDialogOpen(false);
-          setEditingInstructor(null);
+          setEditingItem(null);
         }}
         onSubmit={(data) => {
           return handleUpdateEntity(
@@ -292,7 +296,7 @@ export default function InstructorsTable() {
             setIsSubmitting,
             () => {
               setIsEditDialogOpen(false);
-              setEditingInstructor(null);
+              setEditingItem(null);
             },
             validateInstructor
           );
@@ -324,21 +328,21 @@ export default function InstructorsTable() {
         isOpen={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
         onConfirm={() => {
-          if (instructorToDelete?.id) {
+          if (itemToDelete?.id) {
             return handleDeleteEntity(
               ENTITY_NAME,
-              instructorToDelete.id,
+              itemToDelete.id,
               deleteInstructor,
               fetchData,
               setIsDeleting,
               () => {
-                setInstructorToDelete(null);
+                setItemToDelete(null);
                 setIsDeleteDialogOpen(false);
               }
             );
           }
         }}
-        itemName={instructorToDelete?.name}
+        itemName={itemToDelete?.name}
         isDeleting={isDeleting}
       />
 
