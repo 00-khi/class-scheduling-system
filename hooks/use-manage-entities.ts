@@ -4,10 +4,9 @@ import { TAcademicQualification } from "@/lib/types";
 import { TInstructor } from "@/lib/types";
 
 // Define a generic type for the entity
-// type Entity = {
-//   id: number;
-//   name: string;
-// };
+type Entity = {
+  id: number;
+};
 
 interface ApiService<T> {
   fetch: () => Promise<T[]>;
@@ -25,7 +24,7 @@ interface UseManageEntitiesProps<T> {
   }[]; // For fetching related datas
 }
 
-export function useManageEntities<T>({
+export function useManageEntities<T extends Entity>({
   apiService,
   relatedApiServices = [], // Default to an empty array,
 }: UseManageEntitiesProps<T>) {
