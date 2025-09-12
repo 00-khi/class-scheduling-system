@@ -5,6 +5,7 @@ import { SidebarIcon } from "lucide-react";
 import { Button } from "@/ui/shadcn/button";
 import { Separator } from "@/ui/shadcn/separator";
 import { useSidebar } from "@/ui/shadcn/sidebar";
+import Image from "next/image";
 
 export function SiteHeader() {
   const { toggleSidebar } = useSidebar();
@@ -22,8 +23,17 @@ export function SiteHeader() {
         </Button>
         <Separator orientation="vertical" className="mr-2 h-4" />
         {/* LOGO */}
-        {/* <Image src={STI_LOGO} alt="Logo of STI College" height={20} className="hidden sm:block"/> */}
-        <h1 className="text-base font-medium">Automated Class Scheduling System</h1>
+        <div className="relative h-full w-15 hidden sm:block">
+          <Image
+            src="/images/sti_logo.png"
+            alt="STI"
+            fill
+            className="object-contain"
+          />
+        </div>
+        <h1 className="text-base font-medium">
+          Automated Class Scheduling System
+        </h1>
       </div>
     </header>
   );
