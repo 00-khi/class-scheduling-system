@@ -59,7 +59,17 @@ function DataFormBase<T>({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={(open) => {
+        if (isLoading) {
+          return; // Ignore the close event if loading
+        }
+        if (!open) {
+          onClose();
+        }
+      }}
+    >
       <DialogContent className="max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
@@ -319,13 +329,35 @@ function DataFormArrayInput({
 // ------------------------------------
 // Section (container only, no injected props)
 // ------------------------------------
-interface SectionProps {
+interface DivProps {
   children: ReactNode;
   className?: string;
+  formData?: any;
+  setFormData?: (fn: any) => void;
+  isLoading?: boolean;
 }
 
-function DataFormDiv({ children, className }: SectionProps) {
-  return <div className={className}>{children}</div>;
+function DataFormDiv({
+  children,
+  className,
+  formData,
+  setFormData,
+  isLoading,
+}: DivProps) {
+  return (
+    <div className={className}>
+      {children &&
+        React.Children.map(children, (child) =>
+          React.isValidElement(child)
+            ? React.cloneElement(child as React.ReactElement<any>, {
+                formData,
+                setFormData,
+                isLoading,
+              })
+            : child
+        )}
+    </div>
+  );
 }
 
 // ------------------------------------
