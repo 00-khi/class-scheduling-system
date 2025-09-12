@@ -44,55 +44,15 @@ import { useManageEntities } from "@/hooks/use-manage-entities";
 export default function InstructorsTable() {
   const ENTITY_NAME = "Instructor";
 
-  const {
-    data,
-    relatedData,
-
-    loading,
-
-    isSubmitting,
-    setIsSubmitting,
-
-    isDeleting,
-    setIsDeleting,
-
-    isDeletingSelected,
-    setIsDeletingSelected,
-
-    isAddDialogOpen,
-    setIsAddDialogOpen,
-
-    isEditDialogOpen,
-    setIsEditDialogOpen,
-
-    editingItem,
-    setEditingItem,
-
-    isDeleteDialogOpen,
-    setIsDeleteDialogOpen,
-
-    itemToDelete,
-    setItemToDelete,
-
-    failedDialogOpen,
-    setFailedDialogOpen,
-
-    failedReasons,
-    setFailedReasons,
-
-    failedCount,
-    setFailedCount,
-
-    fetchData,
-  } = useManageEntities<TInstructor>({
+  const entityManagement = useManageEntities<TInstructor>({
     apiService: { fetch: getInstructors },
     relatedApiServices: [
       { key: "academicQualifications", fetch: getAcademicQualifications },
-      // Add more related data services here if needed
     ],
   });
 
-  const academicQualifications = relatedData.academicQualifications || [];
+  const academicQualifications =
+    entityManagement.relatedData.academicQualifications || [];
 
   const validateInstructor = (
     data: Partial<TInstructor>,
@@ -144,6 +104,7 @@ export default function InstructorsTable() {
     },
     {
       header: "Academic Qualification",
+      id: "academicQualification",
       accessorFn: (row) => row.academicQualification?.name || "N/A",
       cell: ({ row }) => {
         return (
@@ -162,12 +123,12 @@ export default function InstructorsTable() {
     },
     getActionsColumn<TInstructorRow>({
       onEdit: (item) => {
-        setEditingItem(item);
-        setIsEditDialogOpen(true);
+        entityManagement.setEditingItem(item);
+        entityManagement.setIsEditDialogOpen(true);
       },
       onDelete: (item) => {
-        setItemToDelete(item);
-        setIsDeleteDialogOpen(true);
+        entityManagement.setItemToDelete(item);
+        entityManagement.setIsDeleteDialogOpen(true);
       },
     }),
   ];
@@ -200,16 +161,21 @@ export default function InstructorsTable() {
 
   return (
     <DataTableSection>
-      {loading ? (
+      {entityManagement.loading ? (
         <DataTableSkeleton columnCount={4} rowCount={5} />
       ) : (
-        <DataTable data={data} columns={columns}>
+        <DataTable data={entityManagement.data} columns={columns}>
           <DataTableToolbar>
             <DataTableToolbarGroup>
               <DataTable.Search
                 column="name"
                 placeholder="Search"
                 className="max-w-sm"
+              />
+              <DataTable.Filter column="status" placeholder="All statuses" />
+              <DataTable.Filter
+                column="academicQualification"
+                placeholder="All academic qualifications"
               />
               <DataTable.ClearFilters />
               <DataTable.ViewOptions />
@@ -221,16 +187,16 @@ export default function InstructorsTable() {
                     ENTITY_NAME,
                     ids,
                     deleteInstructor,
-                    fetchData,
-                    setIsDeletingSelected,
-                    setFailedReasons,
-                    setFailedCount,
-                    setFailedDialogOpen
+                    entityManagement.fetchData,
+                    entityManagement.setIsDeletingSelected,
+                    entityManagement.setFailedReasons,
+                    entityManagement.setFailedCount,
+                    entityManagement.setFailedDialogOpen
                   );
                 }}
-                isDeletingSelected={isDeletingSelected}
+                isDeletingSelected={entityManagement.isDeletingSelected}
               />
-              <Button onClick={() => setIsAddDialogOpen(true)}>
+              <Button onClick={() => entityManagement.setIsAddDialogOpen(true)}>
                 <PlusIcon className="-ms-1 opacity-60" size={16} />
                 Add {ENTITY_NAME}
               </Button>
@@ -244,20 +210,20 @@ export default function InstructorsTable() {
 
       {/* Add Form */}
       <EntityForm<Omit<TInstructor, "id">>
-        isOpen={isAddDialogOpen}
-        onClose={() => setIsAddDialogOpen(false)}
+        isOpen={entityManagement.isAddDialogOpen}
+        onClose={() => entityManagement.setIsAddDialogOpen(false)}
         onSubmit={(data) => {
           return handleAddEntity(
             ENTITY_NAME,
             data,
             addInstructor,
-            fetchData,
-            setIsSubmitting,
-            setIsAddDialogOpen,
+            entityManagement.fetchData,
+            entityManagement.setIsSubmitting,
+            entityManagement.setIsAddDialogOpen,
             validateInstructor
           );
         }}
-        isLoading={isSubmitting}
+        isLoading={entityManagement.isSubmitting}
         title={`Add ${ENTITY_NAME}`}
       >
         <DataForm.Input
@@ -281,76 +247,78 @@ export default function InstructorsTable() {
 
       {/* Edit Form */}
       <EntityForm
-        item={editingItem || undefined}
-        isOpen={isEditDialogOpen}
+        item={entityManagement.editingItem || undefined}
+        isOpen={entityManagement.isEditDialogOpen}
         onClose={() => {
-          setIsEditDialogOpen(false);
-          setEditingItem(null);
+          entityManagement.setIsEditDialogOpen(false);
+          entityManagement.setEditingItem(null);
         }}
         onSubmit={(data) => {
           return handleUpdateEntity(
             ENTITY_NAME,
             data,
             updateInstructor,
-            fetchData,
-            setIsSubmitting,
+            entityManagement.fetchData,
+            entityManagement.setIsSubmitting,
             () => {
-              setIsEditDialogOpen(false);
-              setEditingItem(null);
+              entityManagement.setIsEditDialogOpen(false);
+              entityManagement.setEditingItem(null);
             },
             validateInstructor
           );
         }}
-        isLoading={isSubmitting}
+        isLoading={entityManagement.isSubmitting}
         title={`Edit ${ENTITY_NAME}`}
       >
-        <DataForm.Input
-          name="name"
-          label={`${ENTITY_NAME} Name`}
-          placeholder="e.g., Joe Smith"
-        />
-        <DataForm.Select
-          name="status"
-          label="Status"
-          placeholder="Select status"
-          options={statusOptions}
-        />
-        <DataForm.Select
-          name="academicQualificationId"
-          label="Academic Qualification"
-          placeholder="Select qualification"
-          options={academicQualificationOptions}
-        />
+        <DataForm.Div>
+          <DataForm.Input
+            name="name"
+            label={`${ENTITY_NAME} Name`}
+            placeholder="e.g., Joe Smith"
+          />
+          <DataForm.Select
+            name="status"
+            label="Status"
+            placeholder="Select status"
+            options={statusOptions}
+          />
+          <DataForm.Select
+            name="academicQualificationId"
+            label="Academic Qualification"
+            placeholder="Select qualification"
+            options={academicQualificationOptions}
+          />
+        </DataForm.Div>
       </EntityForm>
 
       {/* Delete Dialog */}
       <ConfirmDeleteDialog
-        isOpen={isDeleteDialogOpen}
-        onClose={() => setIsDeleteDialogOpen(false)}
+        isOpen={entityManagement.isDeleteDialogOpen}
+        onClose={() => entityManagement.setIsDeleteDialogOpen(false)}
         onConfirm={() => {
-          if (itemToDelete?.id) {
+          if (entityManagement.itemToDelete?.id) {
             return handleDeleteEntity(
               ENTITY_NAME,
-              itemToDelete.id,
+              entityManagement.itemToDelete.id,
               deleteInstructor,
-              fetchData,
-              setIsDeleting,
+              entityManagement.fetchData,
+              entityManagement.setIsDeleting,
               () => {
-                setItemToDelete(null);
-                setIsDeleteDialogOpen(false);
+                entityManagement.setItemToDelete(null);
+                entityManagement.setIsDeleteDialogOpen(false);
               }
             );
           }
         }}
-        itemName={itemToDelete?.name}
-        isDeleting={isDeleting}
+        itemName={entityManagement.itemToDelete?.name}
+        isDeleting={entityManagement.isDeleting}
       />
 
       <FailedDeletionDialog
-        open={failedDialogOpen}
-        onClose={() => setFailedDialogOpen(false)}
-        failedCount={failedCount}
-        failedReasons={failedReasons}
+        open={entityManagement.failedDialogOpen}
+        onClose={() => entityManagement.setFailedDialogOpen(false)}
+        failedCount={entityManagement.failedCount}
+        failedReasons={entityManagement.failedReasons}
       />
     </DataTableSection>
   );
