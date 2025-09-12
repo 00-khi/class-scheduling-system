@@ -2,19 +2,19 @@ import { toast } from "sonner";
 
 export async function handleAddEntity<T>(
   entityName: string,
-  data: Omit<T, "id">,
+  data: Partial<T>,
   addFn: (data: Omit<T, "id">) => Promise<T>,
   fetchData: () => void,
   setIsSubmitting: (loading: boolean) => void,
   setIsDialogOpen: (open: boolean) => void,
-  validate: (data: Omit<T, "id">, requiredId: boolean) => boolean
+  validate: (data: Partial<T>, requiredId: boolean) => boolean
 ) {
   if (!validate(data, false)) return false;
 
   setIsSubmitting(true);
 
   try {
-    await addFn(data);
+    await addFn(data as Omit<T, "id">);
 
     toast.success(`${entityName} added successfully`);
 
