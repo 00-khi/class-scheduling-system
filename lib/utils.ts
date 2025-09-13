@@ -14,6 +14,12 @@ export function capitalizeEachWord(str: string): string {
   );
 }
 
+export function capitalizeFirstLetter(str: string): string {
+  if (!str) return "";
+  const cleaned = removeExtraSpaces(str.toLowerCase());
+  return cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
+}
+
 export function removeExtraSpaces(str: string): string {
   if (!str) return "";
   return str.trim().replace(/\s+/g, " ");
