@@ -15,11 +15,12 @@ export type TInstructor = {
   status: InstructorStatus;
 };
 
-// export type TAcademicLevel = {
-//   id: string;
-//   code: string; // e.g., "JHS", "SHS", "TER"
-//   name: string; // e.g., "Junior High School", "Senior High School", "Tertiary"
-// };
+export type TAcademicLevel = {
+  id: string;
+  code: string; // e.g., "JHS", "SHS", "TER"
+  name: string; // e.g., "Junior High School", "Senior High School", "Tertiary"
+  years: number[]; // e.g., [7, 8, 9, 10]
+};
 
 // export type TRoom = {
 //   id?: string;
