@@ -4,8 +4,6 @@ export type TAcademicQualification = {
   id: number;
   code: string; // e.g., "IT", "HM"
   name: string; // e.g., "Information Technology", "Hospitality Management"
-  createdAt: Date;
-  updatedAt: Date;
 };
 
 export type TInstructor = {
