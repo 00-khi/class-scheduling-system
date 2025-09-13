@@ -65,7 +65,7 @@ export default function InstructorsTable() {
     }
 
     if (!data.academicQualificationId) {
-      toast.error(`Academic Qualifications is required.`);
+      toast.error(`Academic Qualification is required.`);
       return false;
     }
 
