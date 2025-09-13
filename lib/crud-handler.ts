@@ -2,19 +2,19 @@ import { toast } from "sonner";
 
 export async function handleAddEntity<T>(
   entityName: string,
-  data: Partial<T>,
-  addFn: (data: Omit<T, "id">) => Promise<T>,
+  data: T,
+  addFn: (data: T) => Promise<T>,
   fetchData: () => void,
   setIsSubmitting: (loading: boolean) => void,
   setIsDialogOpen: (open: boolean) => void,
-  validate: (data: Partial<T>, requiredId: boolean) => boolean
+  validate: (data: T, requiredId: boolean) => boolean
 ) {
   if (!validate(data, false)) return false;
 
   setIsSubmitting(true);
 
   try {
-    await addFn(data as Omit<T, "id">);
+    await addFn(data);
 
     toast.success(`${entityName} added successfully`);
 
@@ -36,7 +36,7 @@ export async function handleAddEntity<T>(
 export async function handleUpdateEntity<T extends { id: number }>(
   entityName: string,
   data: T,
-  updateFn: (id: number, updates: Partial<Omit<T, "id">>) => Promise<T>,
+  updateFn: (id: number, updates: T) => Promise<T>,
   fetchData: () => void,
   setIsSubmitting: (loading: boolean) => void,
   closeEdit: () => void,
@@ -47,9 +47,9 @@ export async function handleUpdateEntity<T extends { id: number }>(
   setIsSubmitting(true);
 
   try {
-    const { id, ...rest } = data;
+    const { id } = data;
 
-    await updateFn(id, rest);
+    await updateFn(id, data);
 
     toast.success(`${entityName} updated successfully`);
 
