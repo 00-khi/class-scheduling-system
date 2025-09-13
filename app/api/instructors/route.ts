@@ -26,11 +26,7 @@ export const POST = createApiHandler(async (request) => {
   const academicQualificationId = parseInt(rawData.academicQualificationId);
   const status = rawData.status as InstructorStatus;
 
-  const data = { name, academicQualificationId, status };
-
   const validStatuses = Object.values(InstructorStatus);
-
-  console.log(data);
 
   if (isNaN(academicQualificationId)) {
     return NextResponse.json(
@@ -56,6 +52,8 @@ export const POST = createApiHandler(async (request) => {
       { status: 400 }
     );
   }
+
+  const data = { name, academicQualificationId, status };
 
   const newInstructor = await prisma.instructor.create({
     data,

@@ -52,15 +52,14 @@ export const PUT = createApiHandler(async (request, context) => {
   const code = toUppercase(rawData.code);
   const name = capitalizeEachWord(rawData.name);
 
-  const data = { code, name };
-  console.log(data);
-
   if (!code || !name) {
     return NextResponse.json(
       { error: "Missing required fields." },
       { status: 400 }
     );
   }
+
+  const data = { code, name };
 
   const updatedAcademicQualification =
     await prisma.academicQualification.update({
@@ -87,5 +86,7 @@ export const DELETE = createApiHandler(async (request, context) => {
     where: { id: numericId },
   });
 
-  return NextResponse.json({ message: "Academic qualification deleted successfully" });
+  return NextResponse.json({
+    message: "Academic qualification deleted successfully",
+  });
 });

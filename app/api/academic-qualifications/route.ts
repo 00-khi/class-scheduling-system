@@ -27,14 +27,14 @@ export const POST = createApiHandler(async (request) => {
   const code = toUppercase(rawData.code);
   const name = capitalizeEachWord(rawData.name);
 
-  const data = { code, name };
-
   if (!code || !name) {
     return NextResponse.json(
       { error: "Missing required fields." },
       { status: 400 }
     );
   }
+
+  const data = { code, name };
 
   const newAcademicQualification = await prisma.academicQualification.create({
     data,
