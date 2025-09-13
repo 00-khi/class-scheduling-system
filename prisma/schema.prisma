@@ -59,7 +59,7 @@ model AcademicLevel {
   name String @unique
   yearList Json @default("[]")
 
-  startAt Int
+  yearStart Int
   numberOfYears Int
 
   createdAt DateTime @default(now())
