@@ -80,6 +80,13 @@ export const PUT = createApiHandler(async (request, context) => {
       );
     }
 
+    if (yearStart < 0 || numberOfYears < 0) {
+      return NextResponse.json(
+        { error: "Starting year and number of years must not be negative." },
+        { status: 400 }
+      );
+    }
+
     data.yearStart = yearStart;
     data.numberOfYears = numberOfYears;
 

@@ -6,6 +6,13 @@ import { NextResponse } from "next/server";
 
 export const GET = createApiHandler(async () => {
   const academicLevels = await prisma.academicLevel.findMany({
+    include: {
+      _count: {
+        select: {
+          courses: true,
+        },
+      },
+    },
     orderBy: { updatedAt: "desc" },
   });
 
@@ -46,6 +53,13 @@ export const POST = createApiHandler(async (request) => {
   if (isNaN(numberOfYears)) {
     return NextResponse.json(
       { error: "Invalid number of years." },
+      { status: 400 }
+    );
+  }
+
+  if (yearStart < 0 || numberOfYears < 0) {
+    return NextResponse.json(
+      { error: "Starting year and number of years must not be negative." },
       { status: 400 }
     );
   }
