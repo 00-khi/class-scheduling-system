@@ -74,8 +74,14 @@ export default function AcademicLevelsTable() {
     return true;
   };
 
-  const columns: ColumnDef<AcademicLevel>[] = [
-    getSelectColumn<AcademicLevel>(),
+  type AcademicLevelRow = AcademicLevel & {
+    _count?: {
+      courses: number;
+    };
+  };
+
+  const columns: ColumnDef<AcademicLevelRow>[] = [
+    getSelectColumn<AcademicLevelRow>(),
     {
       header: "Code",
       accessorKey: "code",
@@ -111,7 +117,17 @@ export default function AcademicLevelsTable() {
         );
       },
     },
-    getActionsColumn<AcademicLevel>({
+    {
+      id: "courses",
+      header: "Courses",
+      accessorFn: (row) => row._count?.courses || 0,
+      cell: ({ row }) => {
+        return (
+          <Badge variant="secondary">{row.original._count?.courses || 0}</Badge>
+        );
+      },
+    },
+    getActionsColumn<AcademicLevelRow>({
       onEdit: (item) => {
         entityManagement.setEditingItem(item);
         entityManagement.setIsEditDialogOpen(true);
