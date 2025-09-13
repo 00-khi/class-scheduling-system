@@ -85,5 +85,16 @@ export function createApiClient<T>(baseUrl: string) {
 
       return true;
     },
+
+    async count(): Promise<number> {
+      const response = await fetch(`${baseUrl}/count`);
+      const data = await response.json();
+
+      if (!response.ok) {
+        const msg = data.error ?? `Service Error: Failed to fetch count.`;
+        throw new Error(msg);
+      }
+      return data.count;
+    },
   };
 }
