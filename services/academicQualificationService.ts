@@ -35,15 +35,12 @@ export async function getAcademicQualificationById(
       `Service Error: Failed to fetch academic qualification with ID ${id}.`;
     throw new Error(msg);
   }
-  
+
   return data;
 }
 
 export async function addAcademicQualification(
-  academicQualification: Omit<
-    TAcademicQualification,
-    "id" | "createdAt" | "updatedAt"
-  >
+  academicQualification: Omit<TAcademicQualification, "id">
 ): Promise<TAcademicQualification> {
   const response = await fetch(API_BASE_URL, {
     method: "POST",
@@ -66,9 +63,7 @@ export async function addAcademicQualification(
 
 export async function updateAcademicQualification(
   id: number,
-  updates: Partial<
-    Omit<TAcademicQualification, "id" | "createdAt" | "updatedAt">
-  >
+  updates: Partial<Omit<TAcademicQualification, "id">>
 ): Promise<TAcademicQualification> {
   const response = await fetch(`${API_BASE_URL}/${id}`, {
     method: "PUT",

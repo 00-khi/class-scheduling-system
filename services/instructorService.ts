@@ -36,7 +36,7 @@ export async function getInstructorById(
 }
 
 export async function addInstructor(
-  instructor: Omit<TInstructor, "id" | "createdAt" | "updatedAt">
+  instructor: Omit<TInstructor, "id">
 ): Promise<TInstructor> {
   const response = await fetch(API_BASE_URL, {
     method: "POST",
@@ -58,7 +58,7 @@ export async function addInstructor(
 
 export async function updateInstructor(
   id: number,
-  instructor: Partial<Omit<TInstructor, "id" | "createdAt" | "updatedAt">>
+  instructor: Partial<Omit<TInstructor, "id">>
 ): Promise<TInstructor> {
   const response = await fetch(`${API_BASE_URL}/${id}`, {
     method: "PUT",
