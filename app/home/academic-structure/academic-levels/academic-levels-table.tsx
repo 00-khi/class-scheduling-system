@@ -98,11 +98,15 @@ export default function AcademicLevelsTable() {
         const years: number[] = row.getValue("yearList");
         return (
           <div className="flex flex-wrap gap-1">
-            {years.map((year, i) => (
-              <Badge key={i} variant="secondary">
-                {year}
-              </Badge>
-            ))}
+            {years.length > 0 ? (
+              years.map((year, i) => (
+                <Badge key={i} variant="secondary">
+                  {year}
+                </Badge>
+              ))
+            ) : (
+              <span className="text-sm text-muted-foreground">None</span>
+            )}
           </div>
         );
       },
