@@ -57,7 +57,10 @@ model AcademicLevel {
   id Int @id @default(autoincrement())
   code String @unique
   name String @unique
-  years Json @default("[]")
+  yearList Json @default("[]")
+
+  startAt Int
+  numberOfYears Int
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
