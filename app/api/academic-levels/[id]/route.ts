@@ -89,11 +89,11 @@ export const PUT = createApiHandler(async (request, context) => {
     data.name = capitalizeEachWord(rawData.name);
   }
 
-  if (rawData.startAt && rawData.numberOfYears) {
-    const startAt = parseInt(rawData.startAt);
+  if (rawData.yearStart && rawData.numberOfYears) {
+    const yearStart = parseInt(rawData.yearStart);
     const numberOfYears = parseInt(rawData.numberOfYears);
 
-    if (isNaN(startAt)) {
+    if (isNaN(yearStart)) {
       return NextResponse.json(
         { error: "Invalid starting number." },
         { status: 400 }
@@ -107,12 +107,12 @@ export const PUT = createApiHandler(async (request, context) => {
       );
     }
 
-    data.startAt = startAt;
+    data.yearStart = yearStart;
     data.numberOfYears = numberOfYears;
 
     data.yearList = Array.from(
       { length: numberOfYears },
-      (_, i) => startAt + i
+      (_, i) => yearStart + i
     );
   }
 

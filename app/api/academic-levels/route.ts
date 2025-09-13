@@ -64,17 +64,17 @@ export const POST = createApiHandler(async (request) => {
 
   const code = toUppercase(rawData.code);
   const name = capitalizeEachWord(rawData.name);
-  const startAt = parseInt(rawData.startAt);
+  const yearStart = parseInt(rawData.yearStart);
   const numberOfYears = parseInt(rawData.numberOfYears);
 
-  if (!code || !name || !startAt || !numberOfYears) {
+  if (!code || !name || !yearStart || !numberOfYears) {
     return NextResponse.json(
       { error: "Missing required fields." },
       { status: 400 }
     );
   }
 
-  if (isNaN(startAt)) {
+  if (isNaN(yearStart)) {
     return NextResponse.json(
       { error: "Invalid starting number." },
       { status: 400 }
@@ -88,13 +88,13 @@ export const POST = createApiHandler(async (request) => {
     );
   }
 
-  const yearList = Array.from({ length: numberOfYears }, (_, i) => startAt + i);
+  const yearList = Array.from({ length: numberOfYears }, (_, i) => yearStart + i);
 
   const data = {
     code,
     name,
     yearList,
-    startAt,
+    yearStart,
     numberOfYears,
   };
 
