@@ -28,16 +28,16 @@ export const POST = createApiHandler(async (request) => {
 
   const validStatuses = Object.values(InstructorStatus);
 
-  if (isNaN(academicQualificationId)) {
+  if (!name || !academicQualificationId || !status) {
     return NextResponse.json(
-      { error: "Invalid academic qualification ID." },
+      { error: "Missing required fields." },
       { status: 400 }
     );
   }
 
-  if (!name || !academicQualificationId || !status) {
+  if (isNaN(academicQualificationId)) {
     return NextResponse.json(
-      { error: "Missing required fields." },
+      { error: "Invalid academic qualification ID." },
       { status: 400 }
     );
   }
