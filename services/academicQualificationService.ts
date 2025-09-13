@@ -1,9 +1,9 @@
-import { TAcademicQualification } from "@/lib/types";
+import { AcademicQualification } from "@prisma/client";
 
 const API_BASE_URL = "/api/academic-qualifications";
 
 export async function getAcademicQualifications(): Promise<
-  TAcademicQualification[]
+  AcademicQualification[]
 > {
   const response = await fetch(API_BASE_URL);
 
@@ -20,7 +20,7 @@ export async function getAcademicQualifications(): Promise<
 
 export async function getAcademicQualificationById(
   id: number
-): Promise<TAcademicQualification> {
+): Promise<AcademicQualification> {
   const response = await fetch(`${API_BASE_URL}/${id}`);
 
   if (response.status === 404) {
@@ -40,8 +40,8 @@ export async function getAcademicQualificationById(
 }
 
 export async function addAcademicQualification(
-  academicQualification: Omit<TAcademicQualification, "id">
-): Promise<TAcademicQualification> {
+  academicQualification: AcademicQualification
+): Promise<AcademicQualification> {
   const response = await fetch(API_BASE_URL, {
     method: "POST",
     headers: {
@@ -63,8 +63,8 @@ export async function addAcademicQualification(
 
 export async function updateAcademicQualification(
   id: number,
-  updates: Partial<Omit<TAcademicQualification, "id">>
-): Promise<TAcademicQualification> {
+  updates: AcademicQualification
+): Promise<AcademicQualification> {
   const response = await fetch(`${API_BASE_URL}/${id}`, {
     method: "PUT",
     headers: {

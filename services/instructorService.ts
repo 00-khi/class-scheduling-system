@@ -1,8 +1,8 @@
-import { TInstructor } from "@/lib/types";
+import { Instructor } from "@prisma/client";
 
 const API_BASE_URL = "/api/instructors";
 
-export async function getInstructors(): Promise<TInstructor[]> {
+export async function getInstructors(): Promise<Instructor[]> {
   const response = await fetch(API_BASE_URL);
 
   const data = await response.json();
@@ -15,9 +15,7 @@ export async function getInstructors(): Promise<TInstructor[]> {
   return data;
 }
 
-export async function getInstructorById(
-  id: number
-): Promise<TInstructor> {
+export async function getInstructorById(id: number): Promise<Instructor> {
   const response = await fetch(`${API_BASE_URL}/${id}`);
 
   if (response.status === 404) {
@@ -36,8 +34,8 @@ export async function getInstructorById(
 }
 
 export async function addInstructor(
-  instructor: Omit<TInstructor, "id">
-): Promise<TInstructor> {
+  instructor: Instructor
+): Promise<Instructor> {
   const response = await fetch(API_BASE_URL, {
     method: "POST",
     headers: {
@@ -58,8 +56,8 @@ export async function addInstructor(
 
 export async function updateInstructor(
   id: number,
-  instructor: Partial<Omit<TInstructor, "id">>
-): Promise<TInstructor> {
+  instructor: Instructor
+): Promise<Instructor> {
   const response = await fetch(`${API_BASE_URL}/${id}`, {
     method: "PUT",
     headers: {

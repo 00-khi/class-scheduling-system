@@ -6,7 +6,6 @@ import {
   handleDeleteSelectedEntities,
   handleUpdateEntity,
 } from "@/lib/crud-handler";
-import { TAcademicQualification, TInstructor } from "@/lib/types";
 import { getAcademicQualifications } from "@/services/academicQualificationService";
 import {
   addInstructor,
@@ -32,7 +31,7 @@ import { FailedDeletionDialog } from "@/ui/components/failed-deletion-dialog";
 import { Badge } from "@/ui/shadcn/badge";
 import { Button } from "@/ui/shadcn/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/tooltip";
-import { InstructorStatus } from "@prisma/client";
+import { AcademicQualification, Instructor, InstructorStatus } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import { PlusIcon } from "lucide-react";
 import { toast } from "sonner";
@@ -41,7 +40,7 @@ import { useManageEntities } from "@/hooks/use-manage-entities";
 export default function InstructorsTable() {
   const ENTITY_NAME = "Instructor";
 
-  const entityManagement = useManageEntities<TInstructor>({
+  const entityManagement = useManageEntities<Instructor>({
     apiService: { fetch: getInstructors },
     relatedApiServices: [
       { key: "academicQualifications", fetch: getAcademicQualifications },
@@ -52,7 +51,7 @@ export default function InstructorsTable() {
     entityManagement.relatedData.academicQualifications || [];
 
   const validateInstructor = (
-    data: Partial<TInstructor>,
+    data: Partial<Instructor>,
     requireId = false
   ): boolean => {
     if (requireId && !data.id) {
@@ -78,12 +77,12 @@ export default function InstructorsTable() {
     return true;
   };
 
-  type TInstructorRow = TInstructor & {
-    academicQualification?: TAcademicQualification;
+  type InstructorRow = Instructor & {
+    academicQualification?: AcademicQualification;
   };
 
-  const columns: ColumnDef<TInstructorRow>[] = [
-    getSelectColumn<TInstructorRow>(),
+  const columns: ColumnDef<InstructorRow>[] = [
+    getSelectColumn<InstructorRow>(),
     {
       header: "Name",
       accessorKey: "name",
@@ -118,7 +117,7 @@ export default function InstructorsTable() {
         );
       },
     },
-    getActionsColumn<TInstructorRow>({
+    getActionsColumn<InstructorRow>({
       onEdit: (item) => {
         entityManagement.setEditingItem(item);
         entityManagement.setIsEditDialogOpen(true);
@@ -206,7 +205,7 @@ export default function InstructorsTable() {
       )}
 
       {/* Add Form */}
-      <EntityForm<Omit<TInstructor, "id">>
+      <EntityForm<Instructor>
         isOpen={entityManagement.isAddDialogOpen}
         onClose={() => entityManagement.setIsAddDialogOpen(false)}
         onSubmit={(data) => {
@@ -243,7 +242,7 @@ export default function InstructorsTable() {
       </EntityForm>
 
       {/* Edit Form */}
-      <EntityForm
+      <EntityForm<Instructor>
         item={entityManagement.editingItem || undefined}
         isOpen={entityManagement.isEditDialogOpen}
         onClose={() => {

@@ -2,11 +2,8 @@
 
 import { DataTable } from "@/ui/components/data-table";
 import { ColumnDef } from "@tanstack/react-table";
-import {
-  PlusIcon,
-} from "lucide-react";
+import { PlusIcon } from "lucide-react";
 import { Button } from "@/ui/shadcn/button";
-import { TAcademicQualification } from "@/lib/types";
 import {
   getAcademicQualifications,
   addAcademicQualification,
@@ -36,17 +33,18 @@ import {
   getSelectColumn,
 } from "@/ui/components/data-table-columns";
 import { useManageEntities } from "@/hooks/use-manage-entities";
+import { AcademicQualification } from "@prisma/client";
 
 export default function AcademicQualificationsTable() {
   const ENTITY_NAME = "Academic Qualification";
 
-  const entityManagement = useManageEntities<TAcademicQualification>({
+  const entityManagement = useManageEntities<AcademicQualification>({
     apiService: { fetch: getAcademicQualifications },
   });
 
   // Generic validator for Academic Qualification
   const validateAcademicQualification = (
-    data: Partial<TAcademicQualification>,
+    data: Partial<AcademicQualification>,
     requireId = false
   ): boolean => {
     if (requireId && !data.id) {
@@ -67,14 +65,14 @@ export default function AcademicQualificationsTable() {
     return true;
   };
 
-  type TAcademicQualificationRow = TAcademicQualification & {
+  type AcademicQualificationRow = AcademicQualification & {
     _count?: {
       instructors: number;
     };
   };
 
-  const columns: ColumnDef<TAcademicQualificationRow>[] = [
-    getSelectColumn<TAcademicQualificationRow>(),
+  const columns: ColumnDef<AcademicQualificationRow>[] = [
+    getSelectColumn<AcademicQualificationRow>(),
     {
       header: "Code",
       accessorKey: "code",
@@ -102,7 +100,7 @@ export default function AcademicQualificationsTable() {
         );
       },
     },
-    getActionsColumn<TAcademicQualificationRow>({
+    getActionsColumn<AcademicQualificationRow>({
       onEdit: (item) => {
         entityManagement.setEditingItem(item);
         entityManagement.setIsEditDialogOpen(true);
@@ -160,7 +158,7 @@ export default function AcademicQualificationsTable() {
       )}
 
       {/* Add Form */}
-      <EntityForm<Omit<TAcademicQualification, "id">>
+      <EntityForm<AcademicQualification>
         isOpen={entityManagement.isAddDialogOpen}
         onClose={() => entityManagement.setIsAddDialogOpen(false)}
         onSubmit={(data) => {
@@ -190,7 +188,7 @@ export default function AcademicQualificationsTable() {
       </EntityForm>
 
       {/* Edit Form */}
-      <EntityForm
+      <EntityForm<AcademicQualification>
         item={entityManagement.editingItem || undefined}
         isOpen={entityManagement.isEditDialogOpen}
         onClose={() => {
