@@ -1,7 +1,8 @@
 import { createApiHandler } from "@/lib/api/api-handler";
+import { validateRequestBody } from "@/lib/api/api-validator";
 import { prisma } from "@/lib/prisma";
 import { capitalizeEachWord, toUppercase } from "@/lib/utils";
-import { InstructorStatus } from "@prisma/client";
+import { Instructor, InstructorStatus } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 export const GET = createApiHandler(async () => {
@@ -20,20 +21,19 @@ export const POST = createApiHandler(async (request) => {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
 
-  const rawData = await request.json();
+  const { rawData, error } = await validateRequestBody<Instructor>(request, [
+    { key: "name", type: "string" },
+    { key: "academicQualificationId", type: "number" },
+    { key: "status", type: "string" },
+  ]);
+
+  if (error) return error;
 
   const name = capitalizeEachWord(rawData.name);
-  const academicQualificationId = parseInt(rawData.academicQualificationId);
+  const academicQualificationId = rawData.academicQualificationId;
   const status = toUppercase(rawData.status) as InstructorStatus;
 
   const validStatuses = Object.values(InstructorStatus);
-
-  if (!name || !academicQualificationId || !status) {
-    return NextResponse.json(
-      { error: "Missing required fields." },
-      { status: 400 }
-    );
-  }
 
   if (isNaN(academicQualificationId)) {
     return NextResponse.json(

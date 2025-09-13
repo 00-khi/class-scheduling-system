@@ -2,6 +2,8 @@ import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { createApiHandler } from "@/lib/api/api-handler";
 import { capitalizeEachWord, toUppercase } from "@/lib/utils";
+import { validateRequestBody } from "@/lib/api/api-validator";
+import { AcademicQualification } from "@prisma/client";
 
 export const GET = createApiHandler(async () => {
   const academicQualifications = await prisma.academicQualification.findMany({
@@ -22,17 +24,18 @@ export const POST = createApiHandler(async (request) => {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
 
-  const rawData = await request.json();
+  const { rawData, error } = await validateRequestBody<AcademicQualification>(
+    request,
+    [
+      { key: "code", type: "string" },
+      { key: "name", type: "string" },
+    ]
+  );
+
+  if (error) return error;
 
   const code = toUppercase(rawData.code);
   const name = capitalizeEachWord(rawData.name);
-
-  if (!code || !name) {
-    return NextResponse.json(
-      { error: "Missing required fields." },
-      { status: 400 }
-    );
-  }
 
   const data = { code, name };
 

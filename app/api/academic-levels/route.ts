@@ -1,7 +1,9 @@
 import { createApiHandler } from "@/lib/api/api-handler";
+import { validateRequestBody } from "@/lib/api/api-validator";
 import { prisma } from "@/lib/prisma";
 import { capitalizeEachWord, toUppercase } from "@/lib/utils";
 import { validateAcademicLevelYears } from "@/lib/validators";
+import { AcademicLevel } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 export const GET = createApiHandler(async () => {
@@ -29,19 +31,21 @@ export const POST = createApiHandler(async (request) => {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
 
-  const rawData = await request.json();
+  const { rawData, error } = await validateRequestBody<AcademicLevel>(request, [
+    { key: "code", type: "string" },
+    { key: "name", type: "string" },
+    { key: "yearStart", type: "number" },
+    { key: "numberOfYears", type: "number" },
+  ]);
+
+  if (error) return error;
 
   const code = toUppercase(rawData.code);
   const name = capitalizeEachWord(rawData.name);
-  const yearStart = parseInt(rawData.yearStart);
-  const numberOfYears = parseInt(rawData.numberOfYears);
+  const yearStart = rawData.yearStart;
+  const numberOfYears = rawData.numberOfYears;
 
-  if (!code || !name || !yearStart || !numberOfYears) {
-    return NextResponse.json(
-      { error: "Missing required fields." },
-      { status: 400 }
-    );
-  }
+  console.log(yearStart);
 
   if (isNaN(yearStart)) {
     return NextResponse.json(
