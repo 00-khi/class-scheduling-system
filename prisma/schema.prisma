@@ -23,6 +23,11 @@ enum InstructorStatus {
   FT
 }
 
+enum RoomType {
+  Lecture
+  Laboratory
+}
+
 // ----- Models -----
 
 model AcademicQualification {
@@ -82,4 +87,13 @@ model Course {
 
   // Relations
   academicLevel AcademicLevel? @relation(fields: [academicLevelId], references: [id])
+}
+
+model Room {
+  id   Int      @id @default(autoincrement())
+  name String   @unique
+  type RoomType
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
