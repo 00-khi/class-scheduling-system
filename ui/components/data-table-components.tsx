@@ -42,8 +42,8 @@ export function DataTableSkeleton({
             {Array.from({ length: rowCount }).map((_, rowIndex) => (
               <TableRow key={rowIndex}>
                 {Array.from({ length: columnCount }).map((_, colIndex) => (
-                  <TableCell key={colIndex}>
-                    <Skeleton className="h-9 w-full bg-muted" />
+                  <TableCell key={colIndex} className="py-5">
+                    <Skeleton className="h-3 w-full bg-muted" />
                   </TableCell>
                 ))}
               </TableRow>
