@@ -1,7 +1,7 @@
 import { MainSection } from "@/ui/components/main-section";
 import InstructorsTable from "./instructors-table";
 
-export default function ManageInstructors() {
+export default function ManageInstructorsPage() {
   return (
     <MainSection>
       <MainSection.Section>

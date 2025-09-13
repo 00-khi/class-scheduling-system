@@ -1,7 +1,7 @@
 import { MainSection } from "@/ui/components/main-section";
 import AcademicQualificationsTable from "./academic-qualifications-table";
 
-export default function AcademicQualifications() {
+export default function AcademicQualificationsPage() {
   return (
     <MainSection>
       <MainSection.Section>

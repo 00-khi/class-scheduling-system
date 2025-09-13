@@ -2,7 +2,7 @@ import { InfoCardWrapper } from "./cards";
 import { Separator } from "@/ui/shadcn/separator";
 import { MainSection } from "@/ui/components/main-section";
 
-export default function Dashboard() {
+export default function DashboardPage() {
   return (
     <MainSection>
       <MainSection.Section>
