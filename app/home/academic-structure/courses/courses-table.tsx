@@ -1,19 +1,13 @@
 "use client";
 
 import { useManageEntities } from "@/hooks/use-manage-entities";
+import { createApiClient } from "@/lib/api-client";
 import {
   handleAddEntity,
   handleDeleteEntity,
   handleDeleteSelectedEntities,
   handleUpdateEntity,
 } from "@/lib/crud-handler";
-import { getAcademicLevels } from "@/services/academicLevelService";
-import {
-  addCourse,
-  deleteCourse,
-  getCourses,
-  updateCourse,
-} from "@/services/courseService";
 import { ConfirmDeleteDialog } from "@/ui/components/comfirm-delete-dialog";
 import { DataForm } from "@/ui/components/data-form";
 import { DataTable } from "@/ui/components/data-table";
@@ -40,9 +34,16 @@ import { toast } from "sonner";
 export default function CoursesTable() {
   const ENTITY_NAME = "Course";
 
+  const courseApi = createApiClient<Course>("/api/courses");
+  const academicLevelApi = createApiClient<AcademicLevel>(
+    "api/academic-levels"
+  );
+
   const entityManagement = useManageEntities<Course>({
-    apiService: { fetch: getCourses },
-    relatedApiServices: [{ key: "academicLevels", fetch: getAcademicLevels }],
+    apiService: { fetch: courseApi.getAll },
+    relatedApiServices: [
+      { key: "academicLevels", fetch: academicLevelApi.getAll },
+    ],
   });
 
   const academicLevels = entityManagement.relatedData.academicLevels || [];
@@ -157,7 +158,7 @@ export default function CoursesTable() {
                   return handleDeleteSelectedEntities(
                     ENTITY_NAME,
                     ids,
-                    deleteCourse,
+                    courseApi.delete,
                     entityManagement.fetchData,
                     entityManagement.setIsDeletingSelected,
                     entityManagement.setFailedReasons,
@@ -187,7 +188,7 @@ export default function CoursesTable() {
           return handleAddEntity(
             ENTITY_NAME,
             data,
-            addCourse,
+            courseApi.add,
             entityManagement.fetchData,
             entityManagement.setIsSubmitting,
             entityManagement.setIsAddDialogOpen,
@@ -227,7 +228,7 @@ export default function CoursesTable() {
           return handleUpdateEntity(
             ENTITY_NAME,
             data,
-            updateCourse,
+            courseApi.update,
             entityManagement.fetchData,
             entityManagement.setIsSubmitting,
             () => {
@@ -267,7 +268,7 @@ export default function CoursesTable() {
             return handleDeleteEntity(
               ENTITY_NAME,
               entityManagement.itemToDelete.id,
-              deleteCourse,
+              courseApi.delete,
               entityManagement.fetchData,
               entityManagement.setIsDeleting,
               () => {

@@ -4,12 +4,6 @@ import { DataTable } from "@/ui/components/data-table";
 import { ColumnDef } from "@tanstack/react-table";
 import { PlusIcon } from "lucide-react";
 import { Button } from "@/ui/shadcn/button";
-import {
-  getAcademicQualifications,
-  addAcademicQualification,
-  updateAcademicQualification,
-  deleteAcademicQualification,
-} from "@/services/academicQualificationService";
 import { toast } from "sonner";
 import { ConfirmDeleteDialog } from "@/ui/components/comfirm-delete-dialog";
 import { DataForm } from "@/ui/components/data-form";
@@ -34,12 +28,17 @@ import {
 } from "@/ui/components/data-table-columns";
 import { useManageEntities } from "@/hooks/use-manage-entities";
 import { AcademicQualification } from "@prisma/client";
+import { createApiClient } from "@/lib/api-client";
 
 export default function AcademicQualificationsTable() {
   const ENTITY_NAME = "Academic Qualification";
 
+  const academicQualificationApi = createApiClient<AcademicQualification>(
+    "/api/academic-qualifications"
+  );
+
   const entityManagement = useManageEntities<AcademicQualification>({
-    apiService: { fetch: getAcademicQualifications },
+    apiService: { fetch: academicQualificationApi.getAll },
   });
 
   // Generic validator for Academic Qualification
@@ -135,7 +134,7 @@ export default function AcademicQualificationsTable() {
                   return handleDeleteSelectedEntities(
                     ENTITY_NAME,
                     ids,
-                    deleteAcademicQualification,
+                    academicQualificationApi.delete,
                     entityManagement.fetchData,
                     entityManagement.setIsDeletingSelected,
                     entityManagement.setFailedReasons,
@@ -165,7 +164,7 @@ export default function AcademicQualificationsTable() {
           return handleAddEntity(
             ENTITY_NAME,
             data,
-            addAcademicQualification,
+            academicQualificationApi.add,
             entityManagement.fetchData,
             entityManagement.setIsSubmitting,
             entityManagement.setIsAddDialogOpen,
@@ -199,7 +198,7 @@ export default function AcademicQualificationsTable() {
           return handleUpdateEntity(
             ENTITY_NAME,
             data,
-            updateAcademicQualification,
+            academicQualificationApi.update,
             entityManagement.fetchData,
             entityManagement.setIsSubmitting,
             () => {
@@ -233,7 +232,7 @@ export default function AcademicQualificationsTable() {
             return handleDeleteEntity(
               ENTITY_NAME,
               entityManagement.itemToDelete.id,
-              deleteAcademicQualification,
+              academicQualificationApi.delete,
               entityManagement.fetchData,
               entityManagement.setIsDeleting,
               () => {

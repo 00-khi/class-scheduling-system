@@ -1,18 +1,13 @@
 "use client";
 
 import { useManageEntities } from "@/hooks/use-manage-entities";
+import { createApiClient } from "@/lib/api-client";
 import {
   handleAddEntity,
   handleDeleteEntity,
   handleDeleteSelectedEntities,
   handleUpdateEntity,
 } from "@/lib/crud-handler";
-import {
-  addAcademicLevel,
-  deleteAcademicLevel,
-  getAcademicLevels,
-  updateAcademicLevel,
-} from "@/services/academicLevelService";
 import { ConfirmDeleteDialog } from "@/ui/components/comfirm-delete-dialog";
 import { DataForm } from "@/ui/components/data-form";
 import { DataTable } from "@/ui/components/data-table";
@@ -38,8 +33,10 @@ import { toast } from "sonner";
 export default function AcademicLevelsTable() {
   const ENTITY_NAME = "Academic Levels";
 
+  const academicLevelApi = createApiClient<AcademicLevel>("/api/academic-levels")
+
   const entityManagement = useManageEntities<AcademicLevel>({
-    apiService: { fetch: getAcademicLevels },
+    apiService: { fetch: academicLevelApi.getAll },
   });
 
   const validateAcademicLevel = (
@@ -161,7 +158,7 @@ export default function AcademicLevelsTable() {
                   return handleDeleteSelectedEntities(
                     ENTITY_NAME,
                     ids,
-                    deleteAcademicLevel,
+                    academicLevelApi.delete,
                     entityManagement.fetchData,
                     entityManagement.setIsDeletingSelected,
                     entityManagement.setFailedReasons,
@@ -191,7 +188,7 @@ export default function AcademicLevelsTable() {
           return handleAddEntity(
             ENTITY_NAME,
             data,
-            addAcademicLevel,
+            academicLevelApi.add,
             entityManagement.fetchData,
             entityManagement.setIsSubmitting,
             entityManagement.setIsAddDialogOpen,
@@ -239,7 +236,7 @@ export default function AcademicLevelsTable() {
           return handleUpdateEntity(
             ENTITY_NAME,
             data,
-            updateAcademicLevel,
+            academicLevelApi.update,
             entityManagement.fetchData,
             entityManagement.setIsSubmitting,
             () => {
@@ -287,7 +284,7 @@ export default function AcademicLevelsTable() {
             return handleDeleteEntity(
               ENTITY_NAME,
               entityManagement.itemToDelete.id,
-              deleteAcademicLevel,
+              academicLevelApi.delete,
               entityManagement.fetchData,
               entityManagement.setIsDeleting,
               () => {

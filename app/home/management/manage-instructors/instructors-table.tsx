@@ -6,13 +6,6 @@ import {
   handleDeleteSelectedEntities,
   handleUpdateEntity,
 } from "@/lib/crud-handler";
-import { getAcademicQualifications } from "@/services/academicQualificationService";
-import {
-  addInstructor,
-  deleteInstructor,
-  getInstructors,
-  updateInstructor,
-} from "@/services/instructorService";
 import { ConfirmDeleteDialog } from "@/ui/components/comfirm-delete-dialog";
 import { DataForm } from "@/ui/components/data-form";
 import { DataTable } from "@/ui/components/data-table";
@@ -31,19 +24,29 @@ import { FailedDeletionDialog } from "@/ui/components/failed-deletion-dialog";
 import { Badge } from "@/ui/shadcn/badge";
 import { Button } from "@/ui/shadcn/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/tooltip";
-import { AcademicQualification, Instructor, InstructorStatus } from "@prisma/client";
+import {
+  AcademicQualification,
+  Instructor,
+  InstructorStatus,
+} from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import { PlusIcon } from "lucide-react";
 import { toast } from "sonner";
 import { useManageEntities } from "@/hooks/use-manage-entities";
+import { createApiClient } from "@/lib/api-client";
 
 export default function InstructorsTable() {
   const ENTITY_NAME = "Instructor";
 
+  const instructorApi = createApiClient<Instructor>("/api/instructors");
+  const academicQualificationApi = createApiClient<AcademicQualification>(
+    "/api/academic-qualifications"
+  );
+
   const entityManagement = useManageEntities<Instructor>({
-    apiService: { fetch: getInstructors },
+    apiService: { fetch: instructorApi.getAll },
     relatedApiServices: [
-      { key: "academicQualifications", fetch: getAcademicQualifications },
+      { key: "academicQualifications", fetch: academicQualificationApi.getAll },
     ],
   });
 
@@ -182,7 +185,7 @@ export default function InstructorsTable() {
                   return handleDeleteSelectedEntities(
                     ENTITY_NAME,
                     ids,
-                    deleteInstructor,
+                    instructorApi.delete,
                     entityManagement.fetchData,
                     entityManagement.setIsDeletingSelected,
                     entityManagement.setFailedReasons,
@@ -212,7 +215,7 @@ export default function InstructorsTable() {
           return handleAddEntity(
             ENTITY_NAME,
             data,
-            addInstructor,
+            instructorApi.add,
             entityManagement.fetchData,
             entityManagement.setIsSubmitting,
             entityManagement.setIsAddDialogOpen,
@@ -253,7 +256,7 @@ export default function InstructorsTable() {
           return handleUpdateEntity(
             ENTITY_NAME,
             data,
-            updateInstructor,
+            instructorApi.update,
             entityManagement.fetchData,
             entityManagement.setIsSubmitting,
             () => {
@@ -294,7 +297,7 @@ export default function InstructorsTable() {
             return handleDeleteEntity(
               ENTITY_NAME,
               entityManagement.itemToDelete.id,
-              deleteInstructor,
+              instructorApi.delete,
               entityManagement.fetchData,
               entityManagement.setIsDeleting,
               () => {
