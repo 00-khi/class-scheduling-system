@@ -1,4 +1,5 @@
 export function toUppercase(str: string): string {
+  if (!str) return "";
   return removeExtraSpaces(str.toUpperCase());
 }
 
@@ -14,5 +15,6 @@ export function capitalizeEachWord(str: string): string {
 }
 
 export function removeExtraSpaces(str: string): string {
+  if (!str) return "";
   return str.trim().replace(/\s+/g, " ");
 }
