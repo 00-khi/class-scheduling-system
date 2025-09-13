@@ -1,6 +1,7 @@
 import { createApiHandler } from "@/lib/api-handler";
 import { prisma } from "@/lib/prisma";
 import { capitalizeEachWord, toUppercase } from "@/lib/utils";
+import { validateAcademicLevelYears } from "@/lib/validators";
 import { NextResponse } from "next/server";
 
 export const GET = createApiHandler(async (request, context) => {
@@ -25,40 +26,12 @@ export const GET = createApiHandler(async (request, context) => {
     );
   }
 
-  let yearsArray: number[] = [];
-  const yearsData = academicLevel.yearList;
-
-  try {
-    const parsedData =
-      typeof yearsData === "string" ? JSON.parse(yearsData) : yearsData;
-
-    if (!Array.isArray(parsedData)) {
-      console.error(
-        `Error: 'yearList' field for academic level ${
-          academicLevel.id
-        } is not an array. Found type: ${typeof parsedData}.`
-      );
-    } else {
-      const filtered = parsedData.filter((item) => typeof item === "number");
-      if (filtered.length !== parsedData.length) {
-        console.error(
-          `Error: 'yearList' array for academic level ${academicLevel.id} contains non-numeric values.`
-        );
-      }
-      yearsArray = filtered;
-    }
-  } catch (e) {
-    console.error(
-      `Failed to parse 'yearList' field for academic level ${academicLevel.id}`
-    );
-  }
-
-  // Deduplicate + sort
-  const uniqueYears = Array.from(new Set(yearsArray)).sort((a, b) => a - b);
-
   return NextResponse.json({
     ...academicLevel,
-    yearList: uniqueYears,
+    yearList: validateAcademicLevelYears(
+      academicLevel.yearList,
+      academicLevel.id
+    ),
   });
 });
 

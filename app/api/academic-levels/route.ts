@@ -1,6 +1,7 @@
 import { createApiHandler } from "@/lib/api-handler";
 import { prisma } from "@/lib/prisma";
 import { capitalizeEachWord, toUppercase } from "@/lib/utils";
+import { validateAcademicLevelYears } from "@/lib/validators";
 import { NextResponse } from "next/server";
 
 export const GET = createApiHandler(async () => {
@@ -8,49 +9,10 @@ export const GET = createApiHandler(async () => {
     orderBy: { updatedAt: "desc" },
   });
 
-  const sortedAndUnique = academicLevels.map((level) => {
-    const yearsData = level.yearList;
-    let yearsArray = [];
-
-    try {
-      const parsedData =
-        typeof yearsData === "string" ? JSON.parse(yearsData) : yearsData;
-
-      if (!Array.isArray(parsedData)) {
-        console.error(
-          `Error: 'yearList' field for academic level ${
-            level.id
-          } is not an array. Found type: ${typeof parsedData}.`
-        );
-        return { ...level, yearList: [] };
-      }
-
-      const containsNonNumbers = parsedData.some(
-        (item) => typeof item !== "number"
-      );
-      if (containsNonNumbers) {
-        console.error(
-          `Error: 'yearList' array for academic level ${level.id} contains non-numeric values.`
-        );
-        yearsArray = parsedData.filter((item) => typeof item === "number");
-      } else {
-        yearsArray = parsedData;
-      }
-    } catch (e) {
-      console.error(
-        `Failed to parse 'yearList' field for academic level ${level.id}`
-      );
-      return { ...level, yearList: [] };
-    }
-
-    // Remove duplicates by converting the array to a Set and back to an array. And sort
-    const uniqueYears = Array.from(new Set(yearsArray)).sort((a, b) => a - b);
-
-    return {
-      ...level,
-      yearList: uniqueYears,
-    };
-  });
+  const sortedAndUnique = academicLevels.map((level) => ({
+    ...level,
+    yearList: validateAcademicLevelYears(level.yearList, level.id),
+  }));
 
   return NextResponse.json(sortedAndUnique);
 });
@@ -88,7 +50,10 @@ export const POST = createApiHandler(async (request) => {
     );
   }
 
-  const yearList = Array.from({ length: numberOfYears }, (_, i) => yearStart + i);
+  const yearList = Array.from(
+    { length: numberOfYears },
+    (_, i) => yearStart + i
+  );
 
   const data = {
     code,
