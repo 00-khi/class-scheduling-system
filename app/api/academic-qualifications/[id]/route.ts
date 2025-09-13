@@ -49,17 +49,22 @@ export const PUT = createApiHandler(async (request, context) => {
 
   const rawData = await request.json();
 
-  const code = toUppercase(rawData.code);
-  const name = capitalizeEachWord(rawData.name);
+  const data: any = {};
 
-  if (!code || !name) {
+  if (rawData.code) {
+    data.code = toUppercase(rawData.code);
+  }
+
+  if (rawData.name) {
+    data.name = capitalizeEachWord(rawData.name);
+  }
+
+  if (Object.keys(data).length === 0) {
     return NextResponse.json(
-      { error: "Missing required fields." },
+      { error: "No valid fields to update." },
       { status: 400 }
     );
   }
-
-  const data = { code, name };
 
   const updatedAcademicQualification =
     await prisma.academicQualification.update({

@@ -1,6 +1,6 @@
 import { createApiHandler } from "@/lib/api-handler";
 import { prisma } from "@/lib/prisma";
-import { capitalizeEachWord } from "@/lib/utils";
+import { capitalizeEachWord, toUppercase } from "@/lib/utils";
 import { InstructorStatus } from "@prisma/client";
 import { NextResponse } from "next/server";
 
@@ -24,7 +24,7 @@ export const POST = createApiHandler(async (request) => {
 
   const name = capitalizeEachWord(rawData.name);
   const academicQualificationId = parseInt(rawData.academicQualificationId);
-  const status = rawData.status as InstructorStatus;
+  const status = toUppercase(rawData.status) as InstructorStatus;
 
   const validStatuses = Object.values(InstructorStatus);
 

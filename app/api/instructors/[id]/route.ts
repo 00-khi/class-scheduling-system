@@ -1,6 +1,6 @@
 import { createApiHandler } from "@/lib/api-handler";
 import { prisma } from "@/lib/prisma";
-import { capitalizeEachWord } from "@/lib/utils";
+import { capitalizeEachWord, toUppercase } from "@/lib/utils";
 import { InstructorStatus } from "@prisma/client";
 import { NextResponse } from "next/server";
 
@@ -49,38 +49,46 @@ export const PUT = createApiHandler(async (request, context) => {
 
   const rawData = await request.json();
 
-  const name = capitalizeEachWord(rawData.name);
-  const academicQualificationId = parseInt(rawData.academicQualificationId);
-  const status = rawData.status as InstructorStatus;
+  const data: any = {};
 
   const validStatuses = Object.values(InstructorStatus);
 
-  if (isNaN(academicQualificationId)) {
+  if (rawData.name) {
+    data.name = capitalizeEachWord(rawData.name);
+  }
+
+  if (rawData.academicQualificationId) {
+    data.academicQualificationId = parseInt(rawData.academicQualificationId);
+
+    if (isNaN(data.academicQualificationId)) {
+      return NextResponse.json(
+        { error: "Invalid academic qualification ID." },
+        { status: 400 }
+      );
+    }
+  }
+
+  if (rawData.status) {
+    data.status = toUppercase(rawData.status) as InstructorStatus;
+
+    if (!validStatuses.includes(data.status)) {
+      return NextResponse.json(
+        {
+          error: `Invalid status value. It must be one of: ${validStatuses.join(
+            ", "
+          )}`,
+        },
+        { status: 400 }
+      );
+    }
+  }
+
+  if (Object.keys(data).length === 0) {
     return NextResponse.json(
-      { error: "Invalid academic qualification ID." },
+      { error: "No valid fields to update." },
       { status: 400 }
     );
   }
-
-  if (!name || !academicQualificationId || !status) {
-    return NextResponse.json(
-      { error: "Missing required fields." },
-      { status: 400 }
-    );
-  }
-
-  if (!validStatuses.includes(status)) {
-    return NextResponse.json(
-      {
-        error: `Invalid status value. It must be one of: ${validStatuses.join(
-          ", "
-        )}`,
-      },
-      { status: 400 }
-    );
-  }
-
-  const data = { name, academicQualificationId, status };
 
   const updatedInstructor = await prisma.instructor.update({
     where: { id: numericId },
