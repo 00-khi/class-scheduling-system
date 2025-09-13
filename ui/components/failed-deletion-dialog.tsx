@@ -30,11 +30,9 @@ export function FailedDeletionDialog({
             Some deletions could not be completed. Reasons:
           </AlertDialogDescription>
           <AlertDialogDescription className="text-destructive">
-            <ul>
               {failedReasons.map((error, idx) => (
-                <li key={idx}>{`- ${error}`}</li>
+                <div key={idx}>{`- ${error}`}</div>
               ))}
-            </ul>
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
