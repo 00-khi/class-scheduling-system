@@ -25,7 +25,41 @@ export const GET = createApiHandler(async (request, context) => {
     );
   }
 
-  return NextResponse.json(academicLevel);
+  let yearsArray: number[] = [];
+  const yearsData = academicLevel.yearList;
+
+  try {
+    const parsedData =
+      typeof yearsData === "string" ? JSON.parse(yearsData) : yearsData;
+
+    if (!Array.isArray(parsedData)) {
+      console.error(
+        `Error: 'yearList' field for academic level ${
+          academicLevel.id
+        } is not an array. Found type: ${typeof parsedData}.`
+      );
+    } else {
+      const filtered = parsedData.filter((item) => typeof item === "number");
+      if (filtered.length !== parsedData.length) {
+        console.error(
+          `Error: 'yearList' array for academic level ${academicLevel.id} contains non-numeric values.`
+        );
+      }
+      yearsArray = filtered;
+    }
+  } catch (e) {
+    console.error(
+      `Failed to parse 'yearList' field for academic level ${academicLevel.id}`
+    );
+  }
+
+  // Deduplicate + sort
+  const uniqueYears = Array.from(new Set(yearsArray)).sort((a, b) => a - b);
+
+  return NextResponse.json({
+    ...academicLevel,
+    yearList: uniqueYears,
+  });
 });
 
 export const PUT = createApiHandler(async (request, context) => {
@@ -55,9 +89,9 @@ export const PUT = createApiHandler(async (request, context) => {
     data.name = capitalizeEachWord(rawData.name);
   }
 
-  if (rawData.startAt && rawData.years) {
+  if (rawData.startAt && rawData.numberOfYears) {
     const startAt = parseInt(rawData.startAt);
-    const years = parseInt(rawData.years);
+    const numberOfYears = parseInt(rawData.numberOfYears);
 
     if (isNaN(startAt)) {
       return NextResponse.json(
@@ -66,14 +100,20 @@ export const PUT = createApiHandler(async (request, context) => {
       );
     }
 
-    if (isNaN(years)) {
+    if (isNaN(numberOfYears)) {
       return NextResponse.json(
         { error: "Invalid number of years." },
         { status: 400 }
       );
     }
 
-    data.years = Array.from({ length: years }, (_, i) => startAt + i);
+    data.startAt = startAt;
+    data.numberOfYears = numberOfYears;
+
+    data.yearList = Array.from(
+      { length: numberOfYears },
+      (_, i) => startAt + i
+    );
   }
 
   if (Object.keys(data).length === 0) {

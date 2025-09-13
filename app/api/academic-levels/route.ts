@@ -9,7 +9,7 @@ export const GET = createApiHandler(async () => {
   });
 
   const sortedAndUnique = academicLevels.map((level) => {
-    const yearsData = level.years;
+    const yearsData = level.yearList;
     let yearsArray = [];
 
     try {
@@ -18,11 +18,11 @@ export const GET = createApiHandler(async () => {
 
       if (!Array.isArray(parsedData)) {
         console.error(
-          `Error: 'years' field for academic level ${
+          `Error: 'yearList' field for academic level ${
             level.id
           } is not an array. Found type: ${typeof parsedData}.`
         );
-        return { ...level, years: [] };
+        return { ...level, yearList: [] };
       }
 
       const containsNonNumbers = parsedData.some(
@@ -30,7 +30,7 @@ export const GET = createApiHandler(async () => {
       );
       if (containsNonNumbers) {
         console.error(
-          `Error: 'years' array for academic level ${level.id} contains non-numeric values.`
+          `Error: 'yearList' array for academic level ${level.id} contains non-numeric values.`
         );
         yearsArray = parsedData.filter((item) => typeof item === "number");
       } else {
@@ -38,20 +38,17 @@ export const GET = createApiHandler(async () => {
       }
     } catch (e) {
       console.error(
-        `Failed to parse 'years' field for academic level ${level.id}`
+        `Failed to parse 'yearList' field for academic level ${level.id}`
       );
-      return { ...level, years: [] };
+      return { ...level, yearList: [] };
     }
 
-    // Remove duplicates by converting the array to a Set and back to an array
-    const uniqueYears = Array.from(new Set(yearsArray));
-
-    // Sort the unique array
-    uniqueYears.sort((a, b) => a - b);
+    // Remove duplicates by converting the array to a Set and back to an array. And sort
+    const uniqueYears = Array.from(new Set(yearsArray)).sort((a, b) => a - b);
 
     return {
       ...level,
-      years: uniqueYears,
+      yearList: uniqueYears,
     };
   });
 
@@ -68,9 +65,9 @@ export const POST = createApiHandler(async (request) => {
   const code = toUppercase(rawData.code);
   const name = capitalizeEachWord(rawData.name);
   const startAt = parseInt(rawData.startAt);
-  const years = parseInt(rawData.years);
+  const numberOfYears = parseInt(rawData.numberOfYears);
 
-  if (!code || !name || !startAt || !years) {
+  if (!code || !name || !startAt || !numberOfYears) {
     return NextResponse.json(
       { error: "Missing required fields." },
       { status: 400 }
@@ -84,19 +81,21 @@ export const POST = createApiHandler(async (request) => {
     );
   }
 
-  if (isNaN(years)) {
+  if (isNaN(numberOfYears)) {
     return NextResponse.json(
       { error: "Invalid number of years." },
       { status: 400 }
     );
   }
 
-  const yearArray = Array.from({ length: years }, (_, i) => startAt + i);
+  const yearList = Array.from({ length: numberOfYears }, (_, i) => startAt + i);
 
   const data = {
     code,
     name,
-    years: yearArray,
+    yearList,
+    startAt,
+    numberOfYears,
   };
 
   const newAcademicLevel = await prisma.academicLevel.create({
