@@ -17,7 +17,7 @@ export async function getInstructors(): Promise<TInstructor[]> {
 
 export async function getInstructorById(
   id: number
-): Promise<TInstructor | undefined> {
+): Promise<TInstructor> {
   const response = await fetch(`${API_BASE_URL}/${id}`);
 
   if (response.status === 404) {

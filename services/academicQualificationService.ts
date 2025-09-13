@@ -20,7 +20,7 @@ export async function getAcademicQualifications(): Promise<
 
 export async function getAcademicQualificationById(
   id: number
-): Promise<TAcademicQualification | undefined> {
+): Promise<TAcademicQualification> {
   const response = await fetch(`${API_BASE_URL}/${id}`);
 
   if (response.status === 404) {
