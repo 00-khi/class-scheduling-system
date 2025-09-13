@@ -130,3 +130,21 @@ export const PUT = createApiHandler(async (request, context) => {
 
   return NextResponse.json(updateAcademicLevel);
 });
+
+export const DELETE = createApiHandler(async (request, context) => {
+  const { id } = await context.params;
+  const numericId = parseInt(id);
+
+  if (isNaN(numericId)) {
+    return NextResponse.json(
+      { error: "Invalid academic level ID." },
+      { status: 400 }
+    );
+  }
+
+  await prisma.academicLevel.delete({
+    where: { id: numericId },
+  });
+
+  return NextResponse.json({ message: "Academic level deleted successfully." });
+});
