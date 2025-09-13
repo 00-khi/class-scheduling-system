@@ -1,22 +1,44 @@
 import { NextResponse } from "next/server";
 
+type FieldType = "string" | "number" | "boolean" | "array" | "object";
+
 export async function validateRequestBody<T>(
   request: Request,
-  requiredFields: (keyof T)[]
-): Promise<{ data: T; error?: NextResponse }> {
-  const body = await request.json();
+  requiredFields: { key: keyof T; type: FieldType }[]
+): Promise<{ rawData: T; error?: NextResponse }> {
+  const rawData = await request.json();
 
-  for (const field of requiredFields) {
-    if (!body[field]) {
+  for (const { key, type } of requiredFields) {
+    const value = rawData[key];
+
+    if (value === undefined || value === null || value === "") {
       return {
-        data: body,
+        rawData,
         error: NextResponse.json(
-          { error: `Missing required field: ${String(field)}` },
+          { error: `Missing required field: ${String(key)}` },
+          { status: 400 }
+        ),
+      };
+    }
+
+    const actualType = Array.isArray(value) ? "array" : typeof value;
+
+    if (actualType !== type) {
+      return {
+        rawData,
+        error: NextResponse.json(
+          {
+            error: `Invalid type for field ${String(
+              key
+            )}. Expected ${type}, got ${actualType}.`,
+          },
           { status: 400 }
         ),
       };
     }
   }
 
-  return { data: body, error: undefined };
+  
+
+  return { rawData, error: undefined };
 }
