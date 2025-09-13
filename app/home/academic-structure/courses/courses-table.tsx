@@ -1,7 +1,7 @@
 "use client";
 
 import { useManageEntities } from "@/hooks/use-manage-entities";
-import { createApiClient } from "@/lib/api-client";
+import { createApiClient } from "@/lib/api/api-client";
 import {
   handleAddEntity,
   handleDeleteEntity,

@@ -28,7 +28,7 @@ import {
 } from "@/ui/components/data-table-columns";
 import { useManageEntities } from "@/hooks/use-manage-entities";
 import { AcademicQualification } from "@prisma/client";
-import { createApiClient } from "@/lib/api-client";
+import { createApiClient } from "@/lib/api/api-client";
 
 export default function AcademicQualificationsTable() {
   const ENTITY_NAME = "Academic Qualification";

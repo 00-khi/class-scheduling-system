@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
-import { createApiHandler } from "@/lib/api-handler";
+import { createApiHandler } from "@/lib/api/api-handler";
 import { capitalizeEachWord, toUppercase } from "@/lib/utils";
 
 // GET /api/academic-qualifications/[id]

@@ -1,4 +1,4 @@
-import { createApiHandler } from "@/lib/api-handler";
+import { createApiHandler } from "@/lib/api/api-handler";
 import { prisma } from "@/lib/prisma";
 import { capitalizeEachWord, toUppercase } from "@/lib/utils";
 import { validateAcademicLevelYears } from "@/lib/validators";

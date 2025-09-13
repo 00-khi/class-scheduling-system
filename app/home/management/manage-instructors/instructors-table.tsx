@@ -33,7 +33,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { PlusIcon } from "lucide-react";
 import { toast } from "sonner";
 import { useManageEntities } from "@/hooks/use-manage-entities";
-import { createApiClient } from "@/lib/api-client";
+import { createApiClient } from "@/lib/api/api-client";
 
 export default function InstructorsTable() {
   const ENTITY_NAME = "Instructor";
