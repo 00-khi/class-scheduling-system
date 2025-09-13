@@ -54,14 +54,32 @@ model Instructor {
 }
 
 model AcademicLevel {
-  id Int @id @default(autoincrement())
-  code String @unique
-  name String @unique
-  yearList Json @default("[]")
+  id       Int    @id @default(autoincrement())
+  code     String @unique
+  name     String @unique
+  yearList Json   @default("[]")
 
-  yearStart Int
+  yearStart     Int
   numberOfYears Int
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // Relations
+  Course Course[]
+}
+
+model Course {
+  id   Int    @id @default(autoincrement())
+  code String @unique
+  name String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Foreign keys
+  academicLevelId Int
+
+  // Relations
+  academicLevel AcademicLevel? @relation(fields: [academicLevelId], references: [id])
 }
