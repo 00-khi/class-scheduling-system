@@ -38,8 +38,8 @@ model AcademicQualification {
 }
 
 model Instructor {
-  id   Int    @id @default(autoincrement())
-  name String @unique
+  id     Int              @id @default(autoincrement())
+  name   String           @unique
   status InstructorStatus
 
   createdAt DateTime @default(now())
@@ -51,4 +51,14 @@ model Instructor {
   // Relations
   academicQualification AcademicQualification? @relation(fields: [academicQualificationId], references: [id])
   // schedules ScheduleOfInstructor[]
+}
+
+model AcademicLevel {
+  id Int @id @default(autoincrement())
+  code String @unique
+  name String @unique
+  years Json @default("[]")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
