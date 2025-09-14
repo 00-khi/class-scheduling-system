@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-type FieldType = "string" | "number" | "boolean" | "array" | "object";
+export type FieldType = "string" | "number" | "boolean" | "array" | "object";
 
 export async function validateRequestBody<T>(
   request: Request,
