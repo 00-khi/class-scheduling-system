@@ -91,7 +91,7 @@ export async function validatePartialRequestBody<T>(
 }
 
 export async function validateIdParam(context: {
-  params: { id: string };
+  params: Promise<Record<string, string>>;
 }): Promise<{ id?: number; error?: NextResponse }> {
   const { id } = await context.params;
   const numericId = parseInt(id);
