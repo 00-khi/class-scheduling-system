@@ -93,7 +93,7 @@ export async function validatePartialRequestBody<T>(
 export async function validateIdParam(context: {
   params: { id: string };
 }): Promise<{ id?: number; error?: NextResponse }> {
-  const { id } = context.params;
+  const { id } = await context.params;
   const numericId = parseInt(id);
 
   if (isNaN(numericId)) {
