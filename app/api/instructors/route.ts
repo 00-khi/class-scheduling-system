@@ -35,13 +35,6 @@ export const POST = createApiHandler(async (request) => {
 
   const validStatuses = Object.values(InstructorStatus);
 
-  if (isNaN(academicQualificationId)) {
-    return NextResponse.json(
-      { error: "Invalid academic qualification ID." },
-      { status: 400 }
-    );
-  }
-
   if (!validStatuses.includes(status)) {
     return NextResponse.json(
       {

@@ -45,22 +45,6 @@ export const POST = createApiHandler(async (request) => {
   const yearStart = rawData.yearStart;
   const numberOfYears = rawData.numberOfYears;
 
-  console.log(yearStart);
-
-  if (isNaN(yearStart)) {
-    return NextResponse.json(
-      { error: "Invalid starting number." },
-      { status: 400 }
-    );
-  }
-
-  if (isNaN(numberOfYears)) {
-    return NextResponse.json(
-      { error: "Invalid number of years." },
-      { status: 400 }
-    );
-  }
-
   if (yearStart < 0 || numberOfYears < 0) {
     return NextResponse.json(
       { error: "Starting year and number of years must not be negative." },

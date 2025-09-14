@@ -33,13 +33,6 @@ export const POST = createApiHandler(async (request) => {
   const name = capitalizeEachWord(rawData.name);
   const academicLevelId = rawData.academicLevelId;
 
-  if (isNaN(academicLevelId)) {
-    return NextResponse.json(
-      { error: "Invalid academic level ID." },
-      { status: 400 }
-    );
-  }
-
   const data = { name, academicLevelId, code };
 
   const newCourse = await prisma.course.create({
