@@ -8,7 +8,7 @@ type CollectionHandlerOptions<T> = {
   orderBy?: object;
   requiredFields?: { key: keyof T; type: FieldType }[];
   validateCreate?: (rawData: T) => Promise<NextResponse | void>;
-  transformCreate?: (rawData: T) => any; // format before saving
+  transform?: (rawData: T) => any; // format before saving
   formatResponse?: (entity: any) => any;
 };
 
@@ -21,7 +21,7 @@ export function createEntityCollectionHandlers<T>(
     orderBy,
     requiredFields,
     validateCreate,
-    transformCreate,
+    transform,
     formatResponse,
   } = options;
 
@@ -55,7 +55,7 @@ export function createEntityCollectionHandlers<T>(
         if (validationError) return validationError;
       }
 
-      const data = transformCreate ? transformCreate(rawData) : rawData;
+      const data = transform ? transform(rawData) : rawData;
 
       const newEntity = await modelDelegate.create({
         data,

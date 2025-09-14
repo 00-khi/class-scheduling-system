@@ -8,12 +8,19 @@ type HandlerOptions<T> = {
   include?: object; // Prisma include if needed
   allowedFields?: { key: keyof T; type: FieldType }[]; // For PUT
   validateUpdate?: (data: Partial<T>) => Promise<NextResponse | void>; // custom validation logic
+  transform?: (rawData: Partial<T>) => any; // format before saving
   formatResponse?: (entity: any) => any; // optional formatter
 };
 
 export function createEntityHandlers<T>(options: HandlerOptions<T>) {
-  const { model, include, allowedFields, validateUpdate, formatResponse } =
-    options;
+  const {
+    model,
+    include,
+    allowedFields,
+    validateUpdate,
+    transform,
+    formatResponse,
+  } = options;
 
   const modelDelegate = (prisma as any)[model];
 
@@ -58,9 +65,12 @@ export function createEntityHandlers<T>(options: HandlerOptions<T>) {
         if (validationError) return validationError;
       }
 
+      // Transform the data before saving if transformUpdate exists
+      const transformedData = transform ? transform(data) : data;
+
       const updatedEntity = await modelDelegate.update({
         where: { id },
-        data,
+        data: transformedData,
       });
 
       return NextResponse.json(
