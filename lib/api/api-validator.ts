@@ -38,7 +38,54 @@ export async function validateRequestBody<T>(
     }
   }
 
-  
-
   return { rawData, error: undefined };
+}
+
+export async function validatePartialRequestBody<T>(
+  request: Request,
+  allowedFields: { key: keyof T; type: FieldType }[]
+): Promise<{ data: Partial<T>; error?: NextResponse }> {
+  const rawData = await request.json();
+  const data: Partial<T> = {};
+
+  for (const { key, type } of allowedFields) {
+    const value = rawData[key as string];
+
+    if (value !== undefined && value !== null && value !== "") {
+      const actualType = Array.isArray(value) ? "array" : typeof value;
+
+      if (actualType !== type) {
+        return {
+          data,
+          error: NextResponse.json(
+            {
+              error: `Invalid type for field ${String(
+                key
+              )}. Expected ${type}, got ${actualType}.`,
+            },
+            { status: 400 }
+          ),
+        };
+      }
+
+      data[key] = value;
+    }
+  }
+
+  if (Object.keys(data).length === 0) {
+    const allowedKeys = allowedFields.map((f) => String(f.key));
+    return {
+      data,
+      error: NextResponse.json(
+        {
+          error: `At least one valid field is required. Allowed fields: ${allowedKeys.join(
+            ", "
+          )}.`,
+        },
+        { status: 400 }
+      ),
+    };
+  }
+
+  return { data, error: undefined };
 }
