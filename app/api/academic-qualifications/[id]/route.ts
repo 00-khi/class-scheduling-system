@@ -4,21 +4,19 @@ import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { createApiHandler } from "@/lib/api/api-handler";
 import { capitalizeEachWord, toUppercase } from "@/lib/utils";
+import {
+  validateIdParam,
+  validatePartialRequestBody,
+} from "@/lib/api/api-validator";
+import { AcademicQualification } from "@prisma/client";
 
 // GET /api/academic-qualifications/[id]
 export const GET = createApiHandler(async (request, context) => {
-  const { id } = await context.params;
-  const numericId = parseInt(id);
-
-  if (isNaN(numericId)) {
-    return NextResponse.json(
-      { error: "Invalid academic qualification ID." },
-      { status: 400 }
-    );
-  }
+  const { id, invalidId } = await validateIdParam(context);
+  if (invalidId) return invalidId;
 
   const academicQualification = await prisma.academicQualification.findUnique({
-    where: { id: numericId },
+    where: { id },
   });
 
   if (!academicQualification) {
@@ -33,43 +31,35 @@ export const GET = createApiHandler(async (request, context) => {
 
 // PUT /api/academic-qualifications/[id]
 export const PUT = createApiHandler(async (request, context) => {
-  const { id } = await context.params;
-  const numericId = parseInt(id);
-
-  if (isNaN(numericId)) {
-    return NextResponse.json(
-      { error: "Invalid academic qualification ID." },
-      { status: 400 }
-    );
-  }
+  const { id, invalidId } = await validateIdParam(context);
+  if (invalidId) return invalidId;
 
   if (!request) {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
 
-  const rawData = await request.json();
+  const { data, error } =
+    await validatePartialRequestBody<AcademicQualification>(request, [
+      { key: "code", type: "string" },
+      { key: "name", type: "string" },
+    ]);
 
-  const data: any = {};
+  if (error) return error;
 
-  if (rawData.code) {
-    data.code = toUppercase(rawData.code);
+  const updatedData: any = {};
+
+  if (data.code) {
+    updatedData.code = toUppercase(data.code);
   }
 
-  if (rawData.name) {
-    data.name = capitalizeEachWord(rawData.name);
-  }
-
-  if (Object.keys(data).length === 0) {
-    return NextResponse.json(
-      { error: "No valid fields to update." },
-      { status: 400 }
-    );
+  if (data.name) {
+    updatedData.name = capitalizeEachWord(data.name);
   }
 
   const updatedAcademicQualification =
     await prisma.academicQualification.update({
-      where: { id: numericId },
-      data,
+      where: { id },
+      data: updatedData,
     });
 
   return NextResponse.json(updatedAcademicQualification);
@@ -77,18 +67,11 @@ export const PUT = createApiHandler(async (request, context) => {
 
 // DELETE /api/academic-qualifications/[id]
 export const DELETE = createApiHandler(async (request, context) => {
-  const { id } = await context.params;
-  const numericId = parseInt(id);
-
-  if (isNaN(numericId)) {
-    return NextResponse.json(
-      { error: "Invalid academic qualification ID." },
-      { status: 400 }
-    );
-  }
+  const { id, invalidId } = await validateIdParam(context);
+  if (invalidId) return invalidId;
 
   await prisma.academicQualification.delete({
-    where: { id: numericId },
+    where: { id },
   });
 
   return NextResponse.json({

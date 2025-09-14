@@ -1,22 +1,20 @@
 import { createApiHandler } from "@/lib/api/api-handler";
+import {
+  validateIdParam,
+  validatePartialRequestBody,
+} from "@/lib/api/api-validator";
 import { prisma } from "@/lib/prisma";
 import { capitalizeEachWord, toUppercase } from "@/lib/utils";
 import { validateAcademicLevelYears } from "@/lib/validators";
+import { AcademicLevel } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 export const GET = createApiHandler(async (request, context) => {
-  const { id } = await context.params;
-  const numericId = parseInt(id);
-
-  if (isNaN(numericId)) {
-    return NextResponse.json(
-      { error: "Invalid academic level ID." },
-      { status: 400 }
-    );
-  }
+  const { id, invalidId } = await validateIdParam(context);
+  if (invalidId) return invalidId;
 
   const academicLevel = await prisma.academicLevel.findUnique({
-    where: { id: numericId },
+    where: { id },
   });
 
   if (!academicLevel) {
@@ -36,94 +34,76 @@ export const GET = createApiHandler(async (request, context) => {
 });
 
 export const PUT = createApiHandler(async (request, context) => {
-  const { id } = await context.params;
-  const numericId = parseInt(id);
-
-  if (isNaN(numericId)) {
-    return NextResponse.json(
-      { error: "Invalid academic qualification ID." },
-      { status: 400 }
-    );
-  }
+  const { id, invalidId } = await validateIdParam(context);
+  if (invalidId) return invalidId;
 
   if (!request) {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
 
-  const rawData = await request.json();
+  const { data, error } = await validatePartialRequestBody<AcademicLevel>(
+    request,
+    [
+      { key: "code", type: "string" },
+      { key: "name", type: "string" },
+      { key: "yearStart", type: "number" },
+      { key: "numberOfYears", type: "number" },
+    ]
+  );
 
-  const data: any = {};
+  if (error) return error;
 
-  if (rawData.code) {
-    data.code = toUppercase(rawData.code);
+  const updatedData: any = {};
+
+  if (data.code) {
+    updatedData.code = toUppercase(data.code);
   }
 
-  if (rawData.name) {
-    data.name = capitalizeEachWord(rawData.name);
+  if (data.name) {
+    updatedData.name = capitalizeEachWord(data.name);
   }
 
-  if (rawData.yearStart && rawData.numberOfYears) {
-    const yearStart = parseInt(rawData.yearStart);
-    const numberOfYears = parseInt(rawData.numberOfYears);
-
-    if (isNaN(yearStart)) {
-      return NextResponse.json(
-        { error: "Invalid starting number." },
-        { status: 400 }
-      );
-    }
-
-    if (isNaN(numberOfYears)) {
-      return NextResponse.json(
-        { error: "Invalid number of years." },
-        { status: 400 }
-      );
-    }
-
-    if (yearStart < 0 || numberOfYears < 0) {
-      return NextResponse.json(
-        { error: "Starting year and number of years must not be negative." },
-        { status: 400 }
-      );
-    }
-
-    data.yearStart = yearStart;
-    data.numberOfYears = numberOfYears;
-
-    data.yearList = Array.from(
-      { length: numberOfYears },
-      (_, i) => yearStart + i
-    );
-  }
-
-  if (Object.keys(data).length === 0) {
+  if (
+    (data.yearStart && !data.numberOfYears) ||
+    (!data.yearStart && data.numberOfYears)
+  ) {
     return NextResponse.json(
       { error: "No valid fields to update." },
       { status: 400 }
     );
   }
 
+  if (data.yearStart && data.numberOfYears) {
+    if (data.yearStart < 0 || data.numberOfYears < 0) {
+      return NextResponse.json(
+        { error: "Starting year and number of years must not be negative." },
+        { status: 400 }
+      );
+    }
+
+    updatedData.yearStart = data.yearStart;
+    updatedData.numberOfYears = data.numberOfYears;
+
+    updatedData.yearList = Array.from(
+      { length: data.numberOfYears },
+      (_, i) => (data.yearStart as number) + i
+    );
+  }
+
   const updateAcademicLevel = await prisma.academicLevel.update({
-    where: { id: numericId },
-    data,
+    where: { id },
+    data: updatedData,
   });
 
   return NextResponse.json(updateAcademicLevel);
 });
 
 export const DELETE = createApiHandler(async (request, context) => {
-  const { id } = await context.params;
-  const numericId = parseInt(id);
-
-  if (isNaN(numericId)) {
-    return NextResponse.json(
-      { error: "Invalid academic level ID." },
-      { status: 400 }
-    );
-  }
+  const { id, invalidId } = await validateIdParam(context);
+  if (invalidId) return invalidId;
 
   await prisma.academicLevel.delete({
-    where: { id: numericId },
+    where: { id },
   });
 
   return NextResponse.json({ message: "Academic level deleted successfully." });

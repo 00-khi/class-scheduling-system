@@ -1,22 +1,19 @@
 import { createApiHandler } from "@/lib/api/api-handler";
+import {
+  validateIdParam,
+  validatePartialRequestBody,
+} from "@/lib/api/api-validator";
 import { prisma } from "@/lib/prisma";
 import { capitalizeEachWord, toUppercase } from "@/lib/utils";
-import { InstructorStatus } from "@prisma/client";
+import { Instructor, InstructorStatus } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 export const GET = createApiHandler(async (request, context) => {
-  const { id } = await context.params;
-  const numericId = parseInt(id);
-
-  if (isNaN(numericId)) {
-    return NextResponse.json(
-      { error: "Invalid instructor ID." },
-      { status: 400 }
-    );
-  }
+  const { id, invalidId } = await validateIdParam(context);
+  if (invalidId) return invalidId;
 
   const instructor = await prisma.instructor.findUnique({
-    where: { id: numericId },
+    where: { id },
     include: {
       academicQualification: true,
     },
@@ -33,44 +30,37 @@ export const GET = createApiHandler(async (request, context) => {
 });
 
 export const PUT = createApiHandler(async (request, context) => {
-  const { id } = await context.params;
-  const numericId = parseInt(id);
-
-  if (isNaN(numericId)) {
-    return NextResponse.json(
-      { error: "Invalid instructor ID." },
-      { status: 400 }
-    );
-  }
+  const { id, invalidId } = await validateIdParam(context);
+  if (invalidId) return invalidId;
 
   if (!request) {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
 
-  const rawData = await request.json();
+  const { data, error } = await validatePartialRequestBody<Instructor>(
+    request,
+    [
+      { key: "name", type: "string" },
+      { key: "status", type: "string" },
+      { key: "academicQualificationId", type: "number" },
+    ]
+  );
 
-  const data: any = {};
+  if (error) return error;
+
+  const updatedData: any = {};
 
   const validStatuses = Object.values(InstructorStatus);
 
-  if (rawData.name) {
-    data.name = capitalizeEachWord(rawData.name);
+  if (data.name) {
+    updatedData.name = capitalizeEachWord(data.name);
   }
 
-  if (rawData.academicQualificationId) {
-    data.academicQualificationId = parseInt(rawData.academicQualificationId);
-
-    if (isNaN(data.academicQualificationId)) {
-      return NextResponse.json(
-        { error: "Invalid academic qualification ID." },
-        { status: 400 }
-      );
-    }
+  if (data.academicQualificationId) {
+    updatedData.academicQualificationId = data.academicQualificationId;
   }
 
-  if (rawData.status) {
-    data.status = toUppercase(rawData.status) as InstructorStatus;
-
+  if (data.status) {
     if (!validStatuses.includes(data.status)) {
       return NextResponse.json(
         {
@@ -81,36 +71,24 @@ export const PUT = createApiHandler(async (request, context) => {
         { status: 400 }
       );
     }
-  }
 
-  if (Object.keys(data).length === 0) {
-    return NextResponse.json(
-      { error: "No valid fields to update." },
-      { status: 400 }
-    );
+    updatedData.status = toUppercase(data.status) as InstructorStatus;
   }
 
   const updatedInstructor = await prisma.instructor.update({
-    where: { id: numericId },
-    data,
+    where: { id },
+    data: updatedData,
   });
 
   return NextResponse.json(updatedInstructor);
 });
 
 export const DELETE = createApiHandler(async (request, context) => {
-  const { id } = await context.params;
-  const numericId = parseInt(id);
-
-  if (isNaN(numericId)) {
-    return NextResponse.json(
-      { error: "Invalid instructor ID." },
-      { status: 400 }
-    );
-  }
+  const { id, invalidId } = await validateIdParam(context);
+  if (invalidId) return invalidId;
 
   await prisma.instructor.delete({
-    where: { id: numericId },
+    where: { id },
   });
 
   return NextResponse.json({ message: "Instructor deleted successfully." });
