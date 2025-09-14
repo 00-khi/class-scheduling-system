@@ -89,3 +89,18 @@ export async function validatePartialRequestBody<T>(
 
   return { data, error: undefined };
 }
+
+export async function validateIdParam(context: {
+  params: { id: string };
+}): Promise<{ id?: number; error?: NextResponse }> {
+  const { id } = context.params;
+  const numericId = parseInt(id);
+
+  if (isNaN(numericId)) {
+    return {
+      error: NextResponse.json({ error: "Invalid ID." }, { status: 400 }),
+    };
+  }
+
+  return { id: numericId };
+}
