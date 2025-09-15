@@ -90,8 +90,8 @@ model Course {
 
 model Subject {
   id       Int      @id @default(autoincrement())
-  code     String
-  name     String
+  code     String   @unique
+  name     String   @unique
   semester Semester
   units    Int
   type     RoomType
