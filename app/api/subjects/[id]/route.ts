@@ -68,7 +68,7 @@ const handlers = createEntityHandlers<
       if (data.courses.length <= 0) {
         return NextResponse.json(
           {
-            error: "Courses must not be empty",
+            error: "Courses are required. Please add one or more.",
           },
           { status: 400 }
         );

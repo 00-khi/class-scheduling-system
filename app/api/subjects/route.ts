@@ -66,6 +66,15 @@ const handlers = createEntityCollectionHandlers<
     }
 
     if (data.courses) {
+      if (data.courses.length <= 0) {
+        return NextResponse.json(
+          {
+            error: "Courses are required. Please add one or more.",
+          },
+          { status: 400 }
+        );
+      }
+
       const invalid = data.courses.find((course, i) => {
         if (
           typeof course !== "object" ||
