@@ -138,7 +138,11 @@ function DataFormInput({
   className,
 }: FieldProps) {
   const handleChange = (value: string) => {
-    setFormData?.((prev: any) => ({ ...prev, [name]: value }));
+    // Check the type of the input to decide how to store it
+    const finalValue: string | number =
+      type === "number" ? Number(value) : value;
+
+    setFormData?.((prev: any) => ({ ...prev, [name]: finalValue }));
     if (onValueChange) {
       onValueChange(value); // call the callback if provided
     }
@@ -180,7 +184,6 @@ function DataFormSelect({
   const handleChange = (value: string) => {
     // Check the type of the option to decide how to store it
     const selectedOption = options.find((opt) => String(opt.value) === value);
-
     const finalValue: string | number =
       selectedOption && typeof selectedOption.value === "number"
         ? Number(value)
