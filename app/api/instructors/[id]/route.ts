@@ -15,7 +15,10 @@ const handlers = createEntityHandlers<Instructor>({
   validateUpdate: async (data) => {
     const validStatuses = Object.values(InstructorStatus);
 
-    if (data.status && !validStatuses.includes(data.status)) {
+    if (
+      data.status &&
+      !validStatuses.includes(toUppercase(data.status) as InstructorStatus)
+    ) {
       return NextResponse.json(
         { error: `Invalid status. Must be: ${validStatuses.join(", ")}` },
         { status: 400 }
@@ -23,9 +26,10 @@ const handlers = createEntityHandlers<Instructor>({
     }
   },
   transform: (data) => {
-    const transformed = data;
+    const transformed = { ...data };
 
     if (data.name) transformed.name = capitalizeEachWord(data.name);
+
     if (data.status)
       transformed.status = toUppercase(data.status) as InstructorStatus;
 

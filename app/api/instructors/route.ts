@@ -15,9 +15,11 @@ const handlers = createEntityCollectionHandlers<Instructor>({
   ],
   validateCreate: async (data) => {
     const validStatuses = Object.values(InstructorStatus);
-    const status = toUppercase(data.status) as InstructorStatus;
 
-    if (!validStatuses.includes(status)) {
+    if (
+      data.status &&
+      !validStatuses.includes(toUppercase(data.status) as InstructorStatus)
+    ) {
       return NextResponse.json(
         {
           error: `Invalid status. Must be: ${validStatuses.join(", ")}`,
@@ -27,12 +29,14 @@ const handlers = createEntityCollectionHandlers<Instructor>({
     }
   },
   transform: (data) => {
-    const transformed = data;
+    const transformed = { ...data };
 
-    transformed.name = capitalizeEachWord(data.name);
-    transformed.status = toUppercase(data.status) as InstructorStatus;
+    if (data.name) transformed.name = capitalizeEachWord(data.name);
 
-    return transformed;
+    if (data.status)
+      transformed.status = toUppercase(data.status) as InstructorStatus;
+
+    console.log(transformed);
   },
 });
 
