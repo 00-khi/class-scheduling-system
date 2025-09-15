@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { validateIdParam } from "./api-validator";
 import { validatePartialRequestBody, FieldType } from "./api-validator";
 import { prisma } from "@/lib/prisma";
+import { splitCamelCaseAndNumbers } from "../utils";
 
 type HandlerOptions<T> = {
   model: keyof typeof prisma; // Prisma model name, e.g. "instructor"
@@ -36,7 +37,7 @@ export function createEntityHandlers<T>(options: HandlerOptions<T>) {
 
       if (!entity) {
         return NextResponse.json(
-          { error: `${String(model)} not found.` },
+          { error: `${splitCamelCaseAndNumbers(String(model))} not found.` },
           { status: 404 }
         );
       }
@@ -85,7 +86,7 @@ export function createEntityHandlers<T>(options: HandlerOptions<T>) {
       await modelDelegate.delete({ where: { id } });
 
       return NextResponse.json({
-        message: `${String(model)} deleted successfully.`,
+        message: `${splitCamelCaseAndNumbers(String(model))} deleted successfully.`,
       });
     },
   };
