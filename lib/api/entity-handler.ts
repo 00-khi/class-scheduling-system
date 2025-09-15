@@ -8,7 +8,7 @@ type HandlerOptions<T> = {
   include?: object; // Prisma include if needed
   allowedFields?: { key: keyof T; type: FieldType }[]; // For PUT
   validateUpdate?: (data: Partial<T>) => Promise<NextResponse | void>; // custom validation logic
-  transform?: (rawData: Partial<T>) => any; // format before saving
+  transform: (rawData: Partial<T>) => any; // format before saving
   formatResponse?: (entity: any) => any; // optional formatter
 };
 

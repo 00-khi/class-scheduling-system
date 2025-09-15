@@ -8,7 +8,7 @@ type CollectionHandlerOptions<T> = {
   orderBy?: object;
   requiredFields?: { key: keyof T; type: FieldType }[];
   validateCreate?: (rawData: T) => Promise<NextResponse | void>;
-  transform?: (rawData: T) => any; // format before saving
+  transform: (rawData: T) => any; // format before saving
   formatResponse?: (entity: any) => any;
 };
 
