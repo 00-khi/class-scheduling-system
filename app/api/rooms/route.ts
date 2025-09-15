@@ -1,52 +1,46 @@
 import { createApiHandler } from "@/lib/api/api-handler";
 import { validateRequestBody } from "@/lib/api/api-validator";
+import { createEntityCollectionHandlers } from "@/lib/api/entity-collection-handler";
 import { prisma } from "@/lib/prisma";
 import { capitalizeEachWord } from "@/lib/utils";
 import { Room, RoomType } from "@prisma/client";
 import { request } from "http";
 import { NextResponse } from "next/server";
 
-export const GET = createApiHandler(async () => {
-  const rooms = await prisma.room.findMany({
-    orderBy: { updatedAt: "desc" },
-  });
-
-  return NextResponse.json(rooms);
-});
-
-export const POST = createApiHandler(async (request) => {
-  if (!request) {
-    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
-  }
-
-  const { rawData, error } = await validateRequestBody<Room>(request, [
+const handlers = createEntityCollectionHandlers<Room>({
+  model: "room",
+  orderBy: { updatedAt: "desc" },
+  requiredFields: [
     { key: "name", type: "string" },
     { key: "type", type: "string" },
-  ]);
+  ],
+  validateCreate: async (data) => {
+    const validRoomTypes = Object.values(RoomType);
 
-  if (error) return error;
+    if (
+      data.type &&
+      !validRoomTypes.includes(capitalizeEachWord(data.type) as RoomType)
+    ) {
+      return NextResponse.json(
+        {
+          error: `Invalid room type value. It must be one of: ${validRoomTypes.join(
+            ", "
+          )}`,
+        },
+        { status: 400 }
+      );
+    }
+  },
+  transform: (data) => {
+    const transformed = { ...data };
 
-  const name = capitalizeEachWord(rawData.name);
-  const type = capitalizeEachWord(rawData.type) as RoomType;
+    if (data.name) transformed.name = capitalizeEachWord(data.name);
 
-  const validRoomTypes = Object.values(RoomType);
+    if (data.type) transformed.type = capitalizeEachWord(data.type) as RoomType;
 
-  if (!validRoomTypes.includes(type)) {
-    return NextResponse.json(
-      {
-        error: `Invalid room type value. It must be one of: ${validRoomTypes.join(
-          ", "
-        )}`,
-      },
-      { status: 400 }
-    );
-  }
-
-  const data = { name, type };
-
-  const newRoom = await prisma.room.create({
-    data,
-  });
-
-  return NextResponse.json(newRoom, { status: 201 });
+    return transformed;
+  },
 });
+
+export const GET = createApiHandler(handlers.GET);
+export const POST = createApiHandler(handlers.POST);

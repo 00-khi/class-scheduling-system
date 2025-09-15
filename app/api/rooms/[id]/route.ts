@@ -3,51 +3,25 @@ import {
   validateIdParam,
   validatePartialRequestBody,
 } from "@/lib/api/api-validator";
+import { createEntityHandlers } from "@/lib/api/entity-handler";
 import { prisma } from "@/lib/prisma";
 import { capitalizeEachWord } from "@/lib/utils";
 import { Room, RoomType } from "@prisma/client";
 import { NextResponse } from "next/server";
 
-export const GET = createApiHandler(async (request, context) => {
-  const { id, invalidId } = await validateIdParam(context);
-  if (invalidId) return invalidId;
-
-  const room = await prisma.room.findUnique({
-    where: { id },
-  });
-
-  if (!room) {
-    return NextResponse.json({ error: "Room not found." }, { status: 404 });
-  }
-
-  return NextResponse.json(room);
-});
-
-export const PUT = createApiHandler(async (request, context) => {
-  const { id, invalidId } = await validateIdParam(context);
-  if (invalidId) return invalidId;
-
-  if (!request) {
-    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
-  }
-
-  const { data, error } = await validatePartialRequestBody<Room>(request, [
+const handlers = createEntityHandlers<Room>({
+  model: "room",
+  allowedFields: [
     { key: "name", type: "string" },
     { key: "type", type: "string" },
-  ]);
+  ],
+  validateUpdate: async (data) => {
+    const validRoomTypes = Object.values(RoomType);
 
-  if (error) return error;
-
-  const updatedData: any = {};
-
-  const validRoomTypes = Object.values(RoomType);
-
-  if (data.name) {
-    updatedData.name = capitalizeEachWord(data.name);
-  }
-
-  if (data.type) {
-    if (!validRoomTypes.includes(data.type)) {
+    if (
+      data.type &&
+      !validRoomTypes.includes(capitalizeEachWord(data.type) as RoomType)
+    ) {
       return NextResponse.json(
         {
           error: `Invalid room type value. It must be one of: ${validRoomTypes.join(
@@ -57,25 +31,18 @@ export const PUT = createApiHandler(async (request, context) => {
         { status: 400 }
       );
     }
+  },
+  transform: (data) => {
+    const transformed = { ...data };
 
-    updatedData.status = capitalizeEachWord(data.type) as RoomType;
-  }
+    if (data.name) transformed.name = capitalizeEachWord(data.name);
 
-  const updatedRoom = await prisma.room.update({
-    where: { id },
-    data: updatedData,
-  });
+    if (data.type) transformed.type = capitalizeEachWord(data.type) as RoomType;
 
-  return NextResponse.json(updatedRoom);
+    return transformed;
+  },
 });
 
-export const DELETE = createApiHandler(async (request, context) => {
-  const { id, invalidId } = await validateIdParam(context);
-  if (invalidId) return invalidId;
-
-  await prisma.room.delete({
-    where: { id },
-  });
-
-  return NextResponse.json({ message: "Room deleted successfully." });
-});
+export const GET = createApiHandler(handlers.GET);
+export const PUT = createApiHandler(handlers.PUT);
+export const DELETE = createApiHandler(handlers.DELETE);
