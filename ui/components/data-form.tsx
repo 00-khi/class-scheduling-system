@@ -178,7 +178,15 @@ function DataFormSelect({
   onValueChange,
 }: SelectProps) {
   const handleChange = (value: string) => {
-    setFormData?.((prev: any) => ({ ...prev, [name]: value }));
+    // Check the type of the option to decide how to store it
+    const selectedOption = options.find((opt) => String(opt.value) === value);
+
+    const finalValue: string | number =
+      selectedOption && typeof selectedOption.value === "number"
+        ? Number(value)
+        : value;
+
+    setFormData?.((prev: any) => ({ ...prev, [name]: finalValue }));
     if (onValueChange) {
       onValueChange(value); // call the callback if provided
     }
@@ -190,7 +198,7 @@ function DataFormSelect({
     <div className="space-y-2">
       <Label htmlFor={name}>{label}</Label>
       <Select
-        value={formData?.[name] != null ? String(formData[name]) : ""}
+        value={formData?.[name] ?? ""}
         onValueChange={handleChange}
         disabled={disabled || isLoading || !hasOptions}
         required={required}
