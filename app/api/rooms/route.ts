@@ -1,10 +1,7 @@
 import { createApiHandler } from "@/lib/api/api-handler";
-import { validateRequestBody } from "@/lib/api/api-validator";
 import { createEntityCollectionHandlers } from "@/lib/api/entity-collection-handler";
-import { prisma } from "@/lib/prisma";
 import { capitalizeEachWord } from "@/lib/utils";
 import { Room, RoomType } from "@prisma/client";
-import { request } from "http";
 import { NextResponse } from "next/server";
 
 const handlers = createEntityCollectionHandlers<Room>({

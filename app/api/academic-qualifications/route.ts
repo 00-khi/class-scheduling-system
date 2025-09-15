@@ -1,8 +1,5 @@
-import { prisma } from "@/lib/prisma";
-import { NextResponse } from "next/server";
 import { createApiHandler } from "@/lib/api/api-handler";
 import { capitalizeEachWord, toUppercase } from "@/lib/utils";
-import { validateRequestBody } from "@/lib/api/api-validator";
 import { AcademicQualification } from "@prisma/client";
 import { createEntityCollectionHandlers } from "@/lib/api/entity-collection-handler";
 

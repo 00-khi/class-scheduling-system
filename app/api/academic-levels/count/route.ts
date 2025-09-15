@@ -6,6 +6,7 @@ export async function GET() {
     const count = await prisma.academicLevel.count();
     return NextResponse.json({ count });
   } catch (error) {
+    console.error(`ERROR GETTING COUNT: ${error}`);
     return NextResponse.json(
       { error: "Failed to get academic levels count" },
       { status: 500 }

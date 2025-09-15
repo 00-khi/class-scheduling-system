@@ -1,12 +1,6 @@
 import { createApiHandler } from "@/lib/api/api-handler";
-import {
-  validateIdParam,
-  validatePartialRequestBody,
-} from "@/lib/api/api-validator";
 import { createEntityHandlers } from "@/lib/api/entity-handler";
-import { prisma } from "@/lib/prisma";
 import { capitalizeEachWord, toUppercase } from "@/lib/utils";
-import { validateAcademicLevelYears } from "@/lib/validators";
 import { AcademicLevel } from "@prisma/client";
 import { NextResponse } from "next/server";
 

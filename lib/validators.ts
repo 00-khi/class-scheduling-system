@@ -33,7 +33,7 @@ export function validateAcademicLevelYears(
     console.error(
       `Failed to parse 'yearList' field for academic level ${
         levelId ?? "unknown"
-      }`
+      } ERROR: ${e}`
     );
     return [];
   }
