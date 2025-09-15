@@ -36,7 +36,7 @@ export default function CoursesTable() {
 
   const courseApi = createApiClient<Course>("/api/courses");
   const academicLevelApi = createApiClient<AcademicLevel>(
-    "api/academic-levels"
+    "/api/academic-levels"
   );
 
   const entityManagement = useManageEntities<Course>({
