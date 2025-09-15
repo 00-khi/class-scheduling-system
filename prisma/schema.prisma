@@ -114,8 +114,8 @@ model CourseSubject {
   courseId  Int
   subjectId Int
 
-  course  Course  @relation(fields: [courseId], references: [id])
-  subject Subject @relation(fields: [subjectId], references: [id])
+  course  Course  @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  subject Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
 
   // A unique constraint to prevent duplicate entries (e.g., a subject can only be
   // associated with a specific course and year once).
