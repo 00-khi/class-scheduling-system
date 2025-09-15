@@ -13,9 +13,9 @@ const handlers = createEntityCollectionHandlers<Instructor>({
     { key: "academicQualificationId", type: "number" },
     { key: "status", type: "string" },
   ],
-  validateCreate: async (rawData) => {
+  validateCreate: async (data) => {
     const validStatuses = Object.values(InstructorStatus);
-    const status = toUppercase(rawData.status) as InstructorStatus;
+    const status = toUppercase(data.status) as InstructorStatus;
 
     if (!validStatuses.includes(status)) {
       return NextResponse.json(
