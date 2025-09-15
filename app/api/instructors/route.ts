@@ -36,7 +36,7 @@ const handlers = createEntityCollectionHandlers<Instructor>({
     if (data.status)
       transformed.status = toUppercase(data.status) as InstructorStatus;
 
-    console.log(transformed);
+    return transformed;
   },
 });
 
