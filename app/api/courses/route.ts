@@ -1,43 +1,32 @@
 import { createApiHandler } from "@/lib/api/api-handler";
 import { validateRequestBody } from "@/lib/api/api-validator";
+import { createEntityCollectionHandlers } from "@/lib/api/entity-collection-handler";
 import { prisma } from "@/lib/prisma";
 import { capitalizeEachWord, toUppercase } from "@/lib/utils";
 import { Course } from "@prisma/client";
 import { NextResponse } from "next/server";
 
-export const GET = createApiHandler(async () => {
-  const courses = await prisma.course.findMany({
-    include: {
-      academicLevel: true,
-    },
-    orderBy: { updatedAt: "desc" },
-  });
-
-  return NextResponse.json(courses);
-});
-
-export const POST = createApiHandler(async (request) => {
-  if (!request) {
-    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
-  }
-
-  const { rawData, error } = await validateRequestBody<Course>(request, [
+const handlers = createEntityCollectionHandlers<Course>({
+  model: "course",
+  include: {
+    academicLevel: true,
+  },
+  orderBy: { updatedAt: "desc" },
+  requiredFields: [
     { key: "code", type: "string" },
     { key: "name", type: "string" },
     { key: "academicLevelId", type: "number" },
-  ]);
+  ],
+  transform: (data) => {
+    const transformed = { ...data };
 
-  if (error) return error;
+    if (data.code) transformed.code = toUppercase(data.code);
 
-  const code = toUppercase(rawData.code);
-  const name = capitalizeEachWord(rawData.name);
-  const academicLevelId = rawData.academicLevelId;
+    if (data.name) transformed.name = capitalizeEachWord(data.name);
 
-  const data = { name, academicLevelId, code };
-
-  const newCourse = await prisma.course.create({
-    data,
-  });
-
-  return NextResponse.json(newCourse, { status: 201 });
+    return transformed;
+  },
 });
+
+export const GET = createApiHandler(handlers.GET);
+export const POST = createApiHandler(handlers.POST);
