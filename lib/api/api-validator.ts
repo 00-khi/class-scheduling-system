@@ -5,15 +5,16 @@ export type FieldType = "string" | "number" | "boolean" | "array" | "object";
 export async function validateRequestBody<T>(
   request: Request,
   requiredFields: { key: keyof T; type: FieldType }[]
-): Promise<{ rawData: T; error?: NextResponse }> {
+): Promise<{ rawData: Partial<T>; error?: NextResponse }> {
   const rawData = await request.json();
+  const validatedData: Partial<T> = {};
 
   for (const { key, type } of requiredFields) {
     const value = rawData[key];
 
     if (value === undefined || value === null || value === "") {
       return {
-        rawData,
+        rawData: validatedData,
         error: NextResponse.json(
           { error: `Missing required field: ${String(key)}` },
           { status: 400 }
@@ -22,10 +23,9 @@ export async function validateRequestBody<T>(
     }
 
     const actualType = Array.isArray(value) ? "array" : typeof value;
-
     if (actualType !== type) {
       return {
-        rawData,
+        rawData: validatedData,
         error: NextResponse.json(
           {
             error: `Invalid type for field ${String(
@@ -36,9 +36,11 @@ export async function validateRequestBody<T>(
         ),
       };
     }
+
+    validatedData[key] = value;
   }
 
-  return { rawData, error: undefined };
+  return { rawData: validatedData, error: undefined };
 }
 
 export async function validatePartialRequestBody<T>(
