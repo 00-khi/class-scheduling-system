@@ -28,6 +28,11 @@ enum RoomType {
   Laboratory
 }
 
+enum Semester {
+  First
+  Second
+}
+
 // ----- Models -----
 
 model AcademicQualification {
@@ -38,7 +43,6 @@ model AcademicQualification {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // Relations
   instructors Instructor[]
 }
 
@@ -50,12 +54,8 @@ model Instructor {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // Foreign keys
   academicQualificationId Int
-
-  // Relations
-  academicQualification AcademicQualification? @relation(fields: [academicQualificationId], references: [id])
-  // schedules ScheduleOfInstructor[]
+  academicQualification   AcademicQualification? @relation(fields: [academicQualificationId], references: [id])
 }
 
 model AcademicLevel {
@@ -70,8 +70,8 @@ model AcademicLevel {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // Relations
   courses Course[]
+  Subject Subject[]
 }
 
 model Course {
@@ -82,11 +82,44 @@ model Course {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // Foreign keys
   academicLevelId Int
+  academicLevel   AcademicLevel? @relation(fields: [academicLevelId], references: [id])
 
-  // Relations
-  academicLevel AcademicLevel? @relation(fields: [academicLevelId], references: [id])
+  CourseSubject CourseSubject[]
+}
+
+model Subject {
+  id       Int      @id @default(autoincrement())
+  code     String
+  name     String
+  semester Semester
+  units    Int
+  type     RoomType
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  academicLevelId Int
+  academicLevel   AcademicLevel @relation(fields: [academicLevelId], references: [id])
+
+  courses CourseSubject[]
+}
+
+// This is the intermediate join table to link Subjects and Courses
+// and store the specific year for each link.
+model CourseSubject {
+  id   Int @id @default(autoincrement())
+  year Int
+
+  courseId  Int
+  subjectId Int
+
+  course  Course  @relation(fields: [courseId], references: [id])
+  subject Subject @relation(fields: [subjectId], references: [id])
+
+  // A unique constraint to prevent duplicate entries (e.g., a subject can only be
+  // associated with a specific course and year once).
+  @@unique([subjectId, courseId, year])
 }
 
 model Room {
