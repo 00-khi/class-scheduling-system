@@ -129,7 +129,7 @@ export default function CoursesTable() {
 
   const academicLevelOptions = academicLevels.map((al) => ({
     label: al.name,
-    value: String(al.id),
+    value: al.id,
   }));
 
   return (

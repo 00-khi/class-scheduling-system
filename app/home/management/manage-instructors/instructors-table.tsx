@@ -134,7 +134,7 @@ export default function InstructorsTable() {
 
   const academicQualificationOptions = academicQualifications.map((aq) => ({
     label: aq.name,
-    value: String(aq.id),
+    value: aq.id,
   }));
 
   const statusOptions = Object.values(InstructorStatus).map((status) => ({
