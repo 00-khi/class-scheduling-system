@@ -1,73 +1,66 @@
 import { createApiHandler } from "@/lib/api/api-handler";
 import { validateRequestBody } from "@/lib/api/api-validator";
+import { createEntityCollectionHandlers } from "@/lib/api/entity-collection-handler";
 import { prisma } from "@/lib/prisma";
 import { capitalizeEachWord, toUppercase } from "@/lib/utils";
 import { validateAcademicLevelYears } from "@/lib/validators";
 import { AcademicLevel } from "@prisma/client";
 import { NextResponse } from "next/server";
 
-export const GET = createApiHandler(async () => {
-  const academicLevels = await prisma.academicLevel.findMany({
-    include: {
-      _count: {
-        select: {
-          courses: true,
-        },
+const handlers = createEntityCollectionHandlers<AcademicLevel>({
+  model: "academicLevel",
+  include: {
+    _count: {
+      select: {
+        courses: true,
       },
     },
-    orderBy: { updatedAt: "desc" },
-  });
-
-  const sortedAndUnique = academicLevels.map((level) => ({
-    ...level,
-    yearList: validateAcademicLevelYears(level.yearList, level.id),
-  }));
-
-  return NextResponse.json(sortedAndUnique);
-});
-
-export const POST = createApiHandler(async (request) => {
-  if (!request) {
-    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
-  }
-
-  const { rawData, error } = await validateRequestBody<AcademicLevel>(request, [
+  },
+  orderBy: { updatedAt: "desc" },
+  requiredFields: [
     { key: "code", type: "string" },
     { key: "name", type: "string" },
     { key: "yearStart", type: "number" },
     { key: "numberOfYears", type: "number" },
-  ]);
+  ],
+  validateCreate: async (data) => {
+    if (
+      data.yearStart !== undefined &&
+      data.numberOfYears !== undefined &&
+      (data.yearStart <= 0 || data.numberOfYears <= 0)
+    ) {
+      return NextResponse.json(
+        {
+          error:
+            "Starting year and number of years must not be zero or negative.",
+        },
+        { status: 400 }
+      );
+    }
+  },
+  transform: (data) => {
+    const transformed = { ...data };
 
-  if (error) return error;
+    if (data.code) transformed.code = toUppercase(data.code);
 
-  const code = toUppercase(rawData.code);
-  const name = capitalizeEachWord(rawData.name);
-  const yearStart = rawData.yearStart;
-  const numberOfYears = rawData.numberOfYears;
+    if (data.name) transformed.name = capitalizeEachWord(data.name);
 
-  if (yearStart < 0 || numberOfYears < 0) {
-    return NextResponse.json(
-      { error: "Starting year and number of years must not be negative." },
-      { status: 400 }
-    );
-  }
+    if (data.numberOfYears && data.yearStart) {
+      const yearStart = Math.floor(data.yearStart);
+      const numberOfYears = Math.floor(data.numberOfYears);
+      transformed.yearList = Array.from(
+        { length: numberOfYears },
+        (_, i) => yearStart + i
+      );
+    } else {
+      transformed.yearStart = 0;
+      transformed.numberOfYears = 0;
+      transformed.yearList = [];
+    }
 
-  const yearList = Array.from(
-    { length: numberOfYears },
-    (_, i) => yearStart + i
-  );
-
-  const data = {
-    code,
-    name,
-    yearList,
-    yearStart,
-    numberOfYears,
-  };
-
-  const newAcademicLevel = await prisma.academicLevel.create({
-    data,
-  });
-
-  return NextResponse.json(newAcademicLevel, { status: 201 });
+    return transformed;
+  },
 });
+
+export const GET = createApiHandler(handlers.GET);
+export const POST = createApiHandler(handlers.POST);
