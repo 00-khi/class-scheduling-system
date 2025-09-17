@@ -20,7 +20,13 @@ const handlers = createEntityCollectionHandlers<
   Section & { totalSections: number }
 >({
   model: "section",
-  include: { course: true },
+  include: {
+    course: {
+      include: {
+        academicLevel: true,
+      },
+    },
+  },
   orderBy: { updatedAt: "desc" },
   requiredFields: [
     { key: "courseId", type: "number" },
