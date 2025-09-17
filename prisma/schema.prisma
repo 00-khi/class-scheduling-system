@@ -70,8 +70,8 @@ model AcademicLevel {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  courses Course[]
-  Subject Subject[]
+  courses  Course[]
+  subjects Subject[]
 }
 
 model Course {
@@ -85,7 +85,7 @@ model Course {
   academicLevelId Int
   academicLevel   AcademicLevel? @relation(fields: [academicLevelId], references: [id])
 
-  CourseSubject CourseSubject[]
+  courseSubjects CourseSubject[]
 }
 
 model Subject {
@@ -102,7 +102,7 @@ model Subject {
   academicLevelId Int
   academicLevel   AcademicLevel @relation(fields: [academicLevelId], references: [id])
 
-  courses CourseSubject[]
+  courseSubjects CourseSubject[]
 }
 
 // This is the intermediate join table to link Subjects and Courses

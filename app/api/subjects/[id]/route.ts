@@ -10,7 +10,7 @@ const handlers = createEntityHandlers<
   model: "subject",
   include: {
     academicLevel: true,
-    courses: {
+    courseSubjects: {
       include: { course: true },
     },
   },

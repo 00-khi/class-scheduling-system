@@ -90,7 +90,7 @@ export default function SubjectsTable() {
 
   type SubjectRow = Subject & {
     academicLevel?: AcademicLevel;
-    courses?: (CourseSubject & { course: Course })[];
+    courseSubjects?: (CourseSubject & { course: Course })[];
   };
 
   const columns: ColumnDef<SubjectRow>[] = [
@@ -145,10 +145,10 @@ export default function SubjectsTable() {
       header: "Courses",
       id: "courses",
       accessorFn: (row) =>
-        row.courses?.map((c) => c.course.name).join(", ") || "N/A",
+        row.courseSubjects?.map((c) => c.course.name).join(", ") || "N/A",
       cell: ({ row }) => {
         const courseData =
-          row.original.courses?.map(({ course, year }) => ({
+          row.original.courseSubjects?.map(({ course, year }) => ({
             name: course.name,
             code: course.code,
             year: year,
