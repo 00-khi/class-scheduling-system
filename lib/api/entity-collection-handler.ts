@@ -38,7 +38,9 @@ export function createEntityCollectionHandlers<T>(
       });
 
       return NextResponse.json(
-        formatResponse ? entities.map(formatResponse) : entities
+        formatResponse
+          ? await Promise.all(entities.map((e: any) => formatResponse(e)))
+          : entities
       );
     },
 
@@ -65,7 +67,7 @@ export function createEntityCollectionHandlers<T>(
       });
 
       return NextResponse.json(
-        formatResponse ? formatResponse(newEntity) : newEntity,
+        formatResponse ? await formatResponse(newEntity) : newEntity,
         { status: 201 }
       );
     },
