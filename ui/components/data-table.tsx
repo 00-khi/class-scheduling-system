@@ -157,7 +157,7 @@ function DataTableContent<TData>() {
                 <TableHead
                   key={header.id}
                   colSpan={header.colSpan}
-                  // style={{ width: `${header.getSize()}px` }}
+                  style={{ width: `${header.getSize()}px` }}
                 >
                   {header.isPlaceholder ? null : header.column.getCanSort() ? (
                     <div
@@ -442,7 +442,7 @@ function DataTableDeleteSelected({
     if (!onDeleteSelected) return;
     const ids = selectedRows.map((row) => (row.original as any).id);
     await onDeleteSelected(ids);
-    table.resetRowSelection(); 
+    table.resetRowSelection();
     setIsDialogOpen(false);
   };
 
