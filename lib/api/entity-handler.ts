@@ -46,7 +46,7 @@ export function createEntityHandlers<T>(options: HandlerOptions<T>) {
       }
 
       return NextResponse.json(
-        formatResponse ? formatResponse(entity) : entity
+        formatResponse ? await formatResponse(entity) : entity
       );
     },
 
@@ -78,7 +78,7 @@ export function createEntityHandlers<T>(options: HandlerOptions<T>) {
       });
 
       return NextResponse.json(
-        formatResponse ? formatResponse(updatedEntity) : updatedEntity
+        formatResponse ? await formatResponse(updatedEntity) : updatedEntity
       );
     },
 
