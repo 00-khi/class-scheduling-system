@@ -133,11 +133,10 @@ model Room {
 }
 
 model Section {
-  id            Int      @id @default(autoincrement())
-  name          String   @unique
-  year          Int
-  semester      Semester
-  totalSections Int
+  id       Int      @id @default(autoincrement())
+  name     String   @unique
+  year     Int
+  semester Semester
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
