@@ -7,6 +7,7 @@ import { splitCamelCaseAndNumbers } from "../utils";
 type HandlerOptions<T> = {
   model: keyof typeof prisma; // Prisma model name, e.g. "instructor"
   include?: object; // Prisma include if needed
+  select?: object; // Prisma select if needed
   allowedFields?: { key: keyof T; type: FieldType }[]; // For PUT
   validateUpdate?: (data: Partial<T>) => Promise<NextResponse | void>; // custom validation logic
   transform?: (rawData: Partial<T>) => any; // format before saving
@@ -17,6 +18,7 @@ export function createEntityHandlers<T>(options: HandlerOptions<T>) {
   const {
     model,
     include,
+    select,
     allowedFields,
     validateUpdate,
     transform,
@@ -33,6 +35,7 @@ export function createEntityHandlers<T>(options: HandlerOptions<T>) {
       const entity = await modelDelegate.findUnique({
         where: { id },
         include,
+        select,
       });
 
       if (!entity) {

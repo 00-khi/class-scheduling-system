@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 type CollectionHandlerOptions<T> = {
   model: keyof typeof prisma;
   include?: object;
+  select?: object;
   orderBy?: object;
   requiredFields?: { key: keyof T; type: FieldType }[];
   validateCreate?: (rawData: Partial<T>) => Promise<NextResponse | void>;
@@ -18,6 +19,7 @@ export function createEntityCollectionHandlers<T>(
   const {
     model,
     include,
+    select,
     orderBy,
     requiredFields,
     validateCreate,
@@ -31,6 +33,7 @@ export function createEntityCollectionHandlers<T>(
     GET: async () => {
       const entities = await modelDelegate.findMany({
         include,
+        select,
         orderBy,
       });
 
