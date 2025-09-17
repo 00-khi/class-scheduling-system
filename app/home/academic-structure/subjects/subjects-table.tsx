@@ -282,7 +282,6 @@ export default function SubjectsTable() {
                 column="academicLevel"
                 placeholder="All academic levels"
               />
-              <DataTable.Filter column="year" placeholder="All year" />
               <DataTable.ClearFilters />
               <DataTable.ViewOptions />
             </DataTableToolbarGroup>
