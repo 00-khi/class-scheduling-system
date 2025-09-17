@@ -60,7 +60,7 @@ export function createEntityCollectionHandlers<T>(
         if (validationError) return validationError;
       }
 
-      const data = transform ? transform(rawData) : rawData;
+      const data = transform ? await transform(rawData) : rawData;
 
       const newEntity = await modelDelegate.create({
         data,

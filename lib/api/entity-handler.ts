@@ -70,7 +70,7 @@ export function createEntityHandlers<T>(options: HandlerOptions<T>) {
       }
 
       // Transform the data before saving if transformUpdate exists
-      const transformedData = transform ? transform(data) : data;
+      const transformedData = transform ? await transform(data) : data;
 
       const updatedEntity = await modelDelegate.update({
         where: { id },
