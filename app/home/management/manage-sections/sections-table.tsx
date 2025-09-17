@@ -79,6 +79,25 @@ export default function SectionsTable() {
 
   const columns: ColumnDef<SectionRow>[] = [
     {
+      header: "Academic Level",
+      id: "academicLevel",
+      accessorFn: (row) => row.course?.academicLevel?.name || "N/A",
+      cell: ({ row }) => {
+        return (
+          <Tooltip>
+            <TooltipTrigger>
+              <Badge variant="outline">
+                {row.original.course?.academicLevel?.code || "N/A"}
+              </Badge>
+            </TooltipTrigger>
+            <TooltipContent>
+              {row.original.course?.academicLevel?.name || "N/A"}
+            </TooltipContent>
+          </Tooltip>
+        );
+      },
+    },
+    {
       header: "Name",
       accessorKey: "name",
       cell: ({ row }) => (
@@ -108,31 +127,11 @@ export default function SectionsTable() {
     {
       header: "Year",
       accessorKey: "year",
+      accessorFn: (row) => String(row.year ?? ""),
       cell: ({ row }) => {
         return <Badge variant="secondary">{row.original.year || "N/A"}</Badge>;
       },
-      meta: {
-        filterVariant: "range",
-      },
-    },
-    {
-      header: "Academic Level",
-      id: "academicLevel",
-      accessorFn: (row) => row.course?.academicLevel?.name || "N/A",
-      cell: ({ row }) => {
-        return (
-          <Tooltip>
-            <TooltipTrigger>
-              <Badge variant="outline">
-                {row.original.course?.academicLevel?.code || "N/A"}
-              </Badge>
-            </TooltipTrigger>
-            <TooltipContent>
-              {row.original.course?.academicLevel?.name || "N/A"}
-            </TooltipContent>
-          </Tooltip>
-        );
-      },
+      filterFn: "equals",
     },
   ];
 
@@ -149,6 +148,11 @@ export default function SectionsTable() {
       return;
     }
 
+    setFormData({
+      ...formData,
+      academicLevelId: parsedId,
+    });
+
     setSelectedAcademicLevelId(parsedId);
   };
 
@@ -161,22 +165,17 @@ export default function SectionsTable() {
     label: level.name,
     value: level.id,
   }));
-  const courseOptions: {
-    label: string;
-    value: string;
-    valueType: "string" | "number";
-  }[] =
-    selectedAcademicLevelId !== null
-      ? courses
-          .filter(
-            (course) => course.academicLevelId === selectedAcademicLevelId
-          )
-          .map((course) => ({
-            label: course.name,
-            value: course.id,
-            valueType: "number",
-          }))
-      : [];
+  const courseOptions = courses
+    .filter(
+      (course) =>
+        selectedAcademicLevelId === null ||
+        course.academicLevelId === selectedAcademicLevelId
+    )
+    .map((course) => ({
+      label: course.name,
+      value: course.id,
+      valueType: "number",
+    }));
   const yearOptions: typeof courseOptions =
     selectedAcademicLevelId !== null
       ? (
@@ -188,6 +187,10 @@ export default function SectionsTable() {
           valueType: "number",
         }))
       : [];
+
+  const [formData, setFormData] = useState<
+    Partial<Section & { academicLevelId: number }>
+  >({});
 
   return (
     <DataTableSection>
@@ -214,7 +217,7 @@ export default function SectionsTable() {
             <DataTableToolbarGroup>
               <Button onClick={() => entityManagement.setIsAddDialogOpen(true)}>
                 <EditIcon className="-ms-1 opacity-60" size={16} />
-                Manage {ENTITY_NAME}
+                Add / Remove {ENTITY_NAME}
               </Button>
             </DataTableToolbarGroup>
           </DataTableToolbar>
@@ -226,8 +229,10 @@ export default function SectionsTable() {
 
       {/* Add Form */}
       <EntityForm<Section>
+        item={formData as Section}
         isOpen={entityManagement.isAddDialogOpen}
         onClose={() => {
+          setFormData({});
           entityManagement.setIsAddDialogOpen(false);
           setSelectedAcademicLevelId(null);
         }}
@@ -246,6 +251,12 @@ export default function SectionsTable() {
         title={`Manage ${ENTITY_NAME}`}
       >
         <DataForm.Select
+          onValueChange={(data) => {
+            setFormData({
+              ...formData,
+              semester: data as Semester,
+            });
+          }}
           name="semester"
           label="Semester"
           options={semesterOptions}
