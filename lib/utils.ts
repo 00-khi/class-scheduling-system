@@ -32,3 +32,12 @@ export function splitCamelCaseAndNumbers(str: string): string {
     .replace(/([0-9])([A-Za-z])/g, "$1 $2");
   return capitalizeEachWord(spaced);
 }
+
+function numberToLetters(num: number): string {
+  let result = "";
+  while (num >= 0) {
+    result = String.fromCharCode((num % 26) + 65) + result;
+    num = Math.floor(num / 26) - 1;
+  }
+  return result;
+}
