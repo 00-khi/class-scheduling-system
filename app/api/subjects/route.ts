@@ -5,7 +5,7 @@ import { RoomType, Semester, Subject } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 const handlers = createEntityCollectionHandlers<
-  Subject & { courses: [{ courseId: number; year: number }] }
+  Subject & { courseSubjects: [{ courseId: number; year: number }] }
 >({
   model: "subject",
   include: {
@@ -22,7 +22,7 @@ const handlers = createEntityCollectionHandlers<
     { key: "units", type: "number" },
     { key: "type", type: "string" },
     { key: "academicLevelId", type: "number" },
-    { key: "courses", type: "array" },
+    { key: "courseSubjects", type: "array" },
   ],
   validateCreate: async (data) => {
     const validTypes = Object.values(RoomType);
@@ -65,8 +65,8 @@ const handlers = createEntityCollectionHandlers<
       );
     }
 
-    if (data.courses) {
-      if (data.courses.length <= 0) {
+    if (data.courseSubjects) {
+      if (data.courseSubjects.length <= 0) {
         return NextResponse.json(
           {
             error: "Courses are required. Please add one or more.",
@@ -75,11 +75,11 @@ const handlers = createEntityCollectionHandlers<
         );
       }
 
-      const invalid = data.courses.find((course, i) => {
+      const invalid = data.courseSubjects.find((courseSubjects, i) => {
         if (
-          typeof course !== "object" ||
-          typeof course.courseId !== "number" ||
-          typeof course.year !== "number"
+          typeof courseSubjects !== "object" ||
+          typeof courseSubjects.courseId !== "number" ||
+          typeof courseSubjects.year !== "number"
         ) {
           return true; // this course is invalid
         }
@@ -109,9 +109,9 @@ const handlers = createEntityCollectionHandlers<
 
     if (data.type) transformed.type = capitalizeEachWord(data.type) as RoomType;
 
-    if (data.courses) {
-      transformed.courses = {
-        create: data.courses.map((c: any) => ({
+    if (data.courseSubjects) {
+      transformed.courseSubjects = {
+        create: data.courseSubjects.map((c: any) => ({
           year: c.year,
           course: {
             connect: { id: c.courseId },

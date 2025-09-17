@@ -361,7 +361,7 @@ export default function SubjectsTable() {
         />
 
         <DataForm.ArrayField
-          name="courses"
+          name="courseSubjects"
           label="Courses"
           validValuesByField={{
             courseId: allowedCourseIds,
@@ -435,7 +435,7 @@ export default function SubjectsTable() {
         />
 
         <DataForm.ArrayField
-          name="courses"
+          name="courseSubjects"
           label="Courses"
           validValuesByField={{
             courseId: allowedCourseIds,
