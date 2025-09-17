@@ -160,7 +160,7 @@ function DataFormInput({
       <Input
         type={type}
         id={name}
-        value={formData?.[name] || ""}
+        value={formData?.[name] ?? ""}
         onChange={(e) => handleChange(e.target.value)}
         placeholder={placeholder}
         disabled={disabled || isLoading}
