@@ -88,11 +88,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       {
         category: "ASSIGNMENT",
         items: [
-          {
-            title: "Subject Assigning",
-            url: "/home/assignment/subject-assigning",
-            icon: NotebookText,
-          },
+          // {
+          //   title: "Subject Assigning",
+          //   url: "/home/assignment/subject-assigning",
+          //   icon: NotebookText,
+          // },
           // {
           //   title: "Auto Assign Instructor",
           //   url: "/home/assignment/auto-assign-instructor",
