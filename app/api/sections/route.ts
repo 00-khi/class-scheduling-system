@@ -52,7 +52,7 @@ const handlers = createEntityCollectionHandlers<
     }
     if (data.totalSections !== undefined && data.totalSections < 0) {
       return NextResponse.json(
-        { error: "totalSections must be negative" },
+        { error: "totalSections must not be negative" },
         { status: 400 }
       );
     }
