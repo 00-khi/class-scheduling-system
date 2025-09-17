@@ -33,11 +33,29 @@ export function splitCamelCaseAndNumbers(str: string): string {
   return capitalizeEachWord(spaced);
 }
 
-function numberToLetters(num: number): string {
+function toLetters(num: number): string {
   let result = "";
   while (num >= 0) {
     result = String.fromCharCode((num % 26) + 65) + result;
     num = Math.floor(num / 26) - 1;
   }
   return result;
+}
+
+export function getNextLetters(
+  existingNames: string[],
+  courseCode: string,
+  year: number
+) {
+  const used = existingNames.map((n) => n.replace(`${courseCode}${year}0`, ""));
+  const letters: string[] = [];
+  let counter = 0;
+
+  while (letters.length < 50) {
+    // limit
+    const letter = toLetters(counter);
+    if (!used.includes(letter)) letters.push(letter);
+    counter++;
+  }
+  return letters;
 }
