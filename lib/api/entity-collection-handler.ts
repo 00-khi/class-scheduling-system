@@ -62,6 +62,20 @@ export function createEntityCollectionHandlers<T>(
 
       const data = transform ? await transform(rawData) : rawData;
 
+      // if transform handled everything, return success
+      // if (data == null) {
+      //   return NextResponse.json(
+      //     { success: true, data: null },
+      //     { status: 201 }
+      //   );
+      // }
+
+      // handle createMany case
+      if (data?.createMany) {
+        const created = await modelDelegate.createMany(data.createMany);
+        return NextResponse.json(created, { status: 201 });
+      }
+
       const newEntity = await modelDelegate.create({
         data,
       });
