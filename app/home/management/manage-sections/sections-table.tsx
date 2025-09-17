@@ -243,7 +243,7 @@ export default function SectionsTable() {
           );
         }}
         isLoading={entityManagement.isSubmitting}
-        title={`Add ${ENTITY_NAME}`}
+        title={`Manage ${ENTITY_NAME}`}
       >
         <DataForm.Select
           name="semester"
