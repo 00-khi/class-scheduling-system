@@ -2,11 +2,6 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "../shadcn/checkbox";
 import { RowActions } from "./row-actions";
 
-type TableActions<T> = {
-  onEdit: (item: T) => void;
-  onDelete: (item: T) => void;
-};
-
 export function getSelectColumn<T>(): ColumnDef<T> {
   return {
     id: "select",
@@ -36,21 +31,20 @@ export function getSelectColumn<T>(): ColumnDef<T> {
   };
 }
 
-export function getActionsColumn<T>(actions: TableActions<T>): ColumnDef<T> {
+export function getActionsColumn<T>(actions: {
+  onEdit?: (item: T) => void;
+  onDelete?: (item: T) => void;
+}): ColumnDef<T> {
   return {
     id: "actions",
-    header() {
-      return <span className="sr-only">Actions</span>;
-    },
-    cell({ row }) {
-      return (
-        <RowActions
-          item={row.original}
-          onEdit={actions.onEdit}
-          onDelete={actions.onDelete}
-        />
-      );
-    },
+    header: () => <span className="sr-only">Actions</span>,
+    cell: ({ row }) => (
+      <RowActions
+        item={row.original}
+        onEdit={actions.onEdit}
+        onDelete={actions.onDelete}
+      />
+    ),
     enableHiding: false,
     enableSorting: false,
   };
