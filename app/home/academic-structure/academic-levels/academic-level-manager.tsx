@@ -31,6 +31,7 @@ import DeleteDialog from "../../../../ui/components/table/delete-dialog";
 import BulkDeleteDialog from "../../../../ui/components/table/bulk-delete-dialog";
 import FailedDeleteDialog from "../../../../ui/components/table/failed-delete-dialog";
 import { useAcademicLevelTable } from "./hooks/use-academic-level-table";
+import { ACADEMIC_LEVELS_API } from "@/lib/api/api-endpoints";
 
 // types
 export type AcademicLevelRow = AcademicLevel & {
@@ -56,7 +57,6 @@ export type TableState = {
 
 // constants
 const INITIAL_PAGINATION = { pageIndex: 0, pageSize: 10 };
-const API_ENDPOINT = "/api/academic-levels";
 
 // component
 export default function AcademicLevelManager() {
@@ -71,7 +71,7 @@ export default function AcademicLevelManager() {
 
   const [formData, setFormData] = useState<FormData>(null);
 
-  const academicLevelApi = createApiClient<AcademicLevel>(API_ENDPOINT);
+  const academicLevelApi = createApiClient<AcademicLevel>(ACADEMIC_LEVELS_API);
   const entityManagement = useManageEntities<AcademicLevel>({
     apiService: { fetch: academicLevelApi.getAll },
   });
@@ -121,7 +121,9 @@ export default function AcademicLevelManager() {
     }
 
     const isUpdate = Boolean(formData.id);
-    const url = isUpdate ? `${API_ENDPOINT}/${formData.id}` : API_ENDPOINT;
+    const url = isUpdate
+      ? `${ACADEMIC_LEVELS_API}/${formData.id}`
+      : ACADEMIC_LEVELS_API;
 
     entityManagement.setIsSubmitting(true);
 
@@ -163,7 +165,7 @@ export default function AcademicLevelManager() {
 
     entityManagement.setIsDeleting(true);
     try {
-      const response = await fetch(`${API_ENDPOINT}/${formData.id}`, {
+      const response = await fetch(`${ACADEMIC_LEVELS_API}/${formData.id}`, {
         method: "DELETE",
       });
 
@@ -199,7 +201,7 @@ export default function AcademicLevelManager() {
 
     try {
       const deletePromises = selectedIds.map((id) =>
-        fetch(`${API_ENDPOINT}/${id}`, { method: "DELETE" }).then(
+        fetch(`${ACADEMIC_LEVELS_API}/${id}`, { method: "DELETE" }).then(
           async (res) => {
             if (res.status === 404) throw new Error("Item not found");
             const data = await res.json();

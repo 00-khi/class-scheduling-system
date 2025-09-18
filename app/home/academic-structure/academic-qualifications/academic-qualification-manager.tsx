@@ -31,6 +31,7 @@ import { useAcademicQualificationTable } from "./hooks/use-academic-qualificatio
 import FormDialog from "./components/form-dialog";
 import TableComponent from "./components/table-component";
 import { TableToolbar } from "./components/table-toolbar";
+import { ACADEMIC_QUALIFICATIONS_API } from "@/lib/api/api-endpoints";
 
 // types
 export type AcademicQualificationRow = AcademicQualification & {
@@ -56,7 +57,6 @@ export type TableState = {
 
 // constants
 const INITIAL_PAGINATION = { pageIndex: 0, pageSize: 10 };
-const API_ENDPOINT = "/api/academic-qualifications";
 
 // component
 export default function AcademicQualificationManager() {
@@ -71,8 +71,9 @@ export default function AcademicQualificationManager() {
 
   const [formData, setFormData] = useState<FormData>(null);
 
-  const academicQualificationApi =
-    createApiClient<AcademicQualification>(API_ENDPOINT);
+  const academicQualificationApi = createApiClient<AcademicQualification>(
+    ACADEMIC_QUALIFICATIONS_API
+  );
   const entityManagement = useManageEntities<AcademicQualification>({
     apiService: { fetch: academicQualificationApi.getAll },
   });
@@ -120,7 +121,9 @@ export default function AcademicQualificationManager() {
     }
 
     const isUpdate = Boolean(formData.id);
-    const url = isUpdate ? `${API_ENDPOINT}/${formData.id}` : API_ENDPOINT;
+    const url = isUpdate
+      ? `${ACADEMIC_QUALIFICATIONS_API}/${formData.id}`
+      : ACADEMIC_QUALIFICATIONS_API;
 
     entityManagement.setIsSubmitting(true);
 
@@ -164,9 +167,12 @@ export default function AcademicQualificationManager() {
 
     entityManagement.setIsDeleting(true);
     try {
-      const response = await fetch(`${API_ENDPOINT}/${formData.id}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `${ACADEMIC_QUALIFICATIONS_API}/${formData.id}`,
+        {
+          method: "DELETE",
+        }
+      );
 
       if (response.status === 404) {
         throw new Error("Item not found.");
@@ -200,15 +206,14 @@ export default function AcademicQualificationManager() {
 
     try {
       const deletePromises = selectedIds.map((id) =>
-        fetch(`${API_ENDPOINT}/${id}`, { method: "DELETE" }).then(
-          async (res) => {
-            if (res.status === 404) throw new Error("Item not found");
-            const data = await res.json();
-            if (!res.ok)
-              throw new Error(data?.error ?? "Failed to delete item");
-            return true;
-          }
-        )
+        fetch(`${ACADEMIC_QUALIFICATIONS_API}/${id}`, {
+          method: "DELETE",
+        }).then(async (res) => {
+          if (res.status === 404) throw new Error("Item not found");
+          const data = await res.json();
+          if (!res.ok) throw new Error(data?.error ?? "Failed to delete item");
+          return true;
+        })
       );
 
       const results = await Promise.allSettled(deletePromises);

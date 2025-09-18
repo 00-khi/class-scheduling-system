@@ -31,6 +31,7 @@ import DeleteDialog from "../../../../ui/components/table/delete-dialog";
 import BulkDeleteDialog from "../../../../ui/components/table/bulk-delete-dialog";
 import FailedDeleteDialog from "../../../../ui/components/table/failed-delete-dialog";
 import { useCourseTable } from "./hooks/use-course-table";
+import { ACADEMIC_LEVELS_API, COURSES_API } from "@/lib/api/api-endpoints";
 
 // types
 export type CourseRow = Course & {
@@ -57,7 +58,6 @@ export type TableState = {
 
 // constants
 const INITIAL_PAGINATION = { pageIndex: 0, pageSize: 10 };
-const API_ENDPOINT = "/api/courses";
 
 // component
 export default function CourseManager() {
@@ -72,10 +72,8 @@ export default function CourseManager() {
 
   const [formData, setFormData] = useState<FormData>(null);
 
-  const courseLevelApi = createApiClient<Course>(API_ENDPOINT);
-  const academicLevelApi = createApiClient<AcademicLevel>(
-    "/api/academic-levels"
-  );
+  const courseLevelApi = createApiClient<Course>(COURSES_API);
+  const academicLevelApi = createApiClient<AcademicLevel>(ACADEMIC_LEVELS_API);
   const entityManagement = useManageEntities<Course>({
     apiService: { fetch: courseLevelApi.getAll },
     relatedApiServices: [
@@ -134,7 +132,7 @@ export default function CourseManager() {
     }
 
     const isUpdate = Boolean(formData.id);
-    const url = isUpdate ? `${API_ENDPOINT}/${formData.id}` : API_ENDPOINT;
+    const url = isUpdate ? `${COURSES_API}/${formData.id}` : COURSES_API;
 
     entityManagement.setIsSubmitting(true);
 
@@ -174,7 +172,7 @@ export default function CourseManager() {
 
     entityManagement.setIsDeleting(true);
     try {
-      const response = await fetch(`${API_ENDPOINT}/${formData.id}`, {
+      const response = await fetch(`${COURSES_API}/${formData.id}`, {
         method: "DELETE",
       });
 
@@ -210,7 +208,7 @@ export default function CourseManager() {
 
     try {
       const deletePromises = selectedIds.map((id) =>
-        fetch(`${API_ENDPOINT}/${id}`, { method: "DELETE" }).then(
+        fetch(`${COURSES_API}/${id}`, { method: "DELETE" }).then(
           async (res) => {
             if (res.status === 404) throw new Error("Item not found");
             const data = await res.json();
