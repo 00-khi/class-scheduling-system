@@ -39,7 +39,7 @@ export type RoomRow = Room;
 export type FormData = {
   id?: number;
   name?: string;
-  type?: string;
+  type?: RoomType;
 } | null;
 
 export type TableState = {

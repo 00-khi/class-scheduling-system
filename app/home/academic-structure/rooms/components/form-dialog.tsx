@@ -17,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/ui/shadcn/select";
+import { RoomType } from "@prisma/client";
 
 type Option = { value: string | number; label: string };
 
@@ -71,7 +72,7 @@ export default function FormDialog({
               onValueChange={(value) =>
                 setFormData((prev) => ({
                   ...prev,
-                  type: value,
+                  type: value as RoomType,
                 }))
               }
             >
