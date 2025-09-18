@@ -5,7 +5,14 @@ import {
 } from "@/ui/components/data-table-components";
 import { Input } from "@/ui/shadcn/input";
 import { cn } from "@/lib/shadcn/utils";
-import { CircleX, Columns3, PlusIcon, Search, TrashIcon } from "lucide-react";
+import {
+  CircleX,
+  Columns3,
+  Filter,
+  PlusIcon,
+  Search,
+  TrashIcon,
+} from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -96,7 +103,8 @@ export function TableToolbar({
           }
         >
           <SelectTrigger>
-            <SelectValue placeholder="Filter Type" />
+            <Filter className="text-muted-foreground/80" />
+            <SelectValue placeholder="Type" />
           </SelectTrigger>
           <SelectContent side="bottom">
             {Array.from(new Set(entityData.map((item) => item.type))).map(
