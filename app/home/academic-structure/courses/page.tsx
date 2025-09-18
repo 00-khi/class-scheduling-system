@@ -1,5 +1,5 @@
 import { MainSection } from "@/ui/components/main-section";
-import CoursesTable from "./courses-table";
+import CourseManager from "./course-manager";
 
 export default function CoursesPage() {
   return (
@@ -7,7 +7,7 @@ export default function CoursesPage() {
       <MainSection.Section>
         <MainSection.Title>Courses</MainSection.Title>
         <MainSection.Content>
-          <CoursesTable />
+          <CourseManager />
         </MainSection.Content>
       </MainSection.Section>
     </MainSection>
