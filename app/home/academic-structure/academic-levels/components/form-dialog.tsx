@@ -72,6 +72,7 @@ export default function FormDialog({
             <div className="space-y-2">
               <Label htmlFor="yearStart">Year Start</Label>
               <Input
+                type="number"
                 id="yearStart"
                 value={formData?.yearStart ?? ""}
                 onChange={(e) =>
@@ -88,6 +89,7 @@ export default function FormDialog({
             <div className="space-y-2">
               <Label htmlFor="numberOfYears">Number of Years</Label>
               <Input
+                type="number"
                 id="numberOfYears"
                 value={formData?.numberOfYears ?? ""}
                 onChange={(e) =>
