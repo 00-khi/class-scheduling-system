@@ -82,36 +82,9 @@ export function TableToolbar({
           </div>
         </div>
 
-        {/* Filter Select */}
-        <Select
-          value={
-            (tableState.columnFilters.find((f) => f.id === "code")
-              ?.value as string) ?? ""
-          }
-          onValueChange={(value) =>
-            setTableState((prev) => ({
-              ...prev,
-              columnFilters: value ? [{ id: "code", value }] : [],
-            }))
-          }
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Filter Code" />
-          </SelectTrigger>
-          <SelectContent side="bottom">
-            {Array.from(new Set(entityData.map((item) => item.code))).map(
-              (code) => (
-                <SelectItem key={code} value={code}>
-                  {code}
-                </SelectItem>
-              )
-            )}
-          </SelectContent>
-        </Select>
-
         {/* Clear Filters */}
         {hasFilters && (
-          <Button variant="outline" onClick={clearFilters} className="ml-2">
+          <Button variant="outline" onClick={clearFilters}>
             <CircleX />
             Clear Filters
           </Button>
