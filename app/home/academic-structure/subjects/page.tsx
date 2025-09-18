@@ -1,5 +1,5 @@
 import { MainSection } from "@/ui/components/main-section";
-import SubjectsTable from "./subjects-table";
+import SubjectManager from "./subject-manager";
 
 export default function SubjectsPage() {
   return (
@@ -7,7 +7,7 @@ export default function SubjectsPage() {
       <MainSection.Section>
         <MainSection.Title>Subjects</MainSection.Title>
         <MainSection.Content>
-          <SubjectsTable />
+          <SubjectManager />
         </MainSection.Content>
       </MainSection.Section>
     </MainSection>
