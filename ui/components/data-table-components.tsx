@@ -8,6 +8,7 @@ import {
   TableRow,
 } from "@/ui/shadcn/table";
 import { Skeleton } from "@/ui/shadcn/skeleton";
+import { cn } from "@/lib/shadcn/utils";
 
 export function DataTableSkeleton({
   columnCount = 4,
@@ -64,11 +65,17 @@ export function DataTableToolbar({ children }: { children: React.ReactNode }) {
 }
 
 export function DataTableToolbarGroup({
+  className,
   children,
 }: {
+  className?: string;
   children: React.ReactNode;
 }) {
-  return <div className="flex flex-wrap items-center gap-3">{children}</div>;
+  return (
+    <div className={cn("flex flex-wrap items-center gap-3", className)}>
+      {children}
+    </div>
+  );
 }
 
 export function DataTableSection({ children }: { children: React.ReactNode }) {
