@@ -41,7 +41,6 @@ export default function TableComponent({
   useEffect(() => {
     const selectedRows = table.getSelectedRowModel().rows;
     const selectedIds = selectedRows.map((row) => row.original.id);
-    console.log(selectedIds);
     setTableState((prev) => ({
       ...prev,
       selectedRowsCount: selectedRows.length,

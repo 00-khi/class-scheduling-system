@@ -150,6 +150,7 @@ export default function AcademicLevelManager() {
       console.error("Error saving academic level:", err);
     } finally {
       entityManagement.setIsSubmitting(false);
+      table.resetRowSelection();
     }
   }
 
@@ -187,15 +188,11 @@ export default function AcademicLevelManager() {
       console.error(`Error deleting item:`, error);
     } finally {
       entityManagement.setIsDeleting(false);
+      table.resetRowSelection();
     }
   }
 
   async function handleBulkDelete() {
-    console.log("TEST");
-    console.log(selectedIds);
-
-    console.log(entityManagement.isDeletingSelected);
-
     if (selectedIds.length === 0) return;
 
     entityManagement.setIsDeletingSelected(true);
@@ -244,6 +241,7 @@ export default function AcademicLevelManager() {
       toast.error("Unexpected error occurred");
     } finally {
       entityManagement.setIsDeletingSelected(false);
+      table.resetRowSelection();
     }
   }
 
