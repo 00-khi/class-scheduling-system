@@ -1,5 +1,5 @@
 import { MainSection } from "@/ui/components/main-section";
-import RoomsTable from "./rooms-table";
+import RoomManager from "./room-manager";
 
 export default function RoomsPage() {
   return (
@@ -7,7 +7,7 @@ export default function RoomsPage() {
       <MainSection.Section>
         <MainSection.Title>Rooms</MainSection.Title>
         <MainSection.Content>
-          <RoomsTable />
+          <RoomManager />
         </MainSection.Content>
       </MainSection.Section>
     </MainSection>
