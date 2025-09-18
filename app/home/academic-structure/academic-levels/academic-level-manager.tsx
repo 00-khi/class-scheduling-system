@@ -27,9 +27,9 @@ import useTableColumns from "./hooks/use-table-columns";
 import { TableToolbar } from "./components/table-toolbar";
 import TableComponent from "./components/table-component";
 import FormDialog from "./components/form-dialog";
-import DeleteDialog from "./components/delete-dialog";
-import BulkDeleteDialog from "./components/bulk-delete-dialog";
-import FailedDeleteDialog from "./components/failed-delete-dialog";
+import DeleteDialog from "../../../../ui/components/table/delete-dialog";
+import BulkDeleteDialog from "../../../../ui/components/table/bulk-delete-dialog";
+import FailedDeleteDialog from "../../../../ui/components/table/failed-delete-dialog";
 import { useAcademicLevelTable } from "./hooks/use-academic-level-table";
 
 // types
