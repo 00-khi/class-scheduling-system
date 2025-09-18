@@ -37,10 +37,8 @@ export function useManageEntities<T extends Entity>({
   const [isDeletingSelected, setIsDeletingSelected] = useState(false);
 
   const [isFormDialogOpen, setIsFormDialogOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState<T | null>(null);
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState<T | null>(null);
 
   const [isDeleteSelectedDialogOpen, setIsDeleteSelectedDialogOpen] =
     useState(false);
@@ -101,17 +99,11 @@ export function useManageEntities<T extends Entity>({
     isFormDialogOpen,
     setIsFormDialogOpen,
 
-    editingItem,
-    setEditingItem,
-
     isDeleteDialogOpen,
     setIsDeleteDialogOpen,
 
     isDeleteSelectedDialogOpen,
     setIsDeleteSelectedDialogOpen,
-
-    itemToDelete,
-    setItemToDelete,
 
     failedDialogOpen,
     setFailedDialogOpen,
