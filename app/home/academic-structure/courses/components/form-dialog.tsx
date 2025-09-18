@@ -17,7 +17,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/ui/shadcn/select";
-import { Option } from "../course-manager";
+
+type Option = { value: string | number; label: string };
 
 export default function FormDialog({
   isOpen,

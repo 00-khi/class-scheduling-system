@@ -38,8 +38,6 @@ export type CourseRow = Course & {
   academicLevel?: AcademicLevel;
 };
 
-export type Option = { value: string | number; label: string };
-
 export type FormData = {
   id?: number;
   code?: string;
