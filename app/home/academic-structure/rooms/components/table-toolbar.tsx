@@ -92,13 +92,13 @@ export function TableToolbar({
         {/* Filter Select */}
         <Select
           value={
-            (tableState.columnFilters.find((f) => f.id === "code")
+            (tableState.columnFilters.find((f) => f.id === "type")
               ?.value as string) ?? ""
           }
           onValueChange={(value) =>
             setTableState((prev) => ({
               ...prev,
-              columnFilters: value ? [{ id: "code", value }] : [],
+              columnFilters: value ? [{ id: "type", value }] : [],
             }))
           }
         >
@@ -107,13 +107,23 @@ export function TableToolbar({
             <SelectValue placeholder="Type" />
           </SelectTrigger>
           <SelectContent side="bottom">
-            {Array.from(new Set(entityData.map((item) => item.type))).map(
-              (code) => (
-                <SelectItem key={code} value={code}>
-                  {code}
+            {(() => {
+              const uniqueTypes = Array.from(
+                new Set(entityData.map((item) => item.type).filter(Boolean))
+              );
+
+              return uniqueTypes.length > 0 ? (
+                uniqueTypes.map((item) => (
+                  <SelectItem key={item} value={item}>
+                    {item}
+                  </SelectItem>
+                ))
+              ) : (
+                <SelectItem disabled value="-">
+                  No data found
                 </SelectItem>
-              )
-            )}
+              );
+            })()}
           </SelectContent>
         </Select>
 

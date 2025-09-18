@@ -107,13 +107,27 @@ export function TableToolbar({
             <SelectValue placeholder="Academic Level" />
           </SelectTrigger>
           <SelectContent side="bottom">
-            {Array.from(
-              new Set(entityData.map((item) => item.academicLevel?.name))
-            ).map((al) => (
-              <SelectItem key={al} value={al ?? ""}>
-                {al}
-              </SelectItem>
-            ))}
+            {(() => {
+              const uniqueTypes = Array.from(
+                new Set(
+                  entityData
+                    .map((item) => item.academicLevel?.name)
+                    .filter(Boolean)
+                )
+              );
+
+              return uniqueTypes.length > 0 ? (
+                uniqueTypes.map((item) => (
+                  <SelectItem key={item} value={item ?? ""}>
+                    {item}
+                  </SelectItem>
+                ))
+              ) : (
+                <SelectItem disabled value="-">
+                  No data found
+                </SelectItem>
+              );
+            })()}
           </SelectContent>
         </Select>
 
