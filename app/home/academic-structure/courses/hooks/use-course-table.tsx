@@ -49,6 +49,12 @@ export function useCourseTable(
       })),
     onGlobalFilterChange: (globalFilter) =>
       setTableState((prev) => ({ ...prev, globalFilter })),
+    onPaginationChange: (updater) =>
+      setTableState((prev) => ({
+        ...prev,
+        pagination:
+          typeof updater === "function" ? updater(prev.pagination) : updater,
+      })),
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
