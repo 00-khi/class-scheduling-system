@@ -1,5 +1,5 @@
 import { MainSection } from "@/ui/components/main-section";
-import InstructorsTable from "./instructors-table";
+import InstructorManager from "./instructor-manager";
 
 export default function ManageInstructorsPage() {
   return (
@@ -7,7 +7,7 @@ export default function ManageInstructorsPage() {
       <MainSection.Section>
         <MainSection.Title>Manage Instructors</MainSection.Title>
         <MainSection.Content>
-          <InstructorsTable />
+          <InstructorManager />
         </MainSection.Content>
       </MainSection.Section>
     </MainSection>
