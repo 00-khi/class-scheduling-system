@@ -19,29 +19,31 @@ function toTime(minutes: number): string {
   return `${h}:${m.toString().padStart(2, "0")}`;
 }
 
-// Finds available slot | 1 unit == 1 hr
 function findAvailableSchedule(
   units: number,
-  scheduled: Schedule[]
+  scheduled: Schedule[],
+  spacingMinutes: number = 0
 ): Schedule | boolean {
   const unitMinutes = units * 60;
 
-  // Sort scheduled by start time
+  // Sort schedules
   const sorted = [...scheduled].sort(
     (a, b) => toMinutes(a.startTime) - toMinutes(b.startTime)
   );
 
-  // Add boundaries (start and end of the day)
+  // Add day boundaries
   const allSlots = [
     { startTime: DAY_START, endTime: DAY_START },
     ...sorted,
     { startTime: DAY_END, endTime: DAY_END },
   ];
 
-  // Check gaps between schedules
   for (let i = 0; i < allSlots.length - 1; i++) {
-    const currentEnd = toMinutes(allSlots[i].endTime);
-    const nextStart = toMinutes(allSlots[i + 1].startTime);
+    // Current block ends, add spacing
+    const currentEnd = toMinutes(allSlots[i].endTime) + spacingMinutes;
+
+    // Next block starts, subtract spacing
+    const nextStart = toMinutes(allSlots[i + 1].startTime) - spacingMinutes;
 
     const freeTime = nextStart - currentEnd;
 
@@ -58,13 +60,6 @@ function findAvailableSchedule(
   return false;
 }
 
-// Example use
-// const scheduled = [
-//   { startTime: "7:30", endTime: "9:00" },
-//   { startTime: "9:30", endTime: "11:00" },
-//   { startTime: "11:00", endTime: "13:00" },
-//   { startTime: "15:00", endTime: "19:30" },
-// ];
-
-// console.log(findAvailableSchedule(3, scheduled));
-// Example output: { startTime: '13:00', endTime: '16:00' }
+// example usage
+// Find a 2-unit class (2 hours) with 15 min spacing
+console.log(findAvailableSchedule(2, scheduled, 0));
