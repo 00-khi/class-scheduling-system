@@ -103,7 +103,8 @@ model Subject {
   academicLevelId Int
   academicLevel   AcademicLevel @relation(fields: [academicLevelId], references: [id])
 
-  courseSubjects CourseSubject[]
+  courseSubjects   CourseSubject[]
+  scheduledSubject ScheduledSubject[]
 }
 
 // This is the intermediate join table to link Subjects and Courses
@@ -130,6 +131,8 @@ model Room {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  scheduledSubject ScheduledSubject[]
 }
 
 model Section {
@@ -147,4 +150,27 @@ model Section {
 
   // You can query subjects through CourseSubject
   // Example: Section.course.CourseSubject -> gives subjects for same course and year
+
+  scheduledSubject ScheduledSubject[]
+}
+
+model ScheduledSubject {
+  id        Int    @id @default(autoincrement())
+  startTime String
+  endTime   String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  sectionId Int
+  roomId    Int
+  subjectId Int
+
+  section Section @relation(fields: [sectionId], references: [id])
+  room    Room    @relation(fields: [roomId], references: [id])
+  subject Subject @relation(fields: [subjectId], references: [id])
+
+  // Prevents exact duplicates
+  @@unique([sectionId, roomId, subjectId, startTime, endTime])
 }
