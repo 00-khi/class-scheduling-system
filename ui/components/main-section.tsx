@@ -9,11 +9,11 @@ function MainSectionRoot({ children }: CompoundProps) {
 }
 
 function Section({ children }: CompoundProps) {
-  return <div className="space-y-2">{children}</div>;
+  return <div className="space-y-4">{children}</div>;
 }
 
 function Title({ children }: CompoundProps) {
-  return <div className="text-base font-medium">{children}</div>;
+  return <div className="text-3xl font-bold ">{children}</div>;
 }
 
 function Content({ children }: CompoundProps) {
