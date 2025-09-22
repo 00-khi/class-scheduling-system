@@ -52,10 +52,6 @@ export default function UnscheduledSubjectsManager({
 }: {
   sectionId: number;
 }) {
-  useEffect(() => {
-    entityManagement.fetchData();
-  }, [sectionId]);
-
   const [tableState, setTableState] = useState<TableState>({
     sorting: [],
     columnFilters: [],
@@ -76,6 +72,10 @@ export default function UnscheduledSubjectsManager({
     apiService: { fetch: subjectApi.getAll },
     relatedApiServices: [{ key: "rooms", fetch: roomApi.getAll }],
   });
+
+  useEffect(() => {
+    entityManagement.fetchData();
+  }, [sectionId]);
 
   const rooms = entityManagement.relatedData.rooms || [];
 
