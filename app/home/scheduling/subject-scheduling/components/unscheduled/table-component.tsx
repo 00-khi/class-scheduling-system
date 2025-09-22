@@ -10,7 +10,7 @@ import {
 import {
   UnscheduledSubjectRow,
   TableState,
-} from "../unscheduled-subject-manager";
+} from "../../unscheduled-subject-manager";
 import { useEffect } from "react";
 import { Card } from "@/ui/shadcn/card";
 import {
@@ -30,7 +30,7 @@ import {
   SelectValue,
 } from "@/ui/shadcn/select";
 import { Button } from "@/ui/shadcn/button";
-import { useUnscheduledSubjectTable } from "../hooks/use-unscheduled-subject-table";
+import { useUnscheduledSubjectTable } from "../../hooks/unscheduled/use-unscheduled-subject-table";
 
 export default function TableComponent({
   table,

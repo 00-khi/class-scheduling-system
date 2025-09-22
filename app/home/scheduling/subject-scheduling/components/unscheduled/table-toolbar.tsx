@@ -1,7 +1,7 @@
 import {
   UnscheduledSubjectRow,
   TableState,
-} from "../unscheduled-subject-manager";
+} from "../../unscheduled-subject-manager";
 import {
   DataTableToolbar,
   DataTableToolbarGroup,
@@ -35,7 +35,7 @@ import { AlertDialog, AlertDialogTrigger } from "@/ui/shadcn/alert-dialog";
 import { Dispatch, SetStateAction } from "react";
 import { ColumnDef, useReactTable } from "@tanstack/react-table";
 import { Badge } from "@/ui/shadcn/badge";
-import { useUnscheduledSubjectTable } from "../hooks/use-unscheduled-subject-table";
+import { useUnscheduledSubjectTable } from "../../hooks/unscheduled/use-unscheduled-subject-table";
 
 export function TableToolbar({
   table,
