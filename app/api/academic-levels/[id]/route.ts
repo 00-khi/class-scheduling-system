@@ -38,7 +38,6 @@ const handlers = createEntityHandlers<AcademicLevel>({
         { status: 400 }
       );
     }
-    console.log(data.yearStart !== undefined);
   },
   transform: (data) => {
     const transformed = { ...data };
