@@ -1,3 +1,5 @@
+import { Day } from "@prisma/client";
+
 type Schedule = {
   startTime: string; // "HH:mm"
   endTime: string; // "HH:mm"
@@ -6,7 +8,7 @@ type Schedule = {
 
 type Slot = Omit<Schedule, "day">;
 
-const AVAILABLE_DAYS = ["Monday", "Tuesday", "Saturday"];
+const AVAILABLE_DAYS = Object.values(Day);
 
 const DAY_START = "7:30";
 const DAY_END = "19:30";
