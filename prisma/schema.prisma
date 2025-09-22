@@ -33,6 +33,15 @@ enum Semester {
   Second
 }
 
+enum Day {
+  Monday
+  Tuesday
+  Wednesday
+  Thursday
+  Friday
+  Saturday
+}
+
 // ----- Models -----
 
 model AcademicQualification {
@@ -158,6 +167,7 @@ model ScheduledSubject {
   id        Int    @id @default(autoincrement())
   startTime String
   endTime   String
+  day       Day
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
