@@ -40,6 +40,13 @@ export function normalizeTime(value?: string) {
   return `${h.padStart(2, "0")}:${m.padStart(2, "0")}`;
 }
 
+export const formatTime = (time: string) => {
+  const [hour, minute] = time.split(":").map(Number);
+  const ampm = hour >= 12 ? "PM" : "AM";
+  const h = hour % 12 || 12;
+  return `${h}:${minute.toString().padStart(2, "0")} ${ampm}`;
+};
+
 function findAvailableSchedule(
   units: number,
   scheduled: Schedule[]
