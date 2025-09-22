@@ -130,7 +130,9 @@ export default function SelectSectionCard({
   return (
     <Card className="gap-2">
       <CardHeader>
-        <CardTitle className="text-card-foreground">Select Section</CardTitle>
+        <CardTitle className="text-card-foreground font-normal">
+          Select Section
+        </CardTitle>
       </CardHeader>
       <CardContent className="flex flex-wrap gap-3">
         {/* Academic Level */}
