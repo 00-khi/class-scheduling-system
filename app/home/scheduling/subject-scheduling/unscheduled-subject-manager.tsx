@@ -25,6 +25,8 @@ import FormDialog from "./components/unscheduled/form-dialog";
 
 export type UnscheduledSubjectRow = Subject & {
   scheduledSubject?: ScheduledSubject[];
+  scheduledMinutes?: number;
+  requiredMinutes?: number;
 };
 
 export type FormData = {
@@ -49,8 +51,12 @@ const INITIAL_PAGINATION = { pageIndex: 0, pageSize: 10 };
 
 export default function UnscheduledSubjectsManager({
   sectionId,
+  onChange,
+  refreshKey,
 }: {
   sectionId: number;
+  onChange: () => void;
+  refreshKey: number;
 }) {
   const [tableState, setTableState] = useState<TableState>({
     sorting: [],
@@ -75,7 +81,7 @@ export default function UnscheduledSubjectsManager({
 
   useEffect(() => {
     entityManagement.fetchData();
-  }, [sectionId]);
+  }, [sectionId, refreshKey]);
 
   const rooms = entityManagement.relatedData.rooms || [];
 
