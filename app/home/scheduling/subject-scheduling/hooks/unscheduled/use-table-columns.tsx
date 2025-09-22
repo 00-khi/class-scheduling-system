@@ -6,31 +6,32 @@ import { EditIcon, TrashIcon } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/tooltip";
 import { UnscheduledSubjectRow } from "../../unscheduled-subject-manager";
 import { Progress } from "@/ui/shadcn/progress";
-import { toMinutes } from "@/lib/scheduleUtils";
+import { toHours, toMinutes } from "@/lib/scheduleUtils";
 
 export default function useTableColumns(): ColumnDef<UnscheduledSubjectRow>[] {
   return [
     {
       id: "progress", // TO FIX
       header: "Progress",
-      accessorFn: (row) => row.scheduledSubject?.length || 0,
+      accessorFn: (row) => row.scheduledMinutes || 0,
       cell: ({ row }) => {
-        const scheduledArray = row.original.scheduledSubject || [];
+        const scheduledUnits = toHours(row.original.scheduledMinutes || 0);
 
-        const scheduledUnits = scheduledArray.reduce((sum, s) => {
-          const start = toMinutes(s.startTime);
-          const end = toMinutes(s.endTime);
-          return sum + (end - start) / 60; // convert minutes to units
-        }, 0);
-
-        const totalUnits = row.original.units;
+        const totalUnits = toHours(
+          row.original.requiredMinutes || row.original.units
+        );
         const percent = Math.min((scheduledUnits / totalUnits) * 100, 100);
 
         return (
           <div className="w-full flex flex-row gap-2 items-center">
             <Tooltip>
               <TooltipTrigger>
-                <Progress value={percent} className="w-40" />
+                <Progress
+                  value={percent}
+                  className={`w-40 ${
+                    scheduledUnits > totalUnits ? "[&>div]:bg-destructive" : ""
+                  }`}
+                />
               </TooltipTrigger>
               <TooltipContent>
                 {scheduledUnits} / {totalUnits} hrs
