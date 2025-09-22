@@ -23,7 +23,7 @@ import { toast } from "sonner";
 import {
   FormData,
   UnscheduledSubjectRow,
-} from "../unscheduled-subject-manager";
+} from "../../unscheduled-subject-manager";
 import { diffMinutes, normalizeTime, toHours } from "@/lib/scheduleUtils";
 import { Badge } from "@/ui/shadcn/badge";
 

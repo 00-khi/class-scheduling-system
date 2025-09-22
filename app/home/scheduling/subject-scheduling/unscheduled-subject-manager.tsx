@@ -13,15 +13,15 @@ import {
   VisibilityState,
 } from "@tanstack/react-table";
 import { FormEvent, useEffect, useState } from "react";
-import useTableColumns from "./hooks/use-table-columns";
-import { useUnscheduledSubjectTable } from "./hooks/use-unscheduled-subject-table";
+import useTableColumns from "./hooks/unscheduled/use-table-columns";
+import { useUnscheduledSubjectTable } from "./hooks/unscheduled/use-unscheduled-subject-table";
 import {
   DataTableSection,
   DataTableSkeleton,
 } from "@/ui/components/data-table-components";
-import { TableToolbar } from "./components/table-toolbar";
-import TableComponent from "./components/table-component";
-import FormDialog from "./components/form-dialog";
+import { TableToolbar } from "./components/unscheduled/table-toolbar";
+import TableComponent from "./components/unscheduled/table-component";
+import FormDialog from "./components/unscheduled/form-dialog";
 
 export type UnscheduledSubjectRow = Subject & {
   scheduledSubject?: ScheduledSubject[];

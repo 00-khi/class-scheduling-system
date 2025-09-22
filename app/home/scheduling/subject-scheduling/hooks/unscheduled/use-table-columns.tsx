@@ -4,7 +4,7 @@ import { Badge } from "@/ui/shadcn/badge";
 import { Button } from "@/ui/shadcn/button";
 import { EditIcon, TrashIcon } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/tooltip";
-import { UnscheduledSubjectRow } from "../unscheduled-subject-manager";
+import { UnscheduledSubjectRow } from "../../unscheduled-subject-manager";
 import { Progress } from "@/ui/shadcn/progress";
 import { toMinutes } from "@/lib/scheduleUtils";
 

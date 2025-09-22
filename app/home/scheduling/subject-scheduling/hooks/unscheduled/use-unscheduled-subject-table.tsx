@@ -10,7 +10,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import {
   TableState,
   UnscheduledSubjectRow,
-} from "../unscheduled-subject-manager";
+} from "../../unscheduled-subject-manager";
 
 export function useUnscheduledSubjectTable(
   data: UnscheduledSubjectRow[],
