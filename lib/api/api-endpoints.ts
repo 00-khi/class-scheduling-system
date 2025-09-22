@@ -13,3 +13,5 @@ export const ROOMS_API = `${API_PATH}/rooms`;
 export const SECTIONS_API = `${API_PATH}/sections`;
 
 export const SUBJECTS_API = `${API_PATH}/subjects`;
+
+export const SCHEDULED_SUBJECTS_API = `${API_PATH}/scheduled-subjects`;
