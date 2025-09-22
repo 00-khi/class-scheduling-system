@@ -29,7 +29,7 @@ export default function SelectSectionCard({
     academicLevelId?: number;
     courseId?: number;
     year?: number;
-    sectionId?: number;
+    sectionId?: number | null;
   } | null>(null);
 
   const sectionApi = createApiClient<Section>(SECTIONS_API);
@@ -107,30 +107,25 @@ export default function SelectSectionCard({
     }));
 
   useEffect(() => {
-    if (onSectionChange && selectedData?.sectionId !== undefined)
-      onSectionChange(selectedData.sectionId);
-  }, [selectedData?.sectionId]);
-
-  useEffect(() => {
-    if (selectedData?.courseId !== undefined) {
-      const course = courses.find((c) => c.id === selectedData.courseId);
-      if (course) {
-        setSelectedData((prev) => ({
-          ...prev,
-          academicLevelId: course.academicLevel.id,
-        }));
-      }
-    }
-  }, [selectedData?.courseId]);
-
-  useEffect(() => {
     setSelectedData((prev) => ({
       ...prev,
       courseId: undefined,
       year: undefined,
-      sectionId: undefined,
+      sectionId: null,
     }));
   }, [selectedData?.academicLevelId]);
+
+  useEffect(() => {
+    setSelectedData((prev) => ({
+      ...prev,
+      sectionId: null,
+    }));
+  }, [selectedData?.courseId, selectedData?.year]);
+
+  useEffect(() => {
+    if (onSectionChange && selectedData?.sectionId !== undefined)
+      onSectionChange(selectedData.sectionId);
+  }, [selectedData?.sectionId]);
 
   return (
     <Card className="gap-2">
@@ -172,6 +167,7 @@ export default function SelectSectionCard({
           onValueChange={(value) => {
             setSelectedData((prev) => ({ ...prev, courseId: Number(value) }));
           }}
+          disabled={selectedData?.academicLevelId === undefined}
         >
           <SelectTrigger>
             <SelectValue placeholder="Select Course" />
@@ -197,6 +193,7 @@ export default function SelectSectionCard({
           onValueChange={(value) => {
             setSelectedData((prev) => ({ ...prev, year: Number(value) }));
           }}
+          disabled={selectedData?.academicLevelId === undefined}
         >
           <SelectTrigger>
             <SelectValue placeholder="Select Year Level" />
