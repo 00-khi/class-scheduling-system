@@ -14,16 +14,30 @@ const DAY_START = "7:30";
 const DAY_END = "19:30";
 
 // Convert time "HH:mm" to minutes
-function toMinutes(time: string): number {
+export function toMinutes(time: string): number {
   const [h, m] = time.split(":").map(Number);
   return h * 60 + m;
 }
 
+export function toHours(mins: number): number {
+  return mins / 60;
+}
+
 // Convert minutes to "HH:mm"
-function toTime(minutes: number): string {
+export function toTime(minutes: number): string {
   const h = Math.floor(minutes / 60);
   const m = minutes % 60;
   return `${h}:${m.toString().padStart(2, "0")}`;
+}
+
+export function diffMinutes(start: string, end: string) {
+  return toMinutes(end) - toMinutes(start);
+}
+
+export function normalizeTime(value?: string) {
+  if (!value) return "";
+  const [h, m] = value.split(":");
+  return `${h.padStart(2, "0")}:${m.padStart(2, "0")}`;
 }
 
 function findAvailableSchedule(
@@ -81,7 +95,7 @@ function findAvailableSchedule(
 // Find a 2-unit class (2 hours) with 15 min spacing
 // console.log(findAvailableSchedule(2, scheduled, 0));
 
-function findSlot(
+export function findSlot(
   units: number,
   scheduled: Slot[]
   // spacingMinutes: number = 0
@@ -127,4 +141,19 @@ function findSlot(
   }
 
   return false;
+}
+
+export function calculateRemainingUnits(
+  subjectUnits: number,
+  schedules: { startTime: string; endTime: string }[]
+): number {
+  // Total scheduled minutes
+  const scheduledMinutes = schedules.reduce((sum, sched) => {
+    return sum + (toMinutes(sched.endTime) - toMinutes(sched.startTime));
+  }, 0);
+
+  const scheduledUnits = scheduledMinutes / 60;
+  const remainingUnits = subjectUnits - scheduledUnits;
+
+  return Math.max(remainingUnits, 0); // prevent negative
 }
