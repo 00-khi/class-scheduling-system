@@ -182,5 +182,5 @@ model ScheduledSubject {
   subject Subject @relation(fields: [subjectId], references: [id])
 
   // Prevents exact duplicates
-  @@unique([sectionId, roomId, subjectId, startTime, endTime])
+  @@unique([sectionId, roomId, subjectId, startTime, endTime, day])
 }
