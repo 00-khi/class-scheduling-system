@@ -11,7 +11,15 @@ const handlers = createEntityHandlers<Section>({
   formatResponse: async (section) => {
     const courseSubjects = await prisma.courseSubject.findMany({
       where: { courseId: section.courseId, year: section.year },
-      include: { subject: true },
+      include: {
+        subject: {
+          include: {
+            scheduledSubject: {
+              where: { sectionId: section.id },
+            },
+          },
+        },
+      },
     });
 
     return courseSubjects.map((cs) => cs.subject);
