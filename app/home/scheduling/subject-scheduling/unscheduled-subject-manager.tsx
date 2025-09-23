@@ -2,7 +2,12 @@
 
 import { useManageEntities } from "@/hooks/use-manage-entities-v2";
 import { createApiClient } from "@/lib/api/api-client";
-import { ROOMS_API, SECTIONS_API, SUBJECTS_API } from "@/lib/api/api-endpoints";
+import {
+  ROOMS_API,
+  SCHEDULED_SUBJECTS_API,
+  SECTIONS_API,
+  SUBJECTS_API,
+} from "@/lib/api/api-endpoints";
 import { Card, CardContent, CardHeader, CardTitle } from "@/ui/shadcn/card";
 import { Separator } from "@/ui/shadcn/separator";
 import { Day, Room, ScheduledSubject, Subject } from "@prisma/client";
@@ -22,6 +27,7 @@ import {
 import { TableToolbar } from "./components/unscheduled/table-toolbar";
 import TableComponent from "./components/unscheduled/table-component";
 import FormDialog from "./components/unscheduled/form-dialog";
+import { toast } from "sonner";
 
 export type UnscheduledSubjectRow = Subject & {
   scheduledSubject?: ScheduledSubject[];
@@ -100,12 +106,66 @@ export default function UnscheduledSubjectsManager({
   );
 
   function handleAdd() {
-    setFormData(null);
+    setFormData((prev) => ({ ...prev, sectionId }));
     entityManagement.setIsFormDialogOpen(true);
   }
 
   async function handleFormSubmit(e: FormEvent) {
     e.preventDefault();
+
+    if (!formData || !validateFormData(formData)) {
+      return;
+    }
+
+    entityManagement.setIsSubmitting(true);
+
+    try {
+      const response = await fetch(SCHEDULED_SUBJECTS_API, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data?.error || "Response error");
+      }
+
+      toast.success("Schedule added");
+      onChange();
+      entityManagement.setIsFormDialogOpen(false);
+      setFormData(null);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Unexpected error";
+      toast.error(message);
+      console.error("Error saving instructor:", err);
+    } finally {
+      entityManagement.setIsSubmitting(false);
+      table.resetRowSelection();
+    }
+  }
+
+  function validateFormData(data: FormData): boolean {
+    if (!data) return false;
+
+    const validations = [
+      { field: data.sectionId, message: "Section is required" },
+      { field: data.subjectId, message: "Subject is required" },
+      { field: data.roomId, message: "Room is required" },
+      { field: data.day, message: "Day is required" },
+      { field: data.startTime, message: "Start Time is required" },
+      { field: data.endTime, message: "End Time is required" },
+    ];
+
+    for (const { field, message } of validations) {
+      if (!field) {
+        toast.error(message);
+        return false;
+      }
+    }
+
+    return true;
   }
 
   return (
