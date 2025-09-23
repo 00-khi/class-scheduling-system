@@ -5,7 +5,7 @@ import SelectSectionCard from "../../../../ui/components/select-section-card";
 import { useState } from "react";
 import UnscheduledSubjectsManager from "./unscheduled-subject-manager";
 import { Card } from "@/ui/shadcn/card";
-import { ArrowRight, MousePointer2, Smile } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import ScheduledSubjectManager from "./scheduled-subject-manager";
 
 export default function SubjectSchedulingPage() {
@@ -41,7 +41,7 @@ export default function SubjectSchedulingPage() {
             ) : (
               <Card>
                 <div className="flex flex-col justify-center items-center gap-2 text-muted-foreground">
-                  <Smile size={32} />
+                  <ArrowRight size={32} />
                   <span className=" text-sm">
                     Select a section to start scheduling subjects
                   </span>
