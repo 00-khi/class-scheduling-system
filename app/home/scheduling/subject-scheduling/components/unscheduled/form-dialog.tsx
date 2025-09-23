@@ -94,6 +94,21 @@ export default function FormDialog({
 
   const remainingMins = Math.max(requiredMins - scheduledMins, 0);
 
+  useEffect(() => {
+    setFormData((prev) => ({
+      ...prev,
+      startTime: undefined,
+      endTime: undefined,
+    }));
+  }, [formData?.subjectId, formData?.roomId, formData?.day]);
+
+  useEffect(() => {
+    setFormData((prev) => ({
+      ...prev,
+      roomId: undefined,
+    }));
+  }, [formData?.subjectId]);
+
   async function handleFindSlot() {
     abortRef.current?.abort(); // cancel previous if running
     const controller = new AbortController();
@@ -295,7 +310,12 @@ export default function FormDialog({
                   />
                 </div>
               </div>
-              <Button type="button" size="icon" onClick={handleFindSlot}>
+              <Button
+                type="button"
+                size="icon"
+                onClick={handleFindSlot}
+                disabled={isFindingSlot}
+              >
                 {isFindingSlot ? (
                   <LoaderCircle className="animate-spin" />
                 ) : (
