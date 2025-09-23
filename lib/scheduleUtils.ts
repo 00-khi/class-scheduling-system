@@ -6,40 +6,59 @@ type Schedule = {
   day: string; // "Monday", etc...
 };
 
-type Slot = Omit<Schedule, "day">;
+type CheckConflictSchedule = {
+  roomId: number;
+  sectionId: number;
+  subjectId: number;
+  startTime: string; // "HH:mm"
+  endTime: string; // "HH:mm"
+  day: string;
+};
 
+type FindSlotSchedule = Omit<Schedule, "day">;
+
+// "7:30" to "19:30", walang bawas walang dagdag. only allow times in 15-minute steps (00, 15, 30, 45) between 07:30 and 19:30
+const VALID_TIME_REGEX =
+  /^(?:0?7:30|0?[8-9]:(00|15|30|45)|1[0-8]:(00|15|30|45)|19:(00|15|30))$/;
+
+// days from Day enum in prisma
 const AVAILABLE_DAYS = Object.values(Day);
 
+// day start and day end
 const DAY_START = "7:30";
 const DAY_END = "19:30";
 
-// Convert time "HH:mm" to minutes
+// convert time "HH:mm" to minutes
 export function toMinutes(time: string): number {
   const [h, m] = time.split(":").map(Number);
   return h * 60 + m;
 }
 
+// convert minutes to hour
 export function toHours(mins: number): number {
   return mins / 60;
 }
 
-// Convert minutes to "HH:mm"
+// convert minutes to "HH:mm" format
 export function toTime(minutes: number): string {
   const h = Math.floor(minutes / 60);
   const m = minutes % 60;
   return `${h}:${m.toString().padStart(2, "0")}`;
 }
 
+// duration
 export function diffMinutes(start: string, end: string) {
   return toMinutes(end) - toMinutes(start);
 }
 
+// example: "7:30" converts to "07:30"
 export function normalizeTime(value?: string) {
   if (!value) return "";
   const [h, m] = value.split(":");
   return `${h.padStart(2, "0")}:${m.padStart(2, "0")}`;
 }
 
+// example: "19:30" converts to "7:30 PM"
 export const formatTime = (time: string) => {
   const [hour, minute] = time.split(":").map(Number);
   const ampm = hour >= 12 ? "PM" : "AM";
@@ -47,6 +66,20 @@ export const formatTime = (time: string) => {
   return `${h}:${minute.toString().padStart(2, "0")} ${ampm}`;
 };
 
+// validates time, must not earlier than startTime and exceeds endTime
+export function isValidTime(str: string): boolean {
+  return VALID_TIME_REGEX.test(str);
+}
+
+// checks if end is ahead of start
+export function isValidRange(start: string, end: string): boolean {
+  if (!isValidTime(start) || !isValidTime(end)) return false;
+  return toMinutes(end) > toMinutes(start);
+}
+
+// finds schedule, if no schedule found, checks other day
+// NEED PA AYUSIN, IF WALA MAHANAP NA SCHEDULE SA ROOM AND LAHAT NG DAY IS NACHECK
+// DAPAT MAG CHECK DIN SYA SA IBANG ROOM
 function findAvailableSchedule(
   units: number,
   scheduled: Schedule[]
@@ -98,15 +131,12 @@ function findAvailableSchedule(
   return false;
 }
 
-// example usage
-// Find a 2-unit class (2 hours) with 15 min spacing
-// console.log(findAvailableSchedule(2, scheduled, 0));
-
+// finds slot based on provided schedule array
 export function findSlot(
   units: number,
-  scheduled: Slot[]
+  scheduled: FindSlotSchedule[]
   // spacingMinutes: number = 0
-): Slot | boolean {
+): FindSlotSchedule | boolean {
   const unitMinutes = units * 60;
 
   // Sort schedules
@@ -150,6 +180,7 @@ export function findSlot(
   return false;
 }
 
+// gets the unit and the schedule of the subject then calculate the scheduled time to get the remaining units
 export function calculateRemainingUnits(
   subjectUnits: number,
   schedules: { startTime: string; endTime: string }[]
@@ -163,4 +194,29 @@ export function calculateRemainingUnits(
   const remainingUnits = subjectUnits - scheduledUnits;
 
   return Math.max(remainingUnits, 0); // prevent negative
+}
+
+// checks if the provided schedule have conflict
+export function isConflict(
+  toSchedule: CheckConflictSchedule,
+  existingSchedule: CheckConflictSchedule[]
+): boolean {
+  const start = toMinutes(toSchedule.startTime);
+  const end = toMinutes(toSchedule.endTime);
+
+  return existingSchedule.some((s) => {
+    if (s.day.toLowerCase() !== toSchedule.day.toLowerCase()) return false;
+
+    const sStart = toMinutes(s.startTime);
+    const sEnd = toMinutes(s.endTime);
+
+    // Check overlap
+    const overlap = start < sEnd && end > sStart;
+
+    // Conflict if same section OR same room
+    return (
+      overlap &&
+      (s.sectionId === toSchedule.sectionId || s.roomId === toSchedule.roomId)
+    );
+  });
 }
