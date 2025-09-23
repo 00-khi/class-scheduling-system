@@ -30,11 +30,11 @@ const VALID_TIME_REGEX =
   /^(?:0?7:30|0?[8-9]:(00|15|30|45)|1[0-8]:(00|15|30|45)|19:(00|15|30))$/;
 
 // days from Day enum in prisma
-const AVAILABLE_DAYS = Object.values(Day);
+export const AVAILABLE_DAYS = Object.values(Day);
 
 // day start and day end
-const DAY_START = "7:30";
-const DAY_END = "19:30";
+export const DAY_START = "7:30";
+export const DAY_END = "19:30";
 
 // convert time "HH:mm" to minutes
 export function toMinutes(time: string): number {
