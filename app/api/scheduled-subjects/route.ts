@@ -13,6 +13,11 @@ import { capitalizeEachWord } from "@/lib/utils";
 import { Day } from "@prisma/client";
 import { NextResponse } from "next/server";
 
+export const GET = createApiHandler(async () => {
+  const scheduledSubjects = await prisma.scheduledSubject.findMany();
+  return NextResponse.json(scheduledSubjects);
+});
+
 export const POST = createApiHandler(async (request) => {
   if (!request) {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
