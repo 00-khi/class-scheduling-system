@@ -14,7 +14,12 @@ import { Day } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 export const GET = createApiHandler(async () => {
-  const scheduledSubjects = await prisma.scheduledSubject.findMany();
+  const scheduledSubjects = await prisma.scheduledSubject.findMany({
+    include: {
+      room: true,
+      subject: true,
+    },
+  });
   return NextResponse.json(scheduledSubjects);
 });
 
