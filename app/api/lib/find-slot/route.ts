@@ -110,14 +110,14 @@ export const POST = createApiHandler(async (request) => {
 
   if (unitsToSched < 1) {
     return NextResponse.json(
-      { error: "Units to schedule must be at least 1." },
+      { error: "Schedule must be at least 1 unit." },
       { status: 400 }
     );
   }
 
   if (unitsToSched * 2 !== Math.floor(unitsToSched * 2)) {
     return NextResponse.json(
-      { error: "unitToSched must be in increments of 0.5." },
+      { error: "Schedule must be in increments of 0.5 unit." },
       { status: 400 }
     );
   }
