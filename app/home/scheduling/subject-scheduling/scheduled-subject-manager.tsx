@@ -99,7 +99,7 @@ export default function ScheduledSubjectManager({
   async function handleSingleDelete() {
     if (!deleteData?.id) {
       toast.error(
-        `Error deleting ${deleteData?.placeholder ?? "item"}: Invalid ID`
+        `Error deleting ${deleteData?.placeholder ?? "schedule"}: Invalid ID`
       );
       entityManagement.setIsDeleteDialogOpen(false);
       return;
@@ -115,24 +115,26 @@ export default function ScheduledSubjectManager({
       );
 
       if (response.status === 404) {
-        throw new Error("Item not found.");
+        throw new Error("Schedule not found.");
       }
 
       const data = await response.json();
 
       if (!response.ok) {
-        const msg = data?.error ?? "Response Error: Failed to delete item.";
+        const msg = data?.error ?? "Response Error: Failed to delete schedule.";
         throw new Error(msg);
       }
 
-      toast.success(`${deleteData.placeholder ?? "Item"} deleted successfully`);
+      toast.success(
+        `${deleteData.placeholder ?? "Schedule"} deleted successfully`
+      );
       onChange();
       entityManagement.setIsDeleteDialogOpen(false);
       setDeleteData(null);
     } catch (error) {
       const msg = error instanceof Error ? error.message : "Unexpected error";
       toast.error(msg);
-      console.error(`Error deleting item:`, error);
+      console.error(`Error deleting schedule:`, error);
     } finally {
       entityManagement.setIsDeleting(false);
       table.resetRowSelection();
