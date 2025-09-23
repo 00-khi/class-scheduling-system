@@ -7,6 +7,8 @@ import UnscheduledSubjectsManager from "./unscheduled-subject-manager";
 import { Card } from "@/ui/shadcn/card";
 import { ArrowRight } from "lucide-react";
 import ScheduledSubjectManager from "./scheduled-subject-manager";
+import Timetable from "./components/timetable";
+import TimetableManager from "./timetable-manager";
 
 export default function SubjectSchedulingPage() {
   const [selectedSectionId, setSelectedSectionId] = useState<number | null>(
@@ -35,6 +37,10 @@ export default function SubjectSchedulingPage() {
                 <ScheduledSubjectManager
                   sectionId={selectedSectionId}
                   onChange={triggerRefresh}
+                  refreshKey={refreshKey}
+                />
+                <TimetableManager
+                  sectionId={selectedSectionId}
                   refreshKey={refreshKey}
                 />
               </div>
