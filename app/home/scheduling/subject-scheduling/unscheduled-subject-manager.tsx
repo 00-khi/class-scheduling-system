@@ -85,16 +85,6 @@ export default function UnscheduledSubjectsManager({
 
   const rooms = entityManagement.relatedData.rooms || [];
 
-  const subjectOptions = entityManagement.data.map((s) => ({
-    label: s.name,
-    value: s.id,
-  }));
-
-  const roomOptions = rooms.map((r) => ({
-    label: r.name,
-    value: r.id,
-  }));
-
   const dayOptions = Object.values(Day).map((day) => ({
     value: day,
     label: day,
@@ -150,8 +140,7 @@ export default function UnscheduledSubjectsManager({
             <FormDialog
               sectionId={sectionId}
               subjects={entityManagement.data}
-              subjectOptions={subjectOptions}
-              roomOptions={roomOptions}
+              rooms={rooms}
               dayOptions={dayOptions}
               isOpen={entityManagement.isFormDialogOpen}
               onClose={() => {

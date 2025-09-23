@@ -16,7 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/ui/shadcn/select";
-import { Day, RoomType, Semester, Subject } from "@prisma/client";
+import { Day, Room, RoomType, Semester, Subject } from "@prisma/client";
 import { LoaderCircle, PlusIcon, Search, TrashIcon } from "lucide-react";
 import { Card } from "@/ui/shadcn/card";
 import { toast } from "sonner";
@@ -31,26 +31,24 @@ type Option = { value: string | number; label: string };
 
 export default function FormDialog({
   subjects,
+  rooms,
   isOpen,
   onClose,
   formData,
   setFormData,
   onSubmit,
   isSubmitting,
-  subjectOptions,
-  roomOptions,
   dayOptions,
   sectionId,
 }: {
   subjects: UnscheduledSubjectRow[];
+  rooms: Room[];
   isOpen: boolean;
   onClose: () => void;
   formData: FormData;
   setFormData: React.Dispatch<React.SetStateAction<FormData>>;
   onSubmit: (e: FormEvent) => void;
   isSubmitting: boolean;
-  subjectOptions: Option[];
-  roomOptions: Option[];
   dayOptions: Option[];
   sectionId: number;
 }) {
@@ -58,6 +56,23 @@ export default function FormDialog({
   const abortRef = useRef<AbortController | null>(null);
 
   const selectedSubject = subjects.find((s) => s.id === formData?.subjectId);
+
+  const filteredRooms =
+    selectedSubject?.type === "Laboratory"
+      ? rooms.filter((r) => r.type === "Laboratory")
+      : rooms;
+
+  const roomOptions = filteredRooms.map((r) => ({
+    label: r.name,
+    value: r.id,
+    roomType: r.type,
+  }));
+
+  const subjectOptions = subjects.map((s) => ({
+    label: s.name,
+    value: s.id,
+    subjectType: s.type,
+  }));
 
   const durationMins = useMemo(
     () =>
@@ -166,7 +181,7 @@ export default function FormDialog({
                 {subjectOptions.length > 0 ? (
                   subjectOptions.map((opt) => (
                     <SelectItem key={opt.value} value={String(opt.value)}>
-                      {opt.label}
+                      {opt.label} - {opt.subjectType}
                     </SelectItem>
                   ))
                 ) : (
@@ -197,7 +212,7 @@ export default function FormDialog({
                 {roomOptions.length > 0 ? (
                   roomOptions.map((opt) => (
                     <SelectItem key={opt.value} value={String(opt.value)}>
-                      {opt.label}
+                      {opt.label} - {opt.roomType}
                     </SelectItem>
                   ))
                 ) : (
