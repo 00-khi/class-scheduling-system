@@ -24,7 +24,7 @@ import {
   FormData,
   UnscheduledSubjectRow,
 } from "../../unscheduled-subject-manager";
-import { diffMinutes, normalizeTime, toHours } from "@/lib/scheduleUtils";
+import { diffMinutes, normalizeTime, toHours } from "@/lib/schedule-utils";
 import { Badge } from "@/ui/shadcn/badge";
 
 type Option = { value: string | number; label: string };

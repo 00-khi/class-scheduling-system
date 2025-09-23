@@ -8,7 +8,7 @@ import {
   isValidTime,
   toHours,
   toMinutes,
-} from "@/lib/scheduleUtils";
+} from "@/lib/schedule-utils";
 import { capitalizeEachWord } from "@/lib/utils";
 import { Day } from "@prisma/client";
 import { NextResponse } from "next/server";

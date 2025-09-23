@@ -6,7 +6,7 @@ import { EditIcon, TrashIcon } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/tooltip";
 import { UnscheduledSubjectRow } from "../../unscheduled-subject-manager";
 import { Progress } from "@/ui/shadcn/progress";
-import { toHours, toMinutes } from "@/lib/scheduleUtils";
+import { toHours, toMinutes } from "@/lib/schedule-utils";
 
 export default function useTableColumns(): ColumnDef<UnscheduledSubjectRow>[] {
   return [

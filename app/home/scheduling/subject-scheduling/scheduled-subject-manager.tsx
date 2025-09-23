@@ -22,7 +22,7 @@ import { TableToolbar } from "./components/scheduled/table-toolbar";
 import TableComponent from "./components/scheduled/table-component";
 import DeleteDialog from "@/ui/components/table/delete-dialog";
 import { toast } from "sonner";
-import { formatTime } from "@/lib/scheduleUtils";
+import { formatTime } from "@/lib/schedule-utils";
 
 export type ScheduledSubjectRow = ScheduledSubject & {
   room: Room;

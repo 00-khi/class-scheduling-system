@@ -10,7 +10,7 @@ import {
   formatTime,
   toHours,
   toMinutes,
-} from "@/lib/scheduleUtils";
+} from "@/lib/schedule-utils";
 import { ScheduledSubjectRow } from "../../scheduled-subject-manager";
 
 export default function useTableColumns({

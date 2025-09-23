@@ -5,7 +5,7 @@ import {
   calculateRemainingUnits,
   findSlot,
   toMinutes,
-} from "@/lib/scheduleUtils";
+} from "@/lib/schedule-utils";
 import { capitalizeEachWord } from "@/lib/utils";
 import { Day, ScheduledSubject } from "@prisma/client";
 import { NextResponse } from "next/server";

@@ -1,12 +1,20 @@
 import { Day } from "@prisma/client";
 
+type Subject = {
+  id: number;
+  units: number;
+  requiredMinutes: number;
+  scheduledMinutes: number;
+  scheduledSubject: { startTime: string; endTime: string; day: string }[];
+};
+
 type Schedule = {
   startTime: string; // "HH:mm"
   endTime: string; // "HH:mm"
   day: string; // "Monday", etc...
 };
 
-type CheckConflictSchedule = {
+type ScheduleWithRelations = {
   roomId: number;
   sectionId: number;
   subjectId: number;
@@ -198,8 +206,8 @@ export function calculateRemainingUnits(
 
 // checks if the provided schedule have conflict
 export function isConflict(
-  toSchedule: CheckConflictSchedule,
-  existingSchedule: CheckConflictSchedule[]
+  toSchedule: ScheduleWithRelations,
+  existingSchedule: ScheduleWithRelations[]
 ): boolean {
   const start = toMinutes(toSchedule.startTime);
   const end = toMinutes(toSchedule.endTime);
@@ -219,4 +227,67 @@ export function isConflict(
       (s.sectionId === toSchedule.sectionId || s.roomId === toSchedule.roomId)
     );
   });
+}
+
+// ---------------- AUTO SCHEDULE
+
+// gets 1 randomly in an array
+function randomChoice<T>(arr: T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+// generates time slots starting 7:30 to 19:30, in 30 minutes step
+function generateTimeSlots(): string[] {
+  const slots: string[] = [];
+  let mins = 7 * 60 + 30; // 07:30 in minutes
+  const end = 19 * 60 + 30;
+  while (mins <= end) {
+    const h = Math.floor(mins / 60);
+    const m = mins % 60;
+    slots.push(`${h}:${m.toString().padStart(2, "0")}`);
+    mins += 30; // step of 30 mins
+  }
+  return slots;
+}
+
+// auto schedule function na puro error
+export function autoSchedule(
+  subjects: Subject[],
+  existing: ScheduleWithRelations[],
+  sectionId: number,
+  roomId: number
+): ScheduleWithRelations[] {
+  const results: ScheduleWithRelations[] = [];
+  const slots = generateTimeSlots();
+
+  for (const subj of subjects) {
+    const remaining = subj.requiredMinutes - subj.scheduledMinutes;
+    if (remaining <= 0) continue;
+
+    let minutesLeft = remaining;
+
+    while (minutesLeft > 0) {
+      const duration = Math.min(60, minutesLeft); // schedule in 1hr blocks
+      const day = randomChoice(Object.values(Day));
+      const start = randomChoice(slots);
+      const endMinutes = toMinutes(start) + duration;
+      const end = toTime(endMinutes);
+
+      const candidate: ScheduleWithRelations = {
+        startTime: start,
+        endTime: end,
+        day,
+        sectionId,
+        roomId,
+        subjectId: subj.id,
+      };
+
+      if (!isConflict(candidate, [...existing, ...results])) {
+        results.push(candidate);
+        minutesLeft -= duration;
+      }
+    }
+  }
+
+  return results;
 }

@@ -1,7 +1,7 @@
 import { createApiHandler } from "@/lib/api/api-handler";
 import { createEntityHandlers } from "@/lib/api/entity-handler";
 import { prisma } from "@/lib/prisma";
-import { diffMinutes, toMinutes } from "@/lib/scheduleUtils";
+import { diffMinutes, toMinutes } from "@/lib/schedule-utils";
 import { Day, ScheduledSubject } from "@prisma/client";
 import { NextResponse } from "next/server";
 

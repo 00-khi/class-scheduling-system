@@ -1,7 +1,7 @@
 import { createApiHandler } from "@/lib/api/api-handler";
 import { createEntityHandlers } from "@/lib/api/entity-handler";
 import { prisma } from "@/lib/prisma";
-import { diffMinutes } from "@/lib/scheduleUtils";
+import { diffMinutes } from "@/lib/schedule-utils";
 import { Section } from "@prisma/client";
 
 const handlers = createEntityHandlers<Section>({
