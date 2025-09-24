@@ -188,6 +188,7 @@ export default function FormDialog({
                   subjectId: Number(value),
                 }))
               }
+              disabled={isSubmitting}
             >
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select Subject" />
@@ -219,6 +220,7 @@ export default function FormDialog({
                   roomId: Number(value),
                 }))
               }
+              disabled={isSubmitting}
             >
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select Room" />
@@ -250,6 +252,7 @@ export default function FormDialog({
                   day: value as Day,
                 }))
               }
+              disabled={isSubmitting}
             >
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select Day" />
@@ -314,7 +317,7 @@ export default function FormDialog({
                 type="button"
                 size="icon"
                 onClick={handleFindSlot}
-                disabled={isFindingSlot}
+                disabled={isFindingSlot || isSubmitting}
               >
                 {isFindingSlot ? (
                   <LoaderCircle className="animate-spin" />
