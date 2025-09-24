@@ -32,6 +32,7 @@ import { Dispatch, SetStateAction } from "react";
 import { ColumnDef, useReactTable } from "@tanstack/react-table";
 import { useSectionTable } from "../hooks/use-section-table";
 import { Badge } from "@/ui/shadcn/badge";
+import { Semester } from "@prisma/client";
 
 export function TableToolbar({
   table,
@@ -66,6 +67,11 @@ export function TableToolbar({
       columnFilters: [],
     }));
   };
+
+  const semesterOptions = Object.values(Semester).map((sem) => ({
+    value: sem,
+    label: sem,
+  }));
 
   return (
     <DataTableToolbar>
@@ -114,23 +120,17 @@ export function TableToolbar({
             <SelectValue placeholder="Semester" />
           </SelectTrigger>
           <SelectContent side="bottom">
-            {(() => {
-              const uniqueTypes = Array.from(
-                new Set(entityData.map((item) => item.semester).filter(Boolean))
-              );
-
-              return uniqueTypes.length > 0 ? (
-                uniqueTypes.map((item) => (
-                  <SelectItem key={item} value={item ?? ""}>
-                    {item}
-                  </SelectItem>
-                ))
-              ) : (
-                <SelectItem disabled value="-">
-                  No data found
+            {semesterOptions.length > 0 ? (
+              semesterOptions.map((opt) => (
+                <SelectItem key={opt.value} value={String(opt.value)}>
+                  {opt.label}
                 </SelectItem>
-              );
-            })()}
+              ))
+            ) : (
+              <SelectItem disabled value="-">
+                No data found
+              </SelectItem>
+            )}
           </SelectContent>
         </Select>
 

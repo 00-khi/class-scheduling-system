@@ -32,6 +32,7 @@ import { Dispatch, SetStateAction } from "react";
 import { ColumnDef, useReactTable } from "@tanstack/react-table";
 import { useSubjectTable } from "../hooks/use-subject-table";
 import { Badge } from "@/ui/shadcn/badge";
+import { Semester } from "@prisma/client";
 
 export function TableToolbar({
   table,
@@ -67,6 +68,11 @@ export function TableToolbar({
     }));
   };
 
+  const semesterOptions = Object.values(Semester).map((sem) => ({
+    value: sem,
+    label: sem,
+  }));
+
   return (
     <DataTableToolbar>
       <DataTableToolbarGroup className="transition-all duration-300 ease-in-out">
@@ -88,6 +94,45 @@ export function TableToolbar({
             <Search size={16} />
           </div>
         </div>
+
+        {/* Filter Select - SEMESTER */}
+        <Select
+          value={
+            (tableState.columnFilters.find((f) => f.id === "semester")
+              ?.value as string) ?? ""
+          }
+          onValueChange={(value) =>
+            setTableState((prev) => {
+              const newFilters = prev.columnFilters.filter(
+                (f) => f.id !== "semester"
+              );
+              return {
+                ...prev,
+                columnFilters: value
+                  ? [...newFilters, { id: "semester", value }]
+                  : newFilters,
+              };
+            })
+          }
+        >
+          <SelectTrigger>
+            <Filter className="text-muted-foreground/80" />
+            <SelectValue placeholder="Semester" />
+          </SelectTrigger>
+          <SelectContent side="bottom">
+            {semesterOptions.length > 0 ? (
+              semesterOptions.map((opt) => (
+                <SelectItem key={opt.value} value={String(opt.value)}>
+                  {opt.label}
+                </SelectItem>
+              ))
+            ) : (
+              <SelectItem disabled value="-">
+                No data found
+              </SelectItem>
+            )}
+          </SelectContent>
+        </Select>
 
         {/* Filter Select - TYPE */}
         <Select
@@ -166,51 +211,6 @@ export function TableToolbar({
                     .map((item) => item.academicLevel?.name)
                     .filter(Boolean)
                 )
-              );
-
-              return uniqueTypes.length > 0 ? (
-                uniqueTypes.map((item) => (
-                  <SelectItem key={item} value={item ?? ""}>
-                    {item}
-                  </SelectItem>
-                ))
-              ) : (
-                <SelectItem disabled value="-">
-                  No data found
-                </SelectItem>
-              );
-            })()}
-          </SelectContent>
-        </Select>
-
-        {/* Filter Select - SEMESTER */}
-        <Select
-          value={
-            (tableState.columnFilters.find((f) => f.id === "semester")
-              ?.value as string) ?? ""
-          }
-          onValueChange={(value) =>
-            setTableState((prev) => {
-              const newFilters = prev.columnFilters.filter(
-                (f) => f.id !== "semester"
-              );
-              return {
-                ...prev,
-                columnFilters: value
-                  ? [...newFilters, { id: "semester", value }]
-                  : newFilters,
-              };
-            })
-          }
-        >
-          <SelectTrigger>
-            <Filter className="text-muted-foreground/80" />
-            <SelectValue placeholder="Semester" />
-          </SelectTrigger>
-          <SelectContent side="bottom">
-            {(() => {
-              const uniqueTypes = Array.from(
-                new Set(entityData.map((item) => item.semester).filter(Boolean))
               );
 
               return uniqueTypes.length > 0 ? (
