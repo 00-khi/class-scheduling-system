@@ -125,15 +125,6 @@ export default function SubjectManager() {
     }
   }, [settings]);
 
-  useEffect(() => {
-    setFormData({
-      ...formData,
-      courseId: undefined,
-      year: undefined,
-      // courseSubjects: undefined,
-    });
-  }, [formData?.academicLevelId]);
-
   const academicLevelOptions = academicLevels.map((al) => ({
     label: al.name,
     value: al.id,
@@ -146,11 +137,7 @@ export default function SubjectManager() {
     value: type,
     label: type,
   }));
-  const courseOptions: {
-    label: string;
-    value: string;
-    valueType: "string" | "number";
-  }[] =
+  const courseOptions =
     formData?.academicLevelId !== null
       ? courses
           .filter(
@@ -163,7 +150,7 @@ export default function SubjectManager() {
           }))
       : [];
   // Build year options based on selected academic level
-  const yearOptions: typeof courseOptions =
+  const yearOptions =
     formData?.academicLevelId !== null
       ? (
           academicLevels.find((level) => level.id === formData?.academicLevelId)
