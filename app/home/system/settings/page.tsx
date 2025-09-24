@@ -174,7 +174,7 @@ export default function SettingsPage() {
                   </CardHeader>
                   <CardContent className="border-y py-4 space-y-4 h-full">
                     {/* TIME INPUTS */}
-                    <div className="grid grid-cols-2 gap-2 w-full">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full">
                       <div className="space-y-2">
                         <Label>Start Time</Label>
                         <Input
@@ -207,7 +207,7 @@ export default function SettingsPage() {
                     {/* DAYS TOGGLE */}
                     <div className="space-y-2">
                       <Label>Days</Label>
-                      <div className="grid grid-cols-2 gap-3">
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
                         {AVAILABLE_DAYS.map((day) => (
                           <div
                             key={day}
