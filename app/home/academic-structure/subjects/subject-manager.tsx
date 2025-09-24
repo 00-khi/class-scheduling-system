@@ -344,6 +344,7 @@ export default function SubjectManager() {
       { field: data.code, message: "Subject Code is required" },
       { field: data.name, message: "Subject Name is required" },
       { field: data.academicLevelId, message: "Academic Level is required" },
+      { field: data.courseSubjects, message: "Course Subjects are required" },
     ];
 
     for (const { field, message } of validations) {
