@@ -8,7 +8,7 @@ import {
 } from "@/ui/shadcn/dialog";
 import { Input } from "@/ui/shadcn/input";
 import { Label } from "@/ui/shadcn/label";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent } from "react";
 import { FormData } from "../subject-manager";
 import {
   Select,
@@ -49,16 +49,6 @@ export default function FormDialog({
   yearOptions: Option[];
   academicLevelOptions: Option[];
 }) {
-  // console.log(formData);
-  useEffect(() => {
-    // SAAGA KO NA AYUSON INI
-    setFormData((prev) => ({
-      ...prev,
-      courseSubjects: undefined,
-    }));
-    console.log("ACADEMIC LEVEL CHANGED");
-  }, [formData?.academicLevelId]);
-
   const handleAdd = () => {
     if (!formData) return;
 
@@ -80,6 +70,8 @@ export default function FormDialog({
 
     setFormData({
       ...formData,
+      courseId: undefined,
+      year: undefined,
       courseSubjects: [
         ...(formData.courseSubjects ?? []),
         {
@@ -179,7 +171,7 @@ export default function FormDialog({
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, code: e.target.value }))
               }
-              placeholder="e.g., TER, SHS, JHS"
+              placeholder="e.g., OOP"
               disabled={isSubmitting}
             />
           </div>
@@ -193,7 +185,7 @@ export default function FormDialog({
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, name: e.target.value }))
               }
-              placeholder="e.g., Tertiary, Senior High School, Junior High School"
+              placeholder="e.g., Object-Oriented Programming"
               disabled={isSubmitting}
             />
           </div>
@@ -209,6 +201,7 @@ export default function FormDialog({
                   semester: value as Semester,
                 }))
               }
+              disabled={isSubmitting}
             >
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select Semester" />
@@ -240,6 +233,7 @@ export default function FormDialog({
                   type: value as RoomType,
                 }))
               }
+              disabled={isSubmitting}
             >
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select Type" />
@@ -286,8 +280,12 @@ export default function FormDialog({
                 setFormData((prev) => ({
                   ...prev,
                   academicLevelId: Number(value),
+                  courseSubjects: undefined,
+                  courseId: undefined,
+                  year: undefined,
                 }))
               }
+              disabled={isSubmitting}
             >
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select Academic Level" />
@@ -319,6 +317,7 @@ export default function FormDialog({
                   onValueChange={(value) => {
                     setFormData({ ...formData, courseId: Number(value) });
                   }}
+                  disabled={isSubmitting}
                 >
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select Course" />
@@ -347,6 +346,7 @@ export default function FormDialog({
                   onValueChange={(value) => {
                     setFormData({ ...formData, year: Number(value) });
                   }}
+                  disabled={isSubmitting}
                 >
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select Year" />
@@ -369,7 +369,12 @@ export default function FormDialog({
             </div>
 
             {/* ARRAY FIELD - COURSE && YEAR - ADD BUTTON */}
-            <Button type="button" size="icon" onClick={handleAdd}>
+            <Button
+              type="button"
+              size="icon"
+              onClick={handleAdd}
+              disabled={isSubmitting}
+            >
               <PlusIcon />
             </Button>
           </div>
@@ -390,6 +395,7 @@ export default function FormDialog({
                         item.year
                       )
                     }
+                    disabled={isSubmitting}
                   >
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder="Select Course" />
@@ -422,6 +428,7 @@ export default function FormDialog({
                         Number(value)
                       )
                     }
+                    disabled={isSubmitting}
                   >
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder="Select Year" />
@@ -448,6 +455,7 @@ export default function FormDialog({
                 variant="destructive"
                 size="icon"
                 onClick={() => handleDelete(item.courseId, item.year)}
+                disabled={isSubmitting}
               >
                 <TrashIcon />
               </Button>

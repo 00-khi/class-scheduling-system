@@ -59,7 +59,7 @@ export default function FormDialog({
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, code: e.target.value }))
               }
-              placeholder="e.g., TER, SHS, JHS"
+              placeholder="e.g., BSIT, BSCS"
               disabled={isSubmitting}
             />
           </div>
@@ -72,7 +72,7 @@ export default function FormDialog({
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, name: e.target.value }))
               }
-              placeholder="e.g., Tertiary, Senior High School, Junior High School"
+              placeholder="e.g., Bachelor of Science in Information Technology"
               disabled={isSubmitting}
             />
           </div>
@@ -87,6 +87,7 @@ export default function FormDialog({
                   academicLevelId: Number(value),
                 }))
               }
+              disabled={isSubmitting}
             >
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select Academic Level" />

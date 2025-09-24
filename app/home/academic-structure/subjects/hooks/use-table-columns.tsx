@@ -57,10 +57,18 @@ export default function useTableColumns({
       },
     },
     {
+      header: "Semester",
+      accessorKey: "semester",
+    },
+    {
       header: "Type",
       accessorKey: "type",
       cell: ({ row }) => (
-        <Badge variant="secondary">{row.getValue("type")}</Badge>
+        <Badge
+          variant={row.original.type === "Laboratory" ? "default" : "secondary"}
+        >
+          {row.original.type}
+        </Badge>
       ),
     },
     {

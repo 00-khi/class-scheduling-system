@@ -96,10 +96,17 @@ export function TableToolbar({
               ?.value as string) ?? ""
           }
           onValueChange={(value) =>
-            setTableState((prev) => ({
-              ...prev,
-              columnFilters: value ? [{ id: "type", value }] : [],
-            }))
+            setTableState((prev) => {
+              const newFilters = prev.columnFilters.filter(
+                (f) => f.id !== "type"
+              );
+              return {
+                ...prev,
+                columnFilters: value
+                  ? [...newFilters, { id: "type", value }]
+                  : newFilters,
+              };
+            })
           }
         >
           <SelectTrigger>
@@ -134,10 +141,17 @@ export function TableToolbar({
               ?.value as string) ?? ""
           }
           onValueChange={(value) =>
-            setTableState((prev) => ({
-              ...prev,
-              columnFilters: value ? [{ id: "academicLevel", value }] : [],
-            }))
+            setTableState((prev) => {
+              const newFilters = prev.columnFilters.filter(
+                (f) => f.id !== "academicLevel"
+              );
+              return {
+                ...prev,
+                columnFilters: value
+                  ? [...newFilters, { id: "academicLevel", value }]
+                  : newFilters,
+              };
+            })
           }
         >
           <SelectTrigger>
@@ -158,6 +172,103 @@ export function TableToolbar({
                 uniqueTypes.map((item) => (
                   <SelectItem key={item} value={item ?? ""}>
                     {item}
+                  </SelectItem>
+                ))
+              ) : (
+                <SelectItem disabled value="-">
+                  No data found
+                </SelectItem>
+              );
+            })()}
+          </SelectContent>
+        </Select>
+
+        {/* Filter Select - SEMESTER */}
+        <Select
+          value={
+            (tableState.columnFilters.find((f) => f.id === "semester")
+              ?.value as string) ?? ""
+          }
+          onValueChange={(value) =>
+            setTableState((prev) => {
+              const newFilters = prev.columnFilters.filter(
+                (f) => f.id !== "semester"
+              );
+              return {
+                ...prev,
+                columnFilters: value
+                  ? [...newFilters, { id: "semester", value }]
+                  : newFilters,
+              };
+            })
+          }
+        >
+          <SelectTrigger>
+            <Filter className="text-muted-foreground/80" />
+            <SelectValue placeholder="Semester" />
+          </SelectTrigger>
+          <SelectContent side="bottom">
+            {(() => {
+              const uniqueTypes = Array.from(
+                new Set(entityData.map((item) => item.semester).filter(Boolean))
+              );
+
+              return uniqueTypes.length > 0 ? (
+                uniqueTypes.map((item) => (
+                  <SelectItem key={item} value={item ?? ""}>
+                    {item}
+                  </SelectItem>
+                ))
+              ) : (
+                <SelectItem disabled value="-">
+                  No data found
+                </SelectItem>
+              );
+            })()}
+          </SelectContent>
+        </Select>
+
+        {/* Filter Select - COURSE */}
+        <Select
+          value={
+            (tableState.columnFilters.find((f) => f.id === "courses")
+              ?.value as string) ?? ""
+          }
+          onValueChange={(value) =>
+            setTableState((prev) => {
+              const newFilters = prev.columnFilters.filter(
+                (f) => f.id !== "courses"
+              );
+              return {
+                ...prev,
+                columnFilters: value
+                  ? [...newFilters, { id: "courses", value }]
+                  : newFilters,
+              };
+            })
+          }
+        >
+          <SelectTrigger>
+            <Filter className="text-muted-foreground/80" />
+            <SelectValue placeholder="Courses" />
+          </SelectTrigger>
+          <SelectContent side="bottom">
+            {(() => {
+              const uniqueCourses = Array.from(
+                new Set(
+                  entityData
+                    .flatMap(
+                      (item) =>
+                        item.courseSubjects?.map((cs) => cs.course?.name) ?? []
+                    )
+                    .filter(Boolean)
+                )
+              );
+
+              return uniqueCourses.length > 0 ? (
+                uniqueCourses.map((course) => (
+                  <SelectItem key={course} value={course}>
+                    {course}
                   </SelectItem>
                 ))
               ) : (

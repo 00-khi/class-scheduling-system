@@ -96,10 +96,17 @@ export function TableToolbar({
               ?.value as string) ?? ""
           }
           onValueChange={(value) =>
-            setTableState((prev) => ({
-              ...prev,
-              columnFilters: value ? [{ id: "status", value }] : [],
-            }))
+            setTableState((prev) => {
+              const newFilters = prev.columnFilters.filter(
+                (f) => f.id !== "status"
+              );
+              return {
+                ...prev,
+                columnFilters: value
+                  ? [...newFilters, { id: "status", value }]
+                  : newFilters,
+              };
+            })
           }
         >
           <SelectTrigger>
@@ -109,11 +116,7 @@ export function TableToolbar({
           <SelectContent side="bottom">
             {(() => {
               const uniqueTypes = Array.from(
-                new Set(
-                  entityData
-                    .map((item) => item.status)
-                    .filter(Boolean)
-                )
+                new Set(entityData.map((item) => item.status).filter(Boolean))
               );
 
               return uniqueTypes.length > 0 ? (
@@ -134,14 +137,22 @@ export function TableToolbar({
         {/* Filter Select */}
         <Select
           value={
-            (tableState.columnFilters.find((f) => f.id === "academicQualification")
-              ?.value as string) ?? ""
+            (tableState.columnFilters.find(
+              (f) => f.id === "academicQualification"
+            )?.value as string) ?? ""
           }
           onValueChange={(value) =>
-            setTableState((prev) => ({
-              ...prev,
-              columnFilters: value ? [{ id: "academicQualification", value }] : [],
-            }))
+            setTableState((prev) => {
+              const newFilters = prev.columnFilters.filter(
+                (f) => f.id !== "academicQualification"
+              );
+              return {
+                ...prev,
+                columnFilters: value
+                  ? [...newFilters, { id: "academicQualification", value }]
+                  : newFilters,
+              };
+            })
           }
         >
           <SelectTrigger>

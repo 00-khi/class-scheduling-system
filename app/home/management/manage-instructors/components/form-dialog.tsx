@@ -54,7 +54,6 @@ export default function FormDialog({
         </DialogHeader>
 
         <form onSubmit={onSubmit} className="space-y-4">
-
           <div className="space-y-2">
             <Label htmlFor="name">Instructor Name</Label>
             <Input
@@ -63,7 +62,7 @@ export default function FormDialog({
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, name: e.target.value }))
               }
-              placeholder="e.g., Jumar"
+              placeholder="e.g., Kyla Sinforoso"
               disabled={isSubmitting}
             />
           </div>
@@ -78,9 +77,10 @@ export default function FormDialog({
                   status: value as InstructorStatus,
                 }))
               }
+              disabled={isSubmitting}
             >
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select Academic Level" />
+                <SelectValue placeholder="Select Status" />
               </SelectTrigger>
               <SelectContent className="w-[var(--radix-select-trigger-width)] min-w-[var(--radix-select-trigger-width)]">
                 {statusOptions.length > 0 ? (
@@ -99,7 +99,9 @@ export default function FormDialog({
           </div>
 
           <div className="grid grid-cols-1 space-y-2">
-            <Label htmlFor="academicQualificationId">Academic Qualification</Label>
+            <Label htmlFor="academicQualificationId">
+              Academic Qualification
+            </Label>
             <Select
               value={formData?.academicQualificationId?.toString() ?? ""}
               onValueChange={(value) =>
@@ -108,9 +110,10 @@ export default function FormDialog({
                   academicQualificationId: Number(value),
                 }))
               }
+              disabled={isSubmitting}
             >
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select Academic Level" />
+                <SelectValue placeholder="Select Academic Qualification" />
               </SelectTrigger>
               <SelectContent className="w-[var(--radix-select-trigger-width)] min-w-[var(--radix-select-trigger-width)]">
                 {academicQualificationOptions.length > 0 ? (

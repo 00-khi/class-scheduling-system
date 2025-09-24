@@ -75,6 +75,7 @@ export default function FormDialog({
                   type: value as RoomType,
                 }))
               }
+              disabled={isSubmitting}
             >
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select Type" />
