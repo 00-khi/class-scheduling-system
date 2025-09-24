@@ -1,3 +1,5 @@
+import { SETTINGS_API } from "./api/api-endpoints";
+
 type Setting = {
   id: number;
   key: string;
@@ -6,7 +8,7 @@ type Setting = {
 
 // get all settings
 export async function getSettings(): Promise<Setting[]> {
-  const res = await fetch("/api/settings", {
+  const res = await fetch(SETTINGS_API, {
     method: "GET",
     headers: { "Content-Type": "application/json" },
   });
@@ -19,7 +21,7 @@ export async function updateSetting(
   key: string,
   value: string
 ): Promise<Setting> {
-  const res = await fetch("/api/settings", {
+  const res = await fetch(SETTINGS_API, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ key, value }),
