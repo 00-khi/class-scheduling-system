@@ -24,6 +24,7 @@ export async function updateSetting(
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ key, value }),
   });
-  if (!res.ok) throw new Error("Failed to update setting");
-  return res.json();
+  const data = await res.json();
+  if (!res.ok) throw new Error(data?.error ?? "Failed to update setting");
+  return data;
 }
