@@ -90,7 +90,7 @@ export default function SettingsPage() {
 
     try {
       await Promise.all([
-        updateSetting("semester", settingsState.semester || "First"),
+        updateSetting("semester", settingsState.semester || "First_Semester"),
         updateSetting("dayStart", settingsState.dayStart || DAY_START),
         updateSetting("dayEnd", settingsState.dayEnd || DAY_END),
         updateSetting("days", JSON.stringify(settingsState.days || [])),

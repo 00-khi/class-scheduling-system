@@ -79,7 +79,7 @@ const handlers = createEntityCollectionHandlers<
     for (let i = 0; i < (data.totalSections || 0); i++) {
       const suffix = toLetters(i); // A, B, C... AA...
       const name = `${course.code}${data.year}0${
-        capitalizeEachWord(data.semester || "") === "First" ? 1 : 2
+        capitalizeEachWord(data.semester || "") === "First_Semester" ? 1 : 2
       }${suffix}`;
       targetNames.push(name);
     }

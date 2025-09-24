@@ -29,8 +29,8 @@ enum RoomType {
 }
 
 enum Semester {
-  First
-  Second
+  First_Semester
+  Second_Semester
 }
 
 enum Day {
