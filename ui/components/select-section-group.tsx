@@ -6,6 +6,7 @@ import {
   ACADEMIC_LEVELS_API,
   COURSES_API,
   SECTIONS_API,
+  SETTINGS_API,
 } from "@/lib/api/api-endpoints";
 import { Card, CardContent, CardHeader, CardTitle } from "@/ui/shadcn/card";
 import {
@@ -15,7 +16,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/ui/shadcn/select";
-import { AcademicLevel, Course, Section, Subject } from "@prisma/client";
+import {
+  AcademicLevel,
+  Course,
+  Section,
+  Semester,
+  Setting,
+  Subject,
+} from "@prisma/client";
 import { useEffect, useState } from "react";
 import {
   DataTableToolbar,
@@ -34,23 +42,45 @@ export default function SelectSectionGroup({
     courseId?: number;
     year?: number;
     sectionId?: number | null;
+    semester?: Semester;
   } | null>(null);
 
   const sectionApi = createApiClient<Section>(SECTIONS_API);
   const academicLevelApi = createApiClient<AcademicLevel>(ACADEMIC_LEVELS_API);
   const courseApi = createApiClient<Course>(COURSES_API);
+  const settingsApi = createApiClient<Setting>(SETTINGS_API);
 
   const entityManagement = useManageEntities<Section>({
     apiService: { fetch: sectionApi.getAll },
     relatedApiServices: [
       { key: "academicLevels", fetch: academicLevelApi.getAll },
       { key: "courses", fetch: courseApi.getAll },
+      { key: "settings", fetch: settingsApi.getAll },
     ],
   });
 
   const academicLevels = entityManagement.relatedData.academicLevels || [];
   const courses = entityManagement.relatedData.courses || [];
+  const settings = entityManagement.relatedData.settings || [];
 
+  useEffect(() => {
+    if (!settings.length) return;
+
+    const defaultSemester = settings.find((s) => s.key === "semester")
+      ?.value as Semester | undefined;
+
+    if (defaultSemester) {
+      setSelectedData((prev) => ({
+        ...prev,
+        semester: defaultSemester,
+      }));
+    }
+  }, [settings]);
+
+  const semesterOptions = Object.values(Semester).map((sem) => ({
+    value: sem,
+    label: sem,
+  }));
   const academicLevelOptions: Option[] = academicLevels.map((al) => ({
     label: al.name,
     value: al.id,
@@ -86,7 +116,8 @@ export default function SelectSectionGroup({
       if (
         !selectedData?.courseId &&
         !selectedData?.year &&
-        !selectedData?.academicLevelId
+        !selectedData?.academicLevelId &&
+        !selectedData?.semester
       ) {
         return true;
       }
@@ -102,6 +133,9 @@ export default function SelectSectionGroup({
       }
       if (selectedData?.year) {
         match = match && s.year === selectedData.year;
+      }
+      if (selectedData?.semester) {
+        match = match && s.semester === selectedData.semester;
       }
       return match;
     })
@@ -228,6 +262,34 @@ export default function SelectSectionGroup({
           <SelectContent>
             {sectionOptions.length > 0 ? (
               sectionOptions.map((opt) => (
+                <SelectItem key={opt.value} value={String(opt.value)}>
+                  {opt.label}
+                </SelectItem>
+              ))
+            ) : (
+              <SelectItem disabled value="-">
+                No data found
+              </SelectItem>
+            )}
+          </SelectContent>
+        </Select>
+
+        {/* Semester */}
+        <Select
+          value={selectedData?.semester?.toString() ?? ""}
+          onValueChange={(value) => {
+            setSelectedData((prev) => ({
+              ...prev,
+              semester: value as Semester,
+            }));
+          }}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Select Semester" />
+          </SelectTrigger>
+          <SelectContent>
+            {semesterOptions.length > 0 ? (
+              semesterOptions.map((opt) => (
                 <SelectItem key={opt.value} value={String(opt.value)}>
                   {opt.label}
                 </SelectItem>
