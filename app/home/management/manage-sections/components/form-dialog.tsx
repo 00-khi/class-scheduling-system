@@ -130,7 +130,7 @@ export default function FormDialog({
 
           {/* COURSE SELECT */}
           <div className="grid grid-cols-1 gap-2">
-            <Label htmlFor="type">Type</Label>
+            <Label htmlFor="type">Course</Label>
             <Select
               value={formData?.courseId?.toString() ?? ""}
               onValueChange={(value) =>
@@ -142,11 +142,43 @@ export default function FormDialog({
               disabled={isSubmitting}
             >
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select Type" />
+                <SelectValue placeholder="Select Course" />
               </SelectTrigger>
               <SelectContent className="w-[var(--radix-select-trigger-width)] min-w-[var(--radix-select-trigger-width)]">
                 {courseOptions.length > 0 ? (
                   courseOptions.map((opt) => (
+                    <SelectItem key={opt.value} value={String(opt.value)}>
+                      {opt.label}
+                    </SelectItem>
+                  ))
+                ) : (
+                  <SelectItem disabled value="-">
+                    No data found
+                  </SelectItem>
+                )}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* COURSE SELECT */}
+          <div className="grid grid-cols-1 gap-2">
+            <Label htmlFor="type">Year</Label>
+            <Select
+              value={formData?.year?.toString() ?? ""}
+              onValueChange={(value) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  year: Number(value),
+                }))
+              }
+              disabled={isSubmitting}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select Year" />
+              </SelectTrigger>
+              <SelectContent className="w-[var(--radix-select-trigger-width)] min-w-[var(--radix-select-trigger-width)]">
+                {yearOptions.length > 0 ? (
+                  yearOptions.map((opt) => (
                     <SelectItem key={opt.value} value={String(opt.value)}>
                       {opt.label}
                     </SelectItem>
