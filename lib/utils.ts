@@ -5,12 +5,17 @@ export function toUppercase(str: string): string {
 
 export function capitalizeEachWord(str: string): string {
   if (!str) return "";
+
   return removeExtraSpaces(
     str
       .toLowerCase()
-      .split(" ")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ")
+      .split(/([ _])/g) // keep spaces and underscores as separators
+      .map((word) =>
+        word === " " || word === "_"
+          ? word
+          : word.charAt(0).toUpperCase() + word.slice(1)
+      )
+      .join("")
   );
 }
 
@@ -62,11 +67,4 @@ export function getNextLetters(
 
 export function replaceUnderscores(str: string): string {
   return str.replace(/_/g, " ");
-}
-
-export function capitalizeWordsWithUnderscore(str: string): string {
-  return str
-    .split("_")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join("_");
 }
