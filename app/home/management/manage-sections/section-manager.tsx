@@ -91,8 +91,8 @@ export default function SectionManager() {
   const entityManagement = useManageEntities<Section>({
     apiService: { fetch: sectionApi.getAll },
     relatedApiServices: [
-      { key: "academicLevel", fetch: academicLevelApi.getAll },
-      { key: "course", fetch: courseApi.getAll },
+      { key: "academicLevels", fetch: academicLevelApi.getAll },
+      { key: "courses", fetch: courseApi.getAll },
       { key: "settings", fetch: settingsApi.getAll },
     ],
   });
