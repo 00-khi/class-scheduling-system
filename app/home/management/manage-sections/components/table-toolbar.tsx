@@ -33,6 +33,7 @@ import { ColumnDef, useReactTable } from "@tanstack/react-table";
 import { useSectionTable } from "../hooks/use-section-table";
 import { Badge } from "@/ui/shadcn/badge";
 import { Semester } from "@prisma/client";
+import { replaceUnderscores } from "@/lib/utils";
 
 export function TableToolbar({
   table,
@@ -123,7 +124,7 @@ export function TableToolbar({
             {semesterOptions.length > 0 ? (
               semesterOptions.map((opt) => (
                 <SelectItem key={opt.value} value={String(opt.value)}>
-                  {opt.label}
+                  {replaceUnderscores(opt.label)}
                 </SelectItem>
               ))
             ) : (

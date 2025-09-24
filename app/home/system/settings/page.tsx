@@ -26,6 +26,7 @@ import { LoaderCircle, RotateCcw, Save } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { SettingsSkeleton } from "./settings-skeleton";
+import { replaceUnderscores } from "@/lib/utils";
 
 type SettingsState = {
   semester?: Semester;
@@ -147,7 +148,7 @@ export default function SettingsPage() {
                               key={opt.value}
                               value={String(opt.value)}
                             >
-                              {opt.label}
+                              {replaceUnderscores(opt.label)}
                             </SelectItem>
                           ))}
                         </SelectContent>

@@ -29,6 +29,7 @@ import {
   DataTableToolbar,
   DataTableToolbarGroup,
 } from "./data-table-components";
+import { replaceUnderscores } from "@/lib/utils";
 
 type Option = { value: string | number; label: string };
 
@@ -291,7 +292,7 @@ export default function SelectSectionGroup({
             {semesterOptions.length > 0 ? (
               semesterOptions.map((opt) => (
                 <SelectItem key={opt.value} value={String(opt.value)}>
-                  {opt.label}
+                  {replaceUnderscores(opt.label)}
                 </SelectItem>
               ))
             ) : (
