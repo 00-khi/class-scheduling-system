@@ -59,3 +59,7 @@ export function getNextLetters(
   }
   return letters;
 }
+
+export function replaceUnderscores(str: string): string {
+  return str.replace(/_/g, " ");
+}
