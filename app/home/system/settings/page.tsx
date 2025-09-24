@@ -1,6 +1,11 @@
 "use client";
 
-import { AVAILABLE_DAYS, normalizeTime } from "@/lib/schedule-utils";
+import {
+  AVAILABLE_DAYS,
+  DAY_END,
+  DAY_START,
+  normalizeTime,
+} from "@/lib/schedule-utils";
 import { getSettings, updateSetting } from "@/lib/settings-handler";
 import { MainSection } from "@/ui/components/main-section";
 import { Button } from "@/ui/shadcn/button";
@@ -86,15 +91,15 @@ export default function SettingsPage() {
     try {
       await Promise.all([
         updateSetting("semester", settingsState.semester || "First"),
-        updateSetting("dayStart", settingsState.dayStart || "07:30"),
-        updateSetting("dayEnd", settingsState.dayEnd || "19:30"),
+        updateSetting("dayStart", settingsState.dayStart || DAY_START),
+        updateSetting("dayEnd", settingsState.dayEnd || DAY_END),
         updateSetting("days", JSON.stringify(settingsState.days || [])),
       ]);
       toast.success("Settings saved");
       load();
     } catch (e) {
       console.error("Failed to save settings", e);
-      toast.success("Failed to save settings");
+      toast.error(e instanceof Error ? e.message : "Failed to save settings");
     } finally {
       setIsSaving(false);
     }
