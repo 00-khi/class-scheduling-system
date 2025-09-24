@@ -1,7 +1,7 @@
 "use client";
 
 import { MainSection } from "@/ui/components/main-section";
-import SelectSectionCard from "../../../../ui/components/select-section-card";
+import SelectSectionGroup from "../../../../ui/components/select-section-group";
 import { useState } from "react";
 import UnscheduledSubjectsManager from "./unscheduled-subject-manager";
 import { Card } from "@/ui/shadcn/card";
@@ -25,7 +25,7 @@ export default function SubjectSchedulingPage() {
         <MainSection.Title>Subject Scheduling</MainSection.Title>
         <MainSection.Content>
           <div className="space-y-3">
-            <SelectSectionCard onSectionChange={setSelectedSectionId} />
+            <SelectSectionGroup onSectionChange={setSelectedSectionId} />
 
             {selectedSectionId ? (
               <div className="space-y-3">

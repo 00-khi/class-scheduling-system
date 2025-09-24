@@ -17,10 +17,14 @@ import {
 } from "@/ui/shadcn/select";
 import { AcademicLevel, Course, Section, Subject } from "@prisma/client";
 import { useEffect, useState } from "react";
+import {
+  DataTableToolbar,
+  DataTableToolbarGroup,
+} from "./data-table-components";
 
 type Option = { value: string | number; label: string };
 
-export default function SelectSectionCard({
+export default function SelectSectionGroup({
   onSectionChange,
 }: {
   onSectionChange?: (section: number | null) => void;
@@ -128,13 +132,8 @@ export default function SelectSectionCard({
   }, [selectedData?.sectionId]);
 
   return (
-    <Card className="gap-2">
-      <CardHeader>
-        <CardTitle className="text-card-foreground font-normal">
-          Select Section
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="flex flex-wrap gap-3">
+    <DataTableToolbar>
+      <DataTableToolbarGroup>
         {/* Academic Level */}
         <Select
           value={selectedData?.academicLevelId?.toString() ?? ""}
@@ -214,7 +213,8 @@ export default function SelectSectionCard({
             )}
           </SelectContent>
         </Select>
-
+      </DataTableToolbarGroup>
+      <DataTableToolbarGroup>
         {/* Section */}
         <Select
           value={selectedData?.sectionId?.toString() ?? ""}
@@ -239,7 +239,7 @@ export default function SelectSectionCard({
             )}
           </SelectContent>
         </Select>
-      </CardContent>
-    </Card>
+      </DataTableToolbarGroup>
+    </DataTableToolbar>
   );
 }
