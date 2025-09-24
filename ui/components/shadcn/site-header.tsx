@@ -6,6 +6,7 @@ import { Button } from "@/ui/shadcn/button";
 import { Separator } from "@/ui/shadcn/separator";
 import { useSidebar } from "@/ui/shadcn/sidebar";
 import Image from "next/image";
+import { ToggleTheme } from "../toggle-theme";
 
 export function SiteHeader() {
   const { toggleSidebar } = useSidebar();
@@ -31,9 +32,13 @@ export function SiteHeader() {
             className="object-contain"
           />
         </div>
-        <h1 className="text-base font-medium">
+        <h1 className="text-base font-medium hidden sm:block">
           Automated Class Scheduling System
         </h1>
+        <h1 className="text-base font-medium block sm:hidden">STI ACSS</h1>
+        <div className="ml-auto">
+          <ToggleTheme />
+        </div>
       </div>
     </header>
   );
