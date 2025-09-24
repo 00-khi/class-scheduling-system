@@ -175,7 +175,7 @@ export default function UnscheduledSubjectsManager({
           Unscheduled Subjects
         </CardTitle>
       </CardHeader>
-      <CardContent className="border-y py-4 space">
+      <CardContent className="border-y py-4">
         {entityManagement.isLoading ? (
           <DataTableSection>
             <DataTableSkeleton columnCount={4} rowCount={5} />
