@@ -10,15 +10,38 @@ import {
   toMinutes,
 } from "@/lib/schedule-utils";
 import { capitalizeEachWord } from "@/lib/utils";
-import { Day } from "@prisma/client";
+import { Day, Semester } from "@prisma/client";
 import { NextResponse } from "next/server";
 
-export const GET = createApiHandler(async () => {
+export const GET = createApiHandler(async (req) => {
+  const { searchParams } = new URL(req.url);
+  const semester = searchParams.get("semester") as Semester;
+  const validSemesters = Object.values(Semester);
+
+  if (!semester) {
+    return NextResponse.json(
+      {
+        error: `Please enter a semester`,
+      },
+      { status: 400 }
+    );
+  }
+
+  if (!validSemesters.includes(semester)) {
+    return NextResponse.json(
+      {
+        error: `Invalid semester. Must be one of: ${validSemesters.join(", ")}`,
+      },
+      { status: 400 }
+    );
+  }
+
   const scheduledSubjects = await prisma.scheduledSubject.findMany({
     include: {
       room: true,
       subject: true,
     },
+    where: { subject: { semester } },
   });
   return NextResponse.json(scheduledSubjects);
 });
