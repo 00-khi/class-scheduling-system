@@ -118,8 +118,6 @@ export default function SectionManager() {
     }
   }, [settings]);
 
-  console.log(settings);
-
   const academicLevelOptions = academicLevels.map((al) => ({
     label: al.name,
     value: al.id,
