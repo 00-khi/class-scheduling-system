@@ -8,6 +8,7 @@ import {
   CourseSubject,
   RoomType,
   Semester,
+  Setting,
   Subject,
 } from "@prisma/client";
 import {
@@ -41,6 +42,7 @@ import { useSubjectTable } from "./hooks/use-subject-table";
 import {
   ACADEMIC_LEVELS_API,
   COURSES_API,
+  SETTINGS_API,
   SUBJECTS_API,
 } from "@/lib/api/api-endpoints";
 
@@ -91,17 +93,37 @@ export default function SubjectManager() {
   const subjectApi = createApiClient<Subject>(SUBJECTS_API);
   const academicLevelApi = createApiClient<AcademicLevel>(ACADEMIC_LEVELS_API);
   const courseApi = createApiClient<Course>(COURSES_API);
+  const settingsApi = createApiClient<Setting>(SETTINGS_API);
 
   const entityManagement = useManageEntities<Subject>({
     apiService: { fetch: subjectApi.getAll },
     relatedApiServices: [
       { key: "academicLevels", fetch: academicLevelApi.getAll },
       { key: "courses", fetch: courseApi.getAll },
+      { key: "settings", fetch: settingsApi.getAll },
     ],
   });
 
   const academicLevels = entityManagement.relatedData.academicLevels || [];
   const courses = entityManagement.relatedData.courses || [];
+  const settings = entityManagement.relatedData.settings || [];
+
+  useEffect(() => {
+    if (!settings.length) return;
+
+    const defaultSemester =
+      settings.find((s) => s.key === "semester")?.value ?? "";
+
+    if (defaultSemester) {
+      setTableState((prev) => ({
+        ...prev,
+        columnFilters: [
+          ...prev.columnFilters.filter((f) => f.id !== "semester"),
+          { id: "semester", value: defaultSemester },
+        ],
+      }));
+    }
+  }, [settings]);
 
   useEffect(() => {
     setFormData({
