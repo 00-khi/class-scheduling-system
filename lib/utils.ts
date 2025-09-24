@@ -63,3 +63,10 @@ export function getNextLetters(
 export function replaceUnderscores(str: string): string {
   return str.replace(/_/g, " ");
 }
+
+export function capitalizeWordsWithUnderscore(str: string): string {
+  return str
+    .split("_")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join("_");
+}
