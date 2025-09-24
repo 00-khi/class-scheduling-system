@@ -8,12 +8,6 @@ type Subject = {
   scheduledSubject: { startTime: string; endTime: string; day: string }[];
 };
 
-type Schedule = {
-  startTime: string; // "HH:mm"
-  endTime: string; // "HH:mm"
-  day: string; // "Monday", etc...
-};
-
 type ScheduleWithRelations = {
   roomId: number;
   sectionId: number;
@@ -23,7 +17,10 @@ type ScheduleWithRelations = {
   day: string;
 };
 
-type FindSlotSchedule = Omit<Schedule, "day">;
+type FindSlotSchedule = {
+  startTime: string; // "HH:mm"
+  endTime: string; // "HH:mm"
+};
 
 // "7:30" to "19:30", walang bawas walang dagdag. only allow times in 15-minute steps (00, 15, 30, 45) between 07:30 and 19:30
 const VALID_TIME_REGEX =
@@ -85,58 +82,14 @@ export function isValidRange(start: string, end: string): boolean {
   return toMinutes(end) > toMinutes(start);
 }
 
-// finds schedule, if no schedule found, checks other day
-// NEED PA AYUSIN, IF WALA MAHANAP NA SCHEDULE SA ROOM AND LAHAT NG DAY IS NACHECK
-// DAPAT MAG CHECK DIN SYA SA IBANG ROOM
-function findAvailableSchedule(
-  units: number,
-  scheduled: Schedule[]
-  // spacingMinutes: number = 0
-): Schedule | boolean {
-  const unitMinutes = units * 60;
-
-  for (const day of AVAILABLE_DAYS) {
-    // Get schedules for this day
-    const daySchedules = scheduled
-      .filter((s) => s.day === day)
-      .sort((a, b) => toMinutes(a.startTime) - toMinutes(b.startTime));
-
-    // Add day boundaries
-    const allSlots = [
-      { startTime: DAY_START, endTime: DAY_START, day },
-      ...daySchedules,
-      { startTime: DAY_END, endTime: DAY_END, day },
-    ];
-
-    for (let i = 0; i < allSlots.length - 1; i++) {
-      // Current block ends
-      let currentEnd = toMinutes(allSlots[i].endTime);
-      // Next block starts
-      let nextStart = toMinutes(allSlots[i + 1].startTime);
-
-      // Apply spacing only if not at day boundary
-      // if (allSlots[i].startTime !== DAY_START) {
-      //   currentEnd += spacingMinutes;
-      // }
-      // if (allSlots[i + 1].endTime !== DAY_END) {
-      //   nextStart -= spacingMinutes;
-      // }
-
-      const freeTime = nextStart - currentEnd;
-
-      if (freeTime >= unitMinutes) {
-        const start = currentEnd;
-        const end = start + unitMinutes;
-        return {
-          startTime: toTime(start),
-          endTime: toTime(end),
-          day,
-        };
-      }
-    }
+export function isValidDays(value: string): boolean {
+  try {
+    const arr = JSON.parse(value as string);
+    if (!Array.isArray(arr)) return false;
+    return arr.every((d) => Object.values(Day).includes(d));
+  } catch {
+    return false;
   }
-
-  return false;
 }
 
 // finds slot based on provided schedule array
