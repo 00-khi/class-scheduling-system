@@ -1,6 +1,7 @@
 "use client";
 
-import { AVAILABLE_DAYS } from "@/lib/schedule-utils";
+import { AVAILABLE_DAYS, normalizeTime } from "@/lib/schedule-utils";
+import { getSettings, updateSetting } from "@/lib/settings-handler";
 import { MainSection } from "@/ui/components/main-section";
 import { Button } from "@/ui/shadcn/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/ui/shadcn/card";
@@ -15,10 +16,11 @@ import {
   SelectValue,
 } from "@/ui/shadcn/select";
 import { Separator } from "@/ui/shadcn/separator";
-import { Toggle } from "@/ui/shadcn/toggle";
 import { Day, Semester } from "@prisma/client";
 import { LoaderCircle, RotateCcw, Save } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { SettingsSkeleton } from "./settings-skeleton";
 
 type SettingsState = {
   semester?: Semester;
@@ -28,20 +30,40 @@ type SettingsState = {
 } | null;
 
 export default function SettingsPage() {
-  const [settingsState, setSettingsState] = useState<SettingsState>({
-    semester: "First",
-    dayStart: "07:30",
-    dayEnd: "19:30",
-    days: ["Monday"],
-  });
-
+  const [settingsState, setSettingsState] = useState<SettingsState>(null);
   const [isSaving, setIsSaving] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [isResetSchedule, setIsResetSchedule] = useState(false);
 
   const semesterOptions = Object.values(Semester).map((sem) => ({
     value: sem,
     label: sem,
   }));
+
+  async function load() {
+    setIsLoading(true);
+
+    try {
+      const settings = await getSettings();
+      const map: SettingsState = {
+        semester: (settings.find((s) => s.key === "semester")?.value ||
+          "") as Semester,
+        dayStart: settings.find((s) => s.key === "dayStart")?.value || "",
+        dayEnd: settings.find((s) => s.key === "dayEnd")?.value || "",
+        days: JSON.parse(settings.find((s) => s.key === "days")?.value || "[]"),
+      };
+      setSettingsState(map);
+    } catch (e) {
+      console.error("Failed to load settings", e);
+    }
+
+    setIsLoading(false);
+  }
+
+  // load settings on mount
+  useEffect(() => {
+    load();
+  }, []);
 
   const handleDayToggle = (day: Day, checked: boolean) => {
     if (checked) {
@@ -57,8 +79,25 @@ export default function SettingsPage() {
     }
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    if (!settingsState) return;
     setIsSaving(true);
+
+    try {
+      await Promise.all([
+        updateSetting("semester", settingsState.semester || "First"),
+        updateSetting("dayStart", settingsState.dayStart || "07:30"),
+        updateSetting("dayEnd", settingsState.dayEnd || "19:30"),
+        updateSetting("days", JSON.stringify(settingsState.days || [])),
+      ]);
+      toast.success("Settings saved");
+      load();
+    } catch (e) {
+      console.error("Failed to save settings", e);
+      toast.success("Failed to save settings");
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleResetSchedule = () => {
@@ -70,150 +109,144 @@ export default function SettingsPage() {
       <MainSection.Section>
         <MainSection.Title>Settings</MainSection.Title>
         <MainSection.Content>
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Card className="gap-4">
-                <CardHeader>
-                  <CardTitle className="text-card-foreground font-normal">
-                    Institution Settings
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="border-y py-4 space-y-4 h-full">
-                  {/* SEMESTER SELECT */}
-                  <div className="grid grid-cols-1 gap-2">
-                    <Label htmlFor="subject">Default Semester</Label>
-                    <Select
-                      value={settingsState?.semester?.toString() ?? ""}
-                      onValueChange={(value) =>
-                        setSettingsState((prev) => ({
-                          ...prev,
-                          semester: value as Semester,
-                        }))
-                      }
-                    >
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select Subject" />
-                      </SelectTrigger>
-                      <SelectContent className="w-[var(--radix-select-trigger-width)] min-w-[var(--radix-select-trigger-width)]">
-                        {semesterOptions.length > 0 ? (
-                          semesterOptions.map((opt) => (
+          {isLoading ? (
+            <SettingsSkeleton />
+          ) : (
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <Card className="gap-4">
+                  <CardHeader>
+                    <CardTitle className="text-card-foreground font-normal">
+                      Institution Settings
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="border-y py-4 space-y-4 h-full">
+                    {/* SEMESTER SELECT */}
+                    <div className="grid grid-cols-1 gap-2">
+                      <Label htmlFor="subject">Default Semester</Label>
+                      <Select
+                        value={settingsState?.semester?.toString() ?? ""}
+                        onValueChange={(value) =>
+                          setSettingsState((prev) => ({
+                            ...prev,
+                            semester: value as Semester,
+                          }))
+                        }
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Select Semester" />
+                        </SelectTrigger>
+                        <SelectContent className="w-[var(--radix-select-trigger-width)] min-w-[var(--radix-select-trigger-width)]">
+                          {semesterOptions.map((opt) => (
                             <SelectItem
                               key={opt.value}
                               value={String(opt.value)}
                             >
                               {opt.label}
                             </SelectItem>
-                          ))
-                        ) : (
-                          <SelectItem disabled value="-">
-                            No data found
-                          </SelectItem>
-                        )}
-                      </SelectContent>
-                    </Select>
-                  </div>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
 
-                  {/* DELETE DATA BUTTON */}
-                  <Button
-                    variant="destructive"
-                    onClick={handleResetSchedule}
-                    disabled={isResetSchedule}
-                  >
-                    <RotateCcw
-                      className={isResetSchedule ? "animate-spin" : ""}
-                    />
-                    Reset Schedule
-                  </Button>
-                </CardContent>
-              </Card>
-              <Card className="gap-4">
-                <CardHeader>
-                  <CardTitle className="text-card-foreground font-normal">
-                    Scheduling Configuration
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="border-y py-4 space-y-4 h-full">
-                  {/* TIME INPUTS */}
-                  <div className="grid grid-cols-2 gap-2 w-full">
-                    {/* START TIME INPUT */}
-                    <div className="space-y-2">
-                      <Label htmlFor="units">Start Time</Label>
-                      <Input
-                        type="time"
-                        value={settingsState?.dayStart}
-                        onChange={(e) =>
-                          setSettingsState((prev) => ({
-                            ...prev,
-                            dayStart: e.target.value,
-                          }))
-                        }
-                        placeholder="e.g., 7:30 AM"
-                        className="appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+                    <Button
+                      variant="destructive"
+                      onClick={handleResetSchedule}
+                      disabled={isResetSchedule}
+                    >
+                      <RotateCcw
+                        className={isResetSchedule ? "animate-spin" : ""}
                       />
+                      Reset Schedule
+                    </Button>
+                  </CardContent>
+                </Card>
+                <Card className="gap-4">
+                  <CardHeader>
+                    <CardTitle className="text-card-foreground font-normal">
+                      Scheduling Configuration
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="border-y py-4 space-y-4 h-full">
+                    {/* TIME INPUTS */}
+                    <div className="grid grid-cols-2 gap-2 w-full">
+                      <div className="space-y-2">
+                        <Label>Start Time</Label>
+                        <Input
+                          type="time"
+                          value={normalizeTime(settingsState?.dayStart)}
+                          onChange={(e) =>
+                            setSettingsState((prev) => ({
+                              ...prev,
+                              dayStart: e.target.value,
+                            }))
+                          }
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label>End Time</Label>
+                        <Input
+                          type="time"
+                          value={normalizeTime(settingsState?.dayEnd)}
+                          onChange={(e) =>
+                            setSettingsState((prev) => ({
+                              ...prev,
+                              dayEnd: e.target.value,
+                            }))
+                          }
+                        />
+                      </div>
                     </div>
 
-                    {/* END TIME INPUT */}
+                    {/* DAYS TOGGLE */}
                     <div className="space-y-2">
-                      <Label htmlFor="units">End Time</Label>
-                      <Input
-                        type="time"
-                        value={settingsState?.dayEnd}
-                        onChange={(e) =>
-                          setSettingsState((prev) => ({
-                            ...prev,
-                            dayEnd: e.target.value,
-                          }))
-                        }
-                        placeholder="e.g., 7:30 PM"
-                        className="appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
-                      />
+                      <Label>Days</Label>
+                      <div className="grid grid-cols-2 gap-3">
+                        {AVAILABLE_DAYS.map((day) => (
+                          <div
+                            key={day}
+                            className="flex items-center space-x-2"
+                          >
+                            <Checkbox
+                              id={day}
+                              checked={
+                                settingsState?.days?.includes(day) ?? false
+                              }
+                              onCheckedChange={(checked) =>
+                                handleDayToggle(day, !!checked)
+                              }
+                            />
+                            <Label htmlFor={day} className="text-sm">
+                              {day}
+                            </Label>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-
-                  {/* DAYS TOGGLE */}
-                  <div className="space-y-2">
-                    <Label htmlFor="units">Days</Label>
-                    <div className="grid grid-cols-2 gap-3">
-                      {AVAILABLE_DAYS.map((day) => (
-                        <div key={day} className="flex items-center space-x-2">
-                          <Checkbox
-                            id={day}
-                            checked={
-                              settingsState?.days?.includes(day) ?? false
-                            }
-                            onCheckedChange={(checked) =>
-                              handleDayToggle(day, !!checked)
-                            }
-                          />
-                          <Label htmlFor={day} className="text-sm">
-                            {day}
-                          </Label>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="flex flex-row sm:justify-between items-center gap-2">
-              <div className="w-full hidden sm:block">
-                <Separator />
+                  </CardContent>
+                </Card>
               </div>
-              <Button
-                className="w-full sm:w-min"
-                onClick={handleSave}
-                disabled={isSaving}
-              >
-                {isSaving ? (
-                  <LoaderCircle className="animate-spin" />
-                ) : (
-                  <Save />
-                )}
-                {isSaving ? "Saving" : "Save"} Settings
-              </Button>
+
+              <div className="flex flex-row sm:justify-between items-center gap-2">
+                <div className="w-full hidden sm:block">
+                  <Separator />
+                </div>
+                <Button
+                  className="w-full sm:w-min"
+                  onClick={handleSave}
+                  disabled={isSaving}
+                >
+                  {isSaving ? (
+                    <LoaderCircle className="animate-spin" />
+                  ) : (
+                    <Save />
+                  )}
+                  {isSaving ? "Saving" : "Save"} Settings
+                </Button>
+              </div>
             </div>
-          </div>
+          )}
         </MainSection.Content>
       </MainSection.Section>
     </MainSection>
