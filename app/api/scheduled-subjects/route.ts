@@ -217,8 +217,6 @@ export const POST = createApiHandler(async (request) => {
     );
   }
 
-  return NextResponse.json("test");
-
   const newSchedule = await prisma.scheduledSubject.create({
     data: toSchedule,
   });
