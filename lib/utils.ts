@@ -38,7 +38,7 @@ export function splitCamelCaseAndNumbers(str: string): string {
   return capitalizeEachWord(spaced);
 }
 
-function toLetters(num: number): string {
+export function toLetters(num: number): string {
   let result = "";
   while (num >= 0) {
     result = String.fromCharCode((num % 26) + 65) + result;
