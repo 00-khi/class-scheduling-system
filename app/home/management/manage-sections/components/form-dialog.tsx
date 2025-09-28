@@ -32,7 +32,6 @@ export default function FormDialog({
   setFormData,
   onSubmit,
   isSubmitting,
-  semesterOptions,
   courseOptions,
   yearOptions,
   academicLevelOptions,
@@ -43,7 +42,6 @@ export default function FormDialog({
   setFormData: React.Dispatch<React.SetStateAction<FormData>>;
   onSubmit: (e: FormEvent) => void;
   isSubmitting: boolean;
-  semesterOptions: Option[];
   courseOptions: Option[];
   yearOptions: Option[];
   academicLevelOptions: Option[];
@@ -62,38 +60,6 @@ export default function FormDialog({
         </DialogHeader>
 
         <form onSubmit={onSubmit} className="space-y-4">
-          {/* SEMESTER SELECT */}
-          <div className="grid grid-cols-1 gap-2">
-            <Label htmlFor="semester">Semester</Label>
-            <Select
-              value={formData?.semester?.toString() ?? ""}
-              onValueChange={(value) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  semester: value as Semester,
-                }))
-              }
-              disabled={isSubmitting}
-            >
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select Semester" />
-              </SelectTrigger>
-              <SelectContent className="w-[var(--radix-select-trigger-width)] min-w-[var(--radix-select-trigger-width)]">
-                {semesterOptions.length > 0 ? (
-                  semesterOptions.map((opt) => (
-                    <SelectItem key={opt.value} value={String(opt.value)}>
-                      {replaceUnderscores(opt.label)}
-                    </SelectItem>
-                  ))
-                ) : (
-                  <SelectItem disabled value="-">
-                    No data found
-                  </SelectItem>
-                )}
-              </SelectContent>
-            </Select>
-          </div>
-
           {/* ACADEMIC LEVEL SELECT */}
           <div className="grid grid-cols-1 gap-2">
             <Label htmlFor="academicLevelId">Academic Level</Label>
@@ -196,6 +162,7 @@ export default function FormDialog({
           <div className="space-y-2">
             <Label htmlFor="units">Total Sections</Label>
             <Input
+              type="number"
               id="units"
               value={formData?.totalSections ?? ""}
               onChange={(e) =>

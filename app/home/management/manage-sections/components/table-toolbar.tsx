@@ -9,6 +9,7 @@ import {
   CircleX,
   Columns3,
   Filter,
+  Pencil,
   PlusIcon,
   Search,
   TrashIcon,
@@ -95,45 +96,6 @@ export function TableToolbar({
             <Search size={16} />
           </div>
         </div>
-
-        {/* Filter Select - SEMESTER */}
-        <Select
-          value={
-            (tableState.columnFilters.find((f) => f.id === "semester")
-              ?.value as string) ?? ""
-          }
-          onValueChange={(value) =>
-            setTableState((prev) => {
-              const newFilters = prev.columnFilters.filter(
-                (f) => f.id !== "semester"
-              );
-              return {
-                ...prev,
-                columnFilters: value
-                  ? [...newFilters, { id: "semester", value }]
-                  : newFilters,
-              };
-            })
-          }
-        >
-          <SelectTrigger>
-            <Filter className="text-muted-foreground/80" />
-            <SelectValue placeholder="Semester" />
-          </SelectTrigger>
-          <SelectContent side="bottom">
-            {semesterOptions.length > 0 ? (
-              semesterOptions.map((opt) => (
-                <SelectItem key={opt.value} value={String(opt.value)}>
-                  {replaceUnderscores(opt.label)}
-                </SelectItem>
-              ))
-            ) : (
-              <SelectItem disabled value="-">
-                No data found
-              </SelectItem>
-            )}
-          </SelectContent>
-        </Select>
 
         {/* Filter Select - ACADEMIC LEVEL */}
         <Select
@@ -330,8 +292,8 @@ export function TableToolbar({
 
         {/* Add Button */}
         <Button onClick={onAdd}>
-          <PlusIcon />
-          Add Section
+          <Pencil />
+          Manage Section
         </Button>
       </DataTableToolbarGroup>
     </DataTableToolbar>

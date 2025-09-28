@@ -52,7 +52,6 @@ export type SectionRow = Section & {
 };
 
 export type FormData = {
-  semester?: Semester;
   academicLevelId?: number;
   courseId?: number;
   year?: number;
@@ -87,44 +86,20 @@ export default function SectionManager() {
   const sectionApi = createApiClient<Section>(SECTIONS_API);
   const academicLevelApi = createApiClient<AcademicLevel>(ACADEMIC_LEVELS_API);
   const courseApi = createApiClient<Course>(COURSES_API);
-  const settingsApi = createApiClient<Setting>(SETTINGS_API);
   const entityManagement = useManageEntities<Section>({
     apiService: { fetch: sectionApi.getAll },
     relatedApiServices: [
       { key: "academicLevels", fetch: academicLevelApi.getAll },
       { key: "courses", fetch: courseApi.getAll },
-      { key: "settings", fetch: settingsApi.getAll },
     ],
   });
 
   const academicLevels = entityManagement.relatedData.academicLevels || [];
   const courses = entityManagement.relatedData.courses || [];
-  const settings = entityManagement.relatedData.settings || [];
-
-  useEffect(() => {
-    if (!settings.length) return;
-
-    const defaultSemester =
-      settings.find((s) => s.key === "semester")?.value ?? "";
-
-    if (defaultSemester) {
-      setTableState((prev) => ({
-        ...prev,
-        columnFilters: [
-          ...prev.columnFilters.filter((f) => f.id !== "semester"),
-          { id: "semester", value: defaultSemester },
-        ],
-      }));
-    }
-  }, [settings]);
 
   const academicLevelOptions = academicLevels.map((al) => ({
     label: al.name,
     value: al.id,
-  }));
-  const semesterOptions = Object.values(Semester).map((sem) => ({
-    value: sem,
-    label: sem,
   }));
   const courseOptions =
     formData?.academicLevelId !== null
@@ -204,7 +179,6 @@ export default function SectionManager() {
     if (!data) return false;
 
     const validations = [
-      { field: data.semester, message: "Semester is required" },
       { field: data.academicLevelId, message: "Academic level is required" },
       { field: data.courseId, message: "Course is required" },
       { field: data.year, message: "Year is required" },
@@ -212,9 +186,16 @@ export default function SectionManager() {
     ];
 
     for (const { field, message } of validations) {
-      if (!field) {
-        toast.error(message);
-        return false;
+      if (field === data.totalSections) {
+        if (data.totalSections === null || data.totalSections === undefined) {
+          toast.error(message);
+          return false;
+        }
+      } else {
+        if (!field) {
+          toast.error(message);
+          return false;
+        }
       }
     }
 
@@ -227,7 +208,6 @@ export default function SectionManager() {
         <DataTableSkeleton columnCount={4} rowCount={5} />
       ) : (
         <DataTableSection>
-          test
           <TableToolbar
             table={table}
             tableState={tableState}
@@ -246,7 +226,6 @@ export default function SectionManager() {
             setTableState={setTableState}
           />
           <FormDialog
-            semesterOptions={semesterOptions}
             courseOptions={courseOptions}
             yearOptions={yearOptions}
             academicLevelOptions={academicLevelOptions}

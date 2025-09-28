@@ -63,9 +63,5 @@ export default function useTableColumns(): ColumnDef<SectionRow>[] {
       },
       filterFn: "equals",
     },
-    {
-      header: "Semester",
-      accessorKey: "semester",
-    },
   ];
 }
