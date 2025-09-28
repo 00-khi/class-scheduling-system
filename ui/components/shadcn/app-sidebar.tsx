@@ -144,16 +144,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       //     // then makikita ng teachers or kung sino mn pumunta sa website
       //   ],
       // },
-      {
-        category: "SYSTEM",
-        items: [
-          {
-            title: "Settings",
-            url: "/home/system/settings",
-            icon: Settings,
-          },
-        ],
-      },
+      // {
+      //   category: "SYSTEM",
+      //   items: [
+      //     {
+      //       title: "Settings",
+      //       url: "/home/system/settings",
+      //       icon: Settings,
+      //     },
+      //   ],
+      // },
     ],
   };
 
