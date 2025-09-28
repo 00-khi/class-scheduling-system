@@ -140,12 +140,32 @@ export const POST = createApiHandler(async (request) => {
     day,
   };
 
+  // get current semester from settings
+  const semesterSetting = await prisma.setting.findUnique({
+    where: { key: "semester" },
+  });
+  if (!semesterSetting) {
+    return NextResponse.json(
+      { error: "Semester setting not found" },
+      { status: 400 }
+    );
+  }
+  const currentSemester = semesterSetting.value as Semester;
+
   const existingRoomSchedules = await prisma.scheduledSubject.findMany({
-    where: { roomId, day: capitalizeEachWord(day) as Day },
+    where: {
+      roomId,
+      day: capitalizeEachWord(day) as Day,
+      subject: { semester: currentSemester }, // schedules only for current semester
+    },
   });
 
   const existingSectionSchedules = await prisma.scheduledSubject.findMany({
-    where: { sectionId, day: capitalizeEachWord(day) as Day },
+    where: {
+      sectionId,
+      day: capitalizeEachWord(day) as Day,
+      subject: { semester: currentSemester }, // schedules only for current semester
+    },
   });
 
   const subject = await prisma.subject.findUnique({
@@ -153,7 +173,11 @@ export const POST = createApiHandler(async (request) => {
   });
 
   const existingRoomSectionSchedules = await prisma.scheduledSubject.findMany({
-    where: { subjectId, sectionId },
+    where: {
+      subjectId,
+      sectionId,
+      subject: { semester: currentSemester },
+    },
     include: { subject: true },
   });
 
@@ -167,8 +191,6 @@ export const POST = createApiHandler(async (request) => {
   );
 
   const duration = toHours(diffMinutes(startTime, endTime));
-
-  console.log(toHours(diffMinutes(startTime, endTime)), remainingUnits);
 
   if (duration > remainingUnits) {
     return NextResponse.json(
@@ -184,6 +206,8 @@ export const POST = createApiHandler(async (request) => {
     ...existingSectionSchedules,
   ].sort((a, b) => toMinutes(a.startTime) - toMinutes(b.startTime));
 
+  console.log(mergedExistingSchedules);
+
   if (isConflict(toSchedule, mergedExistingSchedules)) {
     return NextResponse.json(
       {
@@ -193,9 +217,11 @@ export const POST = createApiHandler(async (request) => {
     );
   }
 
+  return NextResponse.json("test");
+
   const newSchedule = await prisma.scheduledSubject.create({
     data: toSchedule,
   });
 
-  return NextResponse.json(mergedExistingSchedules);
+  return NextResponse.json(newSchedule);
 });

@@ -15,8 +15,21 @@ export const GET = createApiHandler(async (request, context) => {
     return NextResponse.json({ error: "Invalid section ID." }, { status: 400 });
   }
 
+  // get the section to read its semester
+  const section = await prisma.section.findUnique({
+    where: { id: numericId },
+    select: { semester: true },
+  });
+
+  if (!section) {
+    return NextResponse.json({ error: "Section not found." }, { status: 404 });
+  }
+
   const scheduledSubject = await prisma.scheduledSubject.findMany({
-    where: { sectionId: numericId },
+    where: {
+      sectionId: numericId,
+      subject: { semester: section.semester }, // filter by semester
+    },
     include: {
       room: true,
       subject: true,
