@@ -58,7 +58,11 @@ export const POST = createApiHandler(async (request) => {
   }
 
   const courseSubjects = await prisma.courseSubject.findMany({
-    where: { courseId: section.courseId, year: section.year },
+    where: {
+      courseId: section.courseId,
+      year: section.year,
+      subject: { semester: section.semester }, // filter by semester
+    },
     include: {
       subject: {
         include: {
