@@ -35,8 +35,10 @@ type Option = { value: string | number; label: string };
 
 export default function SelectSectionGroup({
   onSectionChange,
+  disabled = false,
 }: {
   onSectionChange?: (section: number | null) => void;
+  disabled?: boolean;
 }) {
   const [selectedData, setSelectedData] = useState<{
     academicLevelId?: number;
@@ -152,6 +154,7 @@ export default function SelectSectionGroup({
               academicLevelId: Number(value),
             }));
           }}
+          disabled={disabled}
         >
           <SelectTrigger>
             <SelectValue placeholder="Select Academic Level" />
@@ -177,7 +180,7 @@ export default function SelectSectionGroup({
           onValueChange={(value) => {
             setSelectedData((prev) => ({ ...prev, courseId: Number(value) }));
           }}
-          disabled={selectedData?.academicLevelId === undefined}
+          disabled={selectedData?.academicLevelId === undefined || disabled}
         >
           <SelectTrigger>
             <SelectValue placeholder="Select Course" />
@@ -203,7 +206,7 @@ export default function SelectSectionGroup({
           onValueChange={(value) => {
             setSelectedData((prev) => ({ ...prev, year: Number(value) }));
           }}
-          disabled={selectedData?.academicLevelId === undefined}
+          disabled={selectedData?.academicLevelId === undefined || disabled}
         >
           <SelectTrigger>
             <SelectValue placeholder="Select Year Level" />
@@ -230,6 +233,7 @@ export default function SelectSectionGroup({
           onValueChange={(value) => {
             setSelectedData((prev) => ({ ...prev, sectionId: Number(value) }));
           }}
+          disabled={disabled}
         >
           <SelectTrigger>
             <SelectValue placeholder="Select Section" />
