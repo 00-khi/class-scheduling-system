@@ -19,7 +19,11 @@ export const POST = createApiHandler(async (request) => {
 
   const rawData = await request.json();
 
-  const requiredFields = [{ key: "sectionId", type: "number" }];
+  const requiredFields = [
+    { key: "sectionId", type: "number" },
+    { key: "days", type: "array" },
+    { key: "roomIds", type: "array" },
+  ];
 
   for (const { key, type } of requiredFields) {
     const value = rawData[key];
@@ -42,10 +46,36 @@ export const POST = createApiHandler(async (request) => {
     }
   }
 
+  const VALID_DAYS = Object.values(Day);
+
   const sectionId = Number(rawData.sectionId);
+  const days = [...new Set(rawData.days)].filter((d): d is Day =>
+    VALID_DAYS.includes(d as Day)
+  );
+
+  const rooms = await prisma.room.findMany();
+
+  const roomIds = [...new Set(rawData.roomIds)].filter(
+    (id): id is number =>
+      typeof id === "number" && rooms.some((r) => r.id === id)
+  );
 
   if (isNaN(sectionId)) {
     return NextResponse.json({ error: "Invalid section ID." }, { status: 400 });
+  }
+
+  if (days.length === 0) {
+    return NextResponse.json(
+      { error: "No valid days provided." },
+      { status: 400 }
+    );
+  }
+
+  if (roomIds.length === 0) {
+    return NextResponse.json(
+      { error: "No valid room IDs provided." },
+      { status: 400 }
+    );
   }
 
   const section = await prisma.section.findUnique({
@@ -95,16 +125,23 @@ export const POST = createApiHandler(async (request) => {
 
   const existingSchedules = await prisma.scheduledSubject.findMany();
 
-  const rooms = await prisma.room.findMany();
+  const selectedRooms = await prisma.room.findMany({
+    where: {
+      id: {
+        in: roomIds,
+      },
+    },
+  });
 
   const result = autoScheduleSubjects(
     subjects,
     existingSchedules,
-    rooms,
+    selectedRooms,
     sectionId,
     {
       stepMinutes: 30,
       attemptsPerSession: 500,
+      days,
     }
   );
 
