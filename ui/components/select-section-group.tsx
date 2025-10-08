@@ -36,9 +36,11 @@ type Option = { value: string | number; label: string };
 export default function SelectSectionGroup({
   onSectionChange,
   disabled = false,
+  reset = false,
 }: {
   onSectionChange?: (section: number | null) => void;
   disabled?: boolean;
+  reset?: boolean;
 }) {
   const [selectedData, setSelectedData] = useState<{
     academicLevelId?: number;
@@ -141,6 +143,14 @@ export default function SelectSectionGroup({
     if (onSectionChange && selectedData?.sectionId !== undefined)
       onSectionChange(selectedData.sectionId);
   }, [selectedData?.sectionId]);
+
+  // Reset trigger
+  useEffect(() => {
+    if (reset) {
+      setSelectedData(null);
+      onSectionChange?.(null);
+    }
+  }, [reset]);
 
   return (
     <DataTableToolbar>
