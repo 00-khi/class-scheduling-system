@@ -260,6 +260,7 @@ export default function FormDialog({
             <Label htmlFor="units">Units</Label>
             <Input
               id="units"
+              type="number"
               value={formData?.units ?? ""}
               onChange={(e) =>
                 setFormData((prev) => ({
