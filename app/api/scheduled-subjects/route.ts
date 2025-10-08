@@ -172,6 +172,14 @@ export const POST = createApiHandler(async (request) => {
     where: { id: subjectId },
   });
 
+  const room = await prisma.room.findUnique({
+    where: { id: roomId },
+  });
+
+  const section = await prisma.section.findUnique({
+    where: { id: sectionId },
+  });
+
   const existingRoomSectionSchedules = await prisma.scheduledSubject.findMany({
     where: {
       subjectId,
@@ -183,6 +191,14 @@ export const POST = createApiHandler(async (request) => {
 
   if (!subject) {
     return NextResponse.json({ error: "Subject not found." }, { status: 400 });
+  }
+
+  if (!room) {
+    return NextResponse.json({ error: "Room not found." }, { status: 400 });
+  }
+
+  if (!section) {
+    return NextResponse.json({ error: "Section not found." }, { status: 400 });
   }
 
   const remainingUnits = calculateRemainingUnits(
