@@ -1,20 +1,19 @@
 "use client";
 
+import { useState } from "react";
 import { MainSection } from "@/ui/components/main-section";
 import SelectSectionGroup from "../../../../ui/components/select-section-group";
-import { useState } from "react";
 import UnscheduledSubjectsManager from "./unscheduled-subject-manager";
+import ScheduledSubjectManager from "./scheduled-subject-manager";
 import { Card } from "@/ui/shadcn/card";
 import { ArrowRight } from "lucide-react";
-import ScheduledSubjectManager from "./scheduled-subject-manager";
-import Timetable from "./components/timetable";
+import { Separator } from "@/ui/shadcn/separator";
 import TimetableManager from "./timetable-manager";
 
 export default function SubjectSchedulingPage() {
   const [selectedSectionId, setSelectedSectionId] = useState<number | null>(
     null
   );
-
   const [refreshKey, setRefreshKey] = useState(0);
 
   const triggerRefresh = () => setRefreshKey((prev) => prev + 1);
@@ -30,39 +29,56 @@ export default function SubjectSchedulingPage() {
         </MainSection.Content>
 
         <MainSection.Content>
-          <div className="space-y-3">
-            <SelectSectionGroup onSectionChange={setSelectedSectionId} />
+          <SelectSectionGroup onSectionChange={setSelectedSectionId} />
+        </MainSection.Content>
 
-            {selectedSectionId ? (
-              <div className="space-y-3">
-                <UnscheduledSubjectsManager
-                  sectionId={selectedSectionId}
-                  onChange={triggerRefresh}
-                  refreshKey={refreshKey}
-                />
+        <MainSection.Content>
+          {!selectedSectionId ? (
+            <Card>
+              <div className="flex flex-col justify-center items-center gap-2 text-muted-foreground">
+                <ArrowRight size={32} />
+                <span className="text-sm">
+                  Select a section to start scheduling subjects
+                </span>
+              </div>
+            </Card>
+          ) : (
+            <div className="space-y-3">
+              <UnscheduledSubjectsManager
+                sectionId={selectedSectionId}
+                onChange={triggerRefresh}
+                refreshKey={refreshKey}
+              />
+            </div>
+          )}
+        </MainSection.Content>
+      </MainSection.Section>
+
+      {selectedSectionId && (
+        <>
+          <Separator />
+
+          <MainSection.Section>
+            <MainSection.ContentTitle>
+              Scheduled Subjects
+            </MainSection.ContentTitle>
+            <MainSection.Content>
+              <div className="space-y-6">
                 <ScheduledSubjectManager
                   sectionId={selectedSectionId}
                   onChange={triggerRefresh}
                   refreshKey={refreshKey}
                 />
+
                 {/* <TimetableManager
                   sectionId={selectedSectionId}
                   refreshKey={refreshKey}
                 /> */}
               </div>
-            ) : (
-              <Card>
-                <div className="flex flex-col justify-center items-center gap-2 text-muted-foreground">
-                  <ArrowRight size={32} />
-                  <span className=" text-sm">
-                    Select a section to start scheduling subjects
-                  </span>
-                </div>
-              </Card>
-            )}
-          </div>
-        </MainSection.Content>
-      </MainSection.Section>
+            </MainSection.Content>
+          </MainSection.Section>
+        </>
+      )}
     </MainSection>
   );
 }

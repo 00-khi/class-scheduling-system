@@ -168,53 +168,96 @@ export default function UnscheduledSubjectsManager({
     return true;
   }
 
+  // return (
+  //   <Card className="gap-4">
+  //     <CardHeader>
+  //       <CardTitle className="text-card-foreground font-normal">
+  //         Unscheduled Subjects
+  //       </CardTitle>
+  //     </CardHeader>
+  //     <CardContent className="border-y py-4">
+  //       {entityManagement.isLoading ? (
+  //         <DataTableSection>
+  //           <DataTableSkeleton columnCount={4} rowCount={5} />
+  //         </DataTableSection>
+  //       ) : (
+  //         <DataTableSection>
+  //           <TableToolbar
+  //             table={table}
+  //             tableState={tableState}
+  //             setTableState={setTableState}
+  //             entityData={entityManagement.data}
+  //             onAdd={handleAdd}
+  //             onRefresh={entityManagement.fetchData}
+  //           />
+
+  //           <TableComponent
+  //             table={table}
+  //             tableState={tableState}
+  //             setTableState={setTableState}
+  //           />
+
+  //           <FormDialog
+  //             sectionId={sectionId}
+  //             subjects={entityManagement.data}
+  //             rooms={rooms}
+  //             dayOptions={dayOptions}
+  //             isOpen={entityManagement.isFormDialogOpen}
+  //             onClose={() => {
+  //               entityManagement.setIsFormDialogOpen(false);
+  //               setFormData(null);
+  //             }}
+  //             formData={formData}
+  //             setFormData={setFormData}
+  //             onSubmit={handleFormSubmit}
+  //             isSubmitting={entityManagement.isSubmitting}
+  //           />
+  //         </DataTableSection>
+  //       )}
+  //     </CardContent>
+  //   </Card>
+  // );
+
   return (
-    <Card className="gap-4">
-      <CardHeader>
-        <CardTitle className="text-card-foreground font-normal">
-          Unscheduled Subjects
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="border-y py-4">
-        {entityManagement.isLoading ? (
-          <DataTableSection>
-            <DataTableSkeleton columnCount={4} rowCount={5} />
-          </DataTableSection>
-        ) : (
-          <DataTableSection>
-            <TableToolbar
-              table={table}
-              tableState={tableState}
-              setTableState={setTableState}
-              entityData={entityManagement.data}
-              onAdd={handleAdd}
-              onRefresh={entityManagement.fetchData}
-            />
+    <>
+      {entityManagement.isLoading ? (
+        <DataTableSection>
+          <DataTableSkeleton columnCount={4} rowCount={5} />
+        </DataTableSection>
+      ) : (
+        <DataTableSection>
+          <TableToolbar
+            table={table}
+            tableState={tableState}
+            setTableState={setTableState}
+            entityData={entityManagement.data}
+            onAdd={handleAdd}
+            onRefresh={entityManagement.fetchData}
+          />
 
-            <TableComponent
-              table={table}
-              tableState={tableState}
-              setTableState={setTableState}
-            />
+          <TableComponent
+            table={table}
+            tableState={tableState}
+            setTableState={setTableState}
+          />
 
-            <FormDialog
-              sectionId={sectionId}
-              subjects={entityManagement.data}
-              rooms={rooms}
-              dayOptions={dayOptions}
-              isOpen={entityManagement.isFormDialogOpen}
-              onClose={() => {
-                entityManagement.setIsFormDialogOpen(false);
-                setFormData(null);
-              }}
-              formData={formData}
-              setFormData={setFormData}
-              onSubmit={handleFormSubmit}
-              isSubmitting={entityManagement.isSubmitting}
-            />
-          </DataTableSection>
-        )}
-      </CardContent>
-    </Card>
+          <FormDialog
+            sectionId={sectionId}
+            subjects={entityManagement.data}
+            rooms={rooms}
+            dayOptions={dayOptions}
+            isOpen={entityManagement.isFormDialogOpen}
+            onClose={() => {
+              entityManagement.setIsFormDialogOpen(false);
+              setFormData(null);
+            }}
+            formData={formData}
+            setFormData={setFormData}
+            onSubmit={handleFormSubmit}
+            isSubmitting={entityManagement.isSubmitting}
+          />
+        </DataTableSection>
+      )}
+    </>
   );
 }

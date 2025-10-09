@@ -141,44 +141,78 @@ export default function ScheduledSubjectManager({
     }
   }
 
+  // return (
+  //   <Card className="gap-4">
+  //     <CardHeader>
+  //       <CardTitle className="text-card-foreground font-normal">
+  //         Scheduled Subjects
+  //       </CardTitle>
+  //     </CardHeader>
+  //     <CardContent className="border-y py-4">
+  //       {entityManagement.isLoading ? (
+  //         <DataTableSection>
+  //           <DataTableSkeleton columnCount={4} rowCount={5} />
+  //         </DataTableSection>
+  //       ) : (
+  //         <DataTableSection>
+  //           <TableToolbar
+  //             table={table}
+  //             tableState={tableState}
+  //             setTableState={setTableState}
+  //             entityData={entityManagement.data}
+  //             onRefresh={entityManagement.fetchData}
+  //           />
+
+  //           <TableComponent
+  //             table={table}
+  //             tableState={tableState}
+  //             setTableState={setTableState}
+  //           />
+
+  //           <DeleteDialog
+  //             isOpen={entityManagement.isDeleteDialogOpen}
+  //             onClose={() => entityManagement.setIsDeleteDialogOpen(false)}
+  //             itemName={deleteData?.placeholder}
+  //             onConfirm={handleSingleDelete}
+  //             isDeleting={entityManagement.isDeleting}
+  //           />
+  //         </DataTableSection>
+  //       )}
+  //     </CardContent>
+  //   </Card>
+  // );
+
   return (
-    <Card className="gap-4">
-      <CardHeader>
-        <CardTitle className="text-card-foreground font-normal">
-          Scheduled Subjects
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="border-y py-4">
-        {entityManagement.isLoading ? (
-          <DataTableSection>
-            <DataTableSkeleton columnCount={4} rowCount={5} />
-          </DataTableSection>
-        ) : (
-          <DataTableSection>
-            <TableToolbar
-              table={table}
-              tableState={tableState}
-              setTableState={setTableState}
-              entityData={entityManagement.data}
-              onRefresh={entityManagement.fetchData}
-            />
+    <>
+      {entityManagement.isLoading ? (
+        <DataTableSection>
+          <DataTableSkeleton columnCount={4} rowCount={5} />
+        </DataTableSection>
+      ) : (
+        <DataTableSection>
+          <TableToolbar
+            table={table}
+            tableState={tableState}
+            setTableState={setTableState}
+            entityData={entityManagement.data}
+            onRefresh={entityManagement.fetchData}
+          />
 
-            <TableComponent
-              table={table}
-              tableState={tableState}
-              setTableState={setTableState}
-            />
+          <TableComponent
+            table={table}
+            tableState={tableState}
+            setTableState={setTableState}
+          />
 
-            <DeleteDialog
-              isOpen={entityManagement.isDeleteDialogOpen}
-              onClose={() => entityManagement.setIsDeleteDialogOpen(false)}
-              itemName={deleteData?.placeholder}
-              onConfirm={handleSingleDelete}
-              isDeleting={entityManagement.isDeleting}
-            />
-          </DataTableSection>
-        )}
-      </CardContent>
-    </Card>
+          <DeleteDialog
+            isOpen={entityManagement.isDeleteDialogOpen}
+            onClose={() => entityManagement.setIsDeleteDialogOpen(false)}
+            itemName={deleteData?.placeholder}
+            onConfirm={handleSingleDelete}
+            isDeleting={entityManagement.isDeleting}
+          />
+        </DataTableSection>
+      )}
+    </>
   );
 }
