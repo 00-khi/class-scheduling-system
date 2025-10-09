@@ -33,7 +33,7 @@ export default function TimetableManager({
   }, [sectionId, refreshKey]);
 
   return (
-    <Card className="p-0 gap-0">
+    <Card className="p-0 gap-0 overflow-auto">
       <Timetable scheduled={entityManagement.data} />
     </Card>
   );
