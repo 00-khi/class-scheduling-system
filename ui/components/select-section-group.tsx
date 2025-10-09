@@ -123,27 +123,6 @@ export default function SelectSectionGroup({
       value: section.id,
     }));
 
-  useEffect(() => {
-    setSelectedData((prev) => ({
-      ...prev,
-      courseId: undefined,
-      year: undefined,
-      sectionId: null,
-    }));
-  }, [selectedData?.academicLevelId]);
-
-  useEffect(() => {
-    setSelectedData((prev) => ({
-      ...prev,
-      sectionId: null,
-    }));
-  }, [selectedData?.courseId, selectedData?.year]);
-
-  useEffect(() => {
-    if (onSectionChange && selectedData?.sectionId !== undefined)
-      onSectionChange(selectedData.sectionId);
-  }, [selectedData?.sectionId]);
-
   // Reset trigger
   useEffect(() => {
     if (reset) {
@@ -151,6 +130,12 @@ export default function SelectSectionGroup({
       onSectionChange?.(null);
     }
   }, [reset]);
+
+  function handleSectionChange(sectionId: number | null) {
+    setSelectedData((prev) => ({ ...prev, sectionId }));
+
+    if (onSectionChange && sectionId !== undefined) onSectionChange(sectionId);
+  }
 
   return (
     <DataTableToolbar>
@@ -162,6 +147,9 @@ export default function SelectSectionGroup({
             setSelectedData((prev) => ({
               ...prev,
               academicLevelId: Number(value),
+              courseId: undefined,
+              year: undefined,
+              sectionId: null,
             }));
           }}
           disabled={disabled || entityManagement.isLoading}
@@ -188,7 +176,11 @@ export default function SelectSectionGroup({
         <Select
           value={selectedData?.courseId?.toString() ?? ""}
           onValueChange={(value) => {
-            setSelectedData((prev) => ({ ...prev, courseId: Number(value) }));
+            setSelectedData((prev) => ({
+              ...prev,
+              courseId: Number(value),
+              sectionId: null,
+            }));
           }}
           disabled={
             selectedData?.academicLevelId === undefined ||
@@ -218,7 +210,11 @@ export default function SelectSectionGroup({
         <Select
           value={selectedData?.year?.toString() ?? ""}
           onValueChange={(value) => {
-            setSelectedData((prev) => ({ ...prev, year: Number(value) }));
+            setSelectedData((prev) => ({
+              ...prev,
+              year: Number(value),
+              sectionId: null,
+            }));
           }}
           disabled={
             selectedData?.academicLevelId === undefined ||
@@ -249,7 +245,7 @@ export default function SelectSectionGroup({
         <Select
           value={selectedData?.sectionId?.toString() ?? ""}
           onValueChange={(value) => {
-            setSelectedData((prev) => ({ ...prev, sectionId: Number(value) }));
+            handleSectionChange(Number(value));
           }}
           disabled={disabled || entityManagement.isLoading}
         >
