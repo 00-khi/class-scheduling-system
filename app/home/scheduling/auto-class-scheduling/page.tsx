@@ -12,6 +12,7 @@ import { AVAILABLE_DAYS, formatTime } from "@/lib/schedule-utils";
 import { MainSection } from "@/ui/components/main-section";
 import SelectSectionGroup from "@/ui/components/select-section-group";
 import { Alert, AlertDescription, AlertTitle } from "@/ui/shadcn/alert";
+import { Badge } from "@/ui/shadcn/badge";
 import { Button } from "@/ui/shadcn/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/ui/shadcn/card";
 import { Checkbox } from "@/ui/shadcn/checkbox";
@@ -450,6 +451,7 @@ export default function AutoClassSchedulingPage() {
                                 <TableHead>Time</TableHead>
                                 <TableHead>Subject</TableHead>
                                 <TableHead>Room</TableHead>
+                                <TableHead>Type</TableHead>
                               </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -474,8 +476,7 @@ export default function AutoClassSchedulingPage() {
                                       <TableCell>
                                         <div>
                                           <div className="font-medium">
-                                            {subject?.code || "N/A"} -{" "}
-                                            {subject?.type}
+                                            {subject?.code || "N/A"}
                                           </div>
                                           <div className="text-sm text-muted-foreground">
                                             {subject?.name || "N/A"}
@@ -485,6 +486,17 @@ export default function AutoClassSchedulingPage() {
                                       <TableCell>
                                         {room?.name || "N/A"}
                                       </TableCell>
+                                      <TableCell>
+                                        <Badge
+                                          variant={
+                                            subject?.type === "Laboratory"
+                                              ? "default"
+                                              : "secondary"
+                                          }
+                                        >
+                                          {subject?.type}
+                                        </Badge>
+                                      </TableCell>
                                     </TableRow>
                                   );
                                 })
@@ -492,7 +504,7 @@ export default function AutoClassSchedulingPage() {
                                 <TableRow>
                                   <TableCell
                                     className="text-muted-foreground text-center py-6"
-                                    colSpan={4}
+                                    colSpan={5}
                                   >
                                     No generated schedules found.
                                   </TableCell>
