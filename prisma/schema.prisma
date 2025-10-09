@@ -65,6 +65,8 @@ model Instructor {
 
   academicQualificationId Int
   academicQualification   AcademicQualification? @relation(fields: [academicQualificationId], references: [id])
+
+  scheduledInstructor ScheduledInstructor[]
 }
 
 model AcademicLevel {
@@ -181,6 +183,8 @@ model ScheduledSubject {
   room    Room    @relation(fields: [roomId], references: [id])
   subject Subject @relation(fields: [subjectId], references: [id])
 
+  scheduledInstructor ScheduledInstructor[]
+
   // Prevents exact duplicates
   @@unique([sectionId, roomId, subjectId, startTime, endTime, day])
 }
@@ -192,4 +196,18 @@ model Setting {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model ScheduledInstructor {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  instructorId       Int
+  scheduledSubjectId Int
+
+  instructor       Instructor       @relation(fields: [instructorId], references: [id])
+  scheduledSubject ScheduledSubject @relation(fields: [scheduledSubjectId], references: [id])
+
+  @@unique([instructorId, scheduledSubjectId])
 }
