@@ -24,9 +24,14 @@ function Content({ children }: CompoundProps) {
   return <div>{children}</div>;
 }
 
+function ContentTitle({ children }: CompoundProps) {
+  return <div className="text-lg font-medium">{children}</div>;
+}
+
 export const MainSection = Object.assign(MainSectionRoot, {
   Section,
   Title,
   Description,
   Content,
+  ContentTitle,
 });
