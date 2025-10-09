@@ -5,7 +5,13 @@ export default function ManageInstructorsPage() {
   return (
     <MainSection>
       <MainSection.Section>
-        <MainSection.Title>Manage Instructors</MainSection.Title>
+        <MainSection.Content>
+          <MainSection.Title>Manage Instructors</MainSection.Title>
+          <MainSection.Description>
+            Create and manage instructor information.
+          </MainSection.Description>
+        </MainSection.Content>
+
         <MainSection.Content>
           <InstructorManager />
         </MainSection.Content>

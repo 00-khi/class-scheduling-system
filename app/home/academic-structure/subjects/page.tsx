@@ -5,7 +5,13 @@ export default function SubjectsPage() {
   return (
     <MainSection>
       <MainSection.Section>
-        <MainSection.Title>Subjects</MainSection.Title>
+        <MainSection.Content>
+          <MainSection.Title>Subjects</MainSection.Title>
+          <MainSection.Description>
+            Create and manage subject information for courses.
+          </MainSection.Description>
+        </MainSection.Content>
+
         <MainSection.Content>
           <SubjectManager />
         </MainSection.Content>

@@ -16,7 +16,13 @@ export default function InstructorSchedulingPage() {
   return (
     <MainSection>
       <MainSection.Section>
-        <MainSection.Title>Instructor Scheduling</MainSection.Title>
+        <MainSection.Content>
+          <MainSection.Title>Instructor Scheduling</MainSection.Title>
+          <MainSection.Description>
+            Assign instructor teaching schedules.
+          </MainSection.Description>
+        </MainSection.Content>
+
         <MainSection.Content>
           <div className="space-y-3">
             {/* <SelectInstructorGroup /> */}

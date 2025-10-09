@@ -13,7 +13,11 @@ function Section({ children }: CompoundProps) {
 }
 
 function Title({ children }: CompoundProps) {
-  return <div className="text-base font-medium">{children}</div>;
+  return <div className="text-2xl font-bold">{children}</div>;
+}
+
+function Description({ children }: CompoundProps) {
+  return <div className="text-base text-muted-foreground mb-4">{children}</div>;
 }
 
 function Content({ children }: CompoundProps) {
@@ -23,5 +27,6 @@ function Content({ children }: CompoundProps) {
 export const MainSection = Object.assign(MainSectionRoot, {
   Section,
   Title,
+  Description,
   Content,
 });

@@ -237,7 +237,12 @@ export default function AutoClassSchedulingPage() {
   return (
     <MainSection>
       <MainSection.Section>
-        <MainSection.Title>Auto Class Scheduling</MainSection.Title>
+        <MainSection.Content>
+          <MainSection.Title>Auto Class Scheduling</MainSection.Title>
+          <MainSection.Description>
+            Automatically generate schedules based on selected rules.
+          </MainSection.Description>
+        </MainSection.Content>
         <MainSection.Content>
           <div className="space-y-3">
             <SelectSectionGroup

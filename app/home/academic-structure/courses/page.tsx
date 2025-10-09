@@ -5,7 +5,13 @@ export default function CoursesPage() {
   return (
     <MainSection>
       <MainSection.Section>
-        <MainSection.Title>Courses</MainSection.Title>
+        <MainSection.Content>
+          <MainSection.Title>Courses</MainSection.Title>
+          <MainSection.Description>
+            Create and manage academic courses.
+          </MainSection.Description>
+        </MainSection.Content>
+
         <MainSection.Content>
           <CourseManager />
         </MainSection.Content>

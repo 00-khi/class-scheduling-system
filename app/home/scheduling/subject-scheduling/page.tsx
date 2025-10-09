@@ -22,7 +22,13 @@ export default function SubjectSchedulingPage() {
   return (
     <MainSection>
       <MainSection.Section>
-        <MainSection.Title>Subject Scheduling</MainSection.Title>
+        <MainSection.Content>
+          <MainSection.Title>Subject Scheduling</MainSection.Title>
+          <MainSection.Description>
+            Create and manage subject-based schedules.
+          </MainSection.Description>
+        </MainSection.Content>
+
         <MainSection.Content>
           <div className="space-y-3">
             <SelectSectionGroup onSectionChange={setSelectedSectionId} />

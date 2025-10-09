@@ -7,7 +7,13 @@ export default function SchedulesPage() {
   return (
     <MainSection>
       <MainSection.Section>
-        <MainSection.Title>Instructor Scheduling</MainSection.Title>
+        <MainSection.Content>
+          <MainSection.Title>Schedules</MainSection.Title>
+          <MainSection.Description>
+            Review and export section, room, and instructor schedules.
+          </MainSection.Description>
+        </MainSection.Content>
+
         <MainSection.Content>
           <Tabs defaultValue="section">
             <TabsList>
