@@ -239,8 +239,7 @@ export default function SelectSectionGroup({
             )}
           </SelectContent>
         </Select>
-      </DataTableToolbarGroup>
-      <DataTableToolbarGroup>
+
         {/* Section */}
         <Select
           value={selectedData?.sectionId?.toString() ?? ""}
