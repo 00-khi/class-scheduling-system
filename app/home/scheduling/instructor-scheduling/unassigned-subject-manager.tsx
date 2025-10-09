@@ -31,6 +31,8 @@ import {
 import { TableToolbar } from "./components/assigned/table-toolbar";
 import TableComponent from "./components/assigned/table-component";
 import FormDialog from "./components/assigned/form-dialog";
+import { Badge } from "@/ui/shadcn/badge";
+import { Separator } from "@/ui/shadcn/separator";
 
 export type UnassignedSubjectRow = ScheduledSubject & {
   subject?: Subject;
@@ -168,50 +170,90 @@ export default function UnassignedSubjectManager({
     return true;
   }
 
+  // return (
+  //   <Card className="gap-4">
+  //     <CardHeader>
+  //       <CardTitle className="text-card-foreground font-normal">
+  //         Unassigned Subjects
+  //       </CardTitle>
+  //     </CardHeader>
+  //     <CardContent className="border-y py-4">
+  //       {entityManagement.isLoading ? (
+  //         <DataTableSection>
+  //           <DataTableSkeleton columnCount={4} rowCount={5} />
+  //         </DataTableSection>
+  //       ) : (
+  //         <DataTableSection>
+  //           <TableToolbar
+  //             table={table}
+  //             tableState={tableState}
+  //             setTableState={setTableState}
+  //             entityData={entityManagement.data}
+  //             onRefresh={entityManagement.fetchData}
+  //           />
+
+  //           <TableComponent
+  //             table={table}
+  //             tableState={tableState}
+  //             setTableState={setTableState}
+  //           />
+
+  //           <FormDialog
+  //             unassignedSubjects={entityManagement.data}
+  //             instructorOptions={instructorOptions}
+  //             isOpen={entityManagement.isFormDialogOpen}
+  //             onClose={() => {
+  //               entityManagement.setIsFormDialogOpen(false);
+  //               setFormData(null);
+  //             }}
+  //             formData={formData}
+  //             setFormData={setFormData}
+  //             onSubmit={handleFormSubmit}
+  //             isSubmitting={entityManagement.isSubmitting}
+  //           />
+  //         </DataTableSection>
+  //       )}
+  //     </CardContent>
+  //   </Card>
+  // );
+
   return (
-    <Card className="gap-4">
-      <CardHeader>
-        <CardTitle className="text-card-foreground font-normal">
-          Unassigned Subjects
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="border-y py-4">
-        {entityManagement.isLoading ? (
-          <DataTableSection>
-            <DataTableSkeleton columnCount={4} rowCount={5} />
-          </DataTableSection>
-        ) : (
-          <DataTableSection>
-            <TableToolbar
-              table={table}
-              tableState={tableState}
-              setTableState={setTableState}
-              entityData={entityManagement.data}
-              onRefresh={entityManagement.fetchData}
-            />
+    <>
+      {entityManagement.isLoading ? (
+        <DataTableSection>
+          <DataTableSkeleton columnCount={4} rowCount={5} />
+        </DataTableSection>
+      ) : (
+        <DataTableSection>
+          <TableToolbar
+            table={table}
+            tableState={tableState}
+            setTableState={setTableState}
+            entityData={entityManagement.data}
+            onRefresh={entityManagement.fetchData}
+          />
 
-            <TableComponent
-              table={table}
-              tableState={tableState}
-              setTableState={setTableState}
-            />
+          <TableComponent
+            table={table}
+            tableState={tableState}
+            setTableState={setTableState}
+          />
 
-            <FormDialog
-              unassignedSubjects={entityManagement.data}
-              instructorOptions={instructorOptions}
-              isOpen={entityManagement.isFormDialogOpen}
-              onClose={() => {
-                entityManagement.setIsFormDialogOpen(false);
-                setFormData(null);
-              }}
-              formData={formData}
-              setFormData={setFormData}
-              onSubmit={handleFormSubmit}
-              isSubmitting={entityManagement.isSubmitting}
-            />
-          </DataTableSection>
-        )}
-      </CardContent>
-    </Card>
+          <FormDialog
+            unassignedSubjects={entityManagement.data}
+            instructorOptions={instructorOptions}
+            isOpen={entityManagement.isFormDialogOpen}
+            onClose={() => {
+              entityManagement.setIsFormDialogOpen(false);
+              setFormData(null);
+            }}
+            formData={formData}
+            setFormData={setFormData}
+            onSubmit={handleFormSubmit}
+            isSubmitting={entityManagement.isSubmitting}
+          />
+        </DataTableSection>
+      )}
+    </>
   );
 }
