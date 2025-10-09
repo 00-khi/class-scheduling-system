@@ -23,6 +23,7 @@ export const GET = createApiHandler(async () => {
     include: {
       room: true,
       subject: true,
+      section: true,
     },
   });
 
