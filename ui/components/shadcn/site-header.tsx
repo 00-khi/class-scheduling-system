@@ -87,10 +87,10 @@ export function SiteHeader() {
           />
         </div>
 
-        <h1 className="text-base font-medium hidden sm:block">
+        <h1 className="text-lg font-semibold hidden sm:block truncate">
           Automated Class Scheduling System
         </h1>
-        <h1 className="text-base font-medium block sm:hidden pr-2">ACSS</h1>
+        <h1 className="text-lg font-semibold block sm:hidden pr-2">ACSS</h1>
 
         <div className="ml-auto flex items-center gap-2">
           <Select
