@@ -164,7 +164,7 @@ export default function SelectSectionGroup({
               academicLevelId: Number(value),
             }));
           }}
-          disabled={disabled}
+          disabled={disabled || entityManagement.isLoading}
         >
           <SelectTrigger>
             <SelectValue placeholder="Select Academic Level" />
@@ -190,7 +190,11 @@ export default function SelectSectionGroup({
           onValueChange={(value) => {
             setSelectedData((prev) => ({ ...prev, courseId: Number(value) }));
           }}
-          disabled={selectedData?.academicLevelId === undefined || disabled}
+          disabled={
+            selectedData?.academicLevelId === undefined ||
+            disabled ||
+            entityManagement.isLoading
+          }
         >
           <SelectTrigger>
             <SelectValue placeholder="Select Course" />
@@ -216,7 +220,11 @@ export default function SelectSectionGroup({
           onValueChange={(value) => {
             setSelectedData((prev) => ({ ...prev, year: Number(value) }));
           }}
-          disabled={selectedData?.academicLevelId === undefined || disabled}
+          disabled={
+            selectedData?.academicLevelId === undefined ||
+            disabled ||
+            entityManagement.isLoading
+          }
         >
           <SelectTrigger>
             <SelectValue placeholder="Select Year Level" />
@@ -243,7 +251,7 @@ export default function SelectSectionGroup({
           onValueChange={(value) => {
             setSelectedData((prev) => ({ ...prev, sectionId: Number(value) }));
           }}
-          disabled={disabled}
+          disabled={disabled || entityManagement.isLoading}
         >
           <SelectTrigger>
             <SelectValue placeholder="Select Section" />
