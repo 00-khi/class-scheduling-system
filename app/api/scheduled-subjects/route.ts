@@ -13,35 +13,25 @@ import { capitalizeEachWord } from "@/lib/utils";
 import { Day, Semester } from "@prisma/client";
 import { NextResponse } from "next/server";
 
-export const GET = createApiHandler(async (req) => {
-  const { searchParams } = new URL(req.url);
-  const semester = searchParams.get("semester") as Semester;
-  const validSemesters = Object.values(Semester);
-
-  if (!semester) {
+export const GET = createApiHandler(async () => {
+  // get current semester from settings
+  const semesterSetting = await prisma.setting.findUnique({
+    where: { key: "semester" },
+  });
+  if (!semesterSetting) {
     return NextResponse.json(
-      {
-        error: `Please enter a semester`,
-      },
+      { error: "Semester setting not found" },
       { status: 400 }
     );
   }
-
-  if (!validSemesters.includes(semester)) {
-    return NextResponse.json(
-      {
-        error: `Invalid semester. Must be one of: ${validSemesters.join(", ")}`,
-      },
-      { status: 400 }
-    );
-  }
+  const currentSemester = semesterSetting.value as Semester;
 
   const scheduledSubjects = await prisma.scheduledSubject.findMany({
+    where: { subject: { semester: currentSemester } },
     include: {
       room: true,
       subject: true,
     },
-    where: { subject: { semester } },
   });
   return NextResponse.json(scheduledSubjects);
 });
