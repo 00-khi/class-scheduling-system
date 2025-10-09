@@ -9,7 +9,7 @@ function MainSectionRoot({ children }: CompoundProps) {
 }
 
 function Section({ children }: CompoundProps) {
-  return <div className="space-y-2">{children}</div>;
+  return <div className="space-y-3">{children}</div>;
 }
 
 function Title({ children }: CompoundProps) {
