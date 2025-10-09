@@ -39,10 +39,10 @@ export default function SubjectSchedulingPage() {
                   onChange={triggerRefresh}
                   refreshKey={refreshKey}
                 />
-                <TimetableManager
+                {/* <TimetableManager
                   sectionId={selectedSectionId}
                   refreshKey={refreshKey}
-                />
+                /> */}
               </div>
             ) : (
               <Card>
