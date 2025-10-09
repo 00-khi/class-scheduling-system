@@ -148,7 +148,7 @@ export default function FormDialog({
               Cancel
             </Button>
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Saving..." : "Save"}
+              {isSubmitting ? "Assigning..." : "Assign"}
             </Button>
           </DialogFooter>
         </form>
