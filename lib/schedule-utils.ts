@@ -185,10 +185,9 @@ export function hasSectionAndRoomConflict(
 // checks if the provided instructor schedule have conflict
 export function hasInstructorScheduleConflict(
   toSchedule: ScheduledSubject,
-  existingSchedules: ScheduledInstructor &
-    {
-      scheduledSubject: ScheduledSubject;
-    }[]
+  existingSchedules: {
+    scheduledSubject: ScheduledSubject;
+  }[]
 ): boolean {
   return existingSchedules.some(({ scheduledSubject }) => {
     // Check same day
