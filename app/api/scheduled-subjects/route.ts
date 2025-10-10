@@ -32,6 +32,11 @@ export const GET = createApiHandler(async () => {
       room: true,
       subject: true,
       section: true,
+      scheduledInstructor: {
+        select: {
+          instructor: true,
+        },
+      },
     },
   });
   return NextResponse.json(scheduledSubjects);
