@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import {
   calculateRemainingUnits,
   diffMinutes,
-  isSectionAndRoomConflict,
+  hasSectionAndRoomConflict,
   isValidRange,
   isValidTime,
   toHours,
@@ -215,7 +215,7 @@ export const POST = createApiHandler(async (request) => {
 
   console.log(mergedExistingSchedules);
 
-  if (isSectionAndRoomConflict(toSchedule, mergedExistingSchedules)) {
+  if (hasSectionAndRoomConflict(toSchedule, mergedExistingSchedules)) {
     return NextResponse.json(
       {
         error: `Conflict detected.`,

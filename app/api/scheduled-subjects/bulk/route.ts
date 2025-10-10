@@ -4,7 +4,7 @@ import { Day, ScheduledSubject, Semester } from "@prisma/client";
 import {
   calculateRemainingUnits,
   diffMinutes,
-  isSectionAndRoomConflict,
+  hasSectionAndRoomConflict,
   isValidRange,
   isValidTime,
   toHours,
@@ -174,7 +174,7 @@ export const POST = createApiHandler(async (request) => {
 
       if (sameDay && (sameRoom || sameSection)) {
         // Check time overlap
-        if (isSectionAndRoomConflict(a, [b])) {
+        if (hasSectionAndRoomConflict(a, [b])) {
           return NextResponse.json(
             {
               error: `Conflict detected between schedules at index ${i} and ${j} on ${a.day}.`,
@@ -282,7 +282,7 @@ export const POST = createApiHandler(async (request) => {
       ...existingSectionSchedules,
     ].sort((a, b) => toMinutes(a.startTime) - toMinutes(b.startTime));
 
-    if (isSectionAndRoomConflict(sched, mergedExistingSchedules)) {
+    if (hasSectionAndRoomConflict(sched, mergedExistingSchedules)) {
       return NextResponse.json(
         {
           error: `Conflict detected for subjectId ${subjectId} on ${day}.`,

@@ -1,4 +1,4 @@
-import { Day } from "@prisma/client";
+import { Day, ScheduledInstructor, ScheduledSubject } from "@prisma/client";
 
 type Subject = {
   id: number;
@@ -157,8 +157,8 @@ export function calculateRemainingUnits(
   return Math.max(remainingUnits, 0); // prevent negative
 }
 
-// checks if the provided schedule have conflict
-export function isSectionAndRoomConflict(
+// checks if the provided subject schedule have conflict
+export function hasSectionAndRoomConflict(
   toSchedule: ScheduleWithRelations,
   existingSchedule: ScheduleWithRelations[]
 ): boolean {
@@ -179,6 +179,36 @@ export function isSectionAndRoomConflict(
       overlap &&
       (s.sectionId === toSchedule.sectionId || s.roomId === toSchedule.roomId)
     );
+  });
+}
+
+// checks if the provided instructor schedule have conflict
+export function hasInstructorScheduleConflict(
+  toSchedule: ScheduledSubject,
+  existingSchedules: ScheduledInstructor &
+    {
+      scheduledSubject: ScheduledSubject;
+    }[]
+): boolean {
+  return existingSchedules.some(({ scheduledSubject }) => {
+    // Check same day
+    if (scheduledSubject.day !== toSchedule.day) return false;
+
+    // Convert times to minutes
+    const [startH1, startM1] = scheduledSubject.startTime
+      .split(":")
+      .map(Number);
+    const [endH1, endM1] = scheduledSubject.endTime.split(":").map(Number);
+    const [startH2, startM2] = toSchedule.startTime.split(":").map(Number);
+    const [endH2, endM2] = toSchedule.endTime.split(":").map(Number);
+
+    const start1 = startH1 * 60 + startM1;
+    const end1 = endH1 * 60 + endM1;
+    const start2 = startH2 * 60 + startM2;
+    const end2 = endH2 * 60 + endM2;
+
+    // Conflict if times overlap
+    return start1 < end2 && start2 < end1;
   });
 }
 
@@ -235,7 +265,7 @@ export function autoSchedule(
         subjectId: subj.id,
       };
 
-      if (!isSectionAndRoomConflict(candidate, [...existing, ...results])) {
+      if (!hasSectionAndRoomConflict(candidate, [...existing, ...results])) {
         results.push(candidate);
         minutesLeft -= duration;
       }
