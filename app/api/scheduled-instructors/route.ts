@@ -90,9 +90,7 @@ export const POST = createApiHandler(async (request) => {
   const scheduledSubject = await prisma.scheduledSubject.findUnique({
     where: {
       id: scheduledSubjectId,
-      scheduledInstructor: {
-        none: {},
-      },
+      scheduledInstructor: null,
     },
   });
 

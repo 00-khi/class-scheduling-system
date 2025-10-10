@@ -183,7 +183,7 @@ model ScheduledSubject {
   room    Room    @relation(fields: [roomId], references: [id])
   subject Subject @relation(fields: [subjectId], references: [id])
 
-  scheduledInstructor ScheduledInstructor[]
+  scheduledInstructor ScheduledInstructor?
 
   // Prevents exact duplicates
   @@unique([sectionId, roomId, subjectId, startTime, endTime, day])
@@ -204,10 +204,8 @@ model ScheduledInstructor {
   updatedAt DateTime @updatedAt
 
   instructorId       Int
-  scheduledSubjectId Int
+  scheduledSubjectId Int @unique
 
   instructor       Instructor       @relation(fields: [instructorId], references: [id])
   scheduledSubject ScheduledSubject @relation(fields: [scheduledSubjectId], references: [id])
-
-  @@unique([instructorId, scheduledSubjectId])
 }

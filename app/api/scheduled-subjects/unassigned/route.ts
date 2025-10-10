@@ -21,7 +21,7 @@ export const GET = createApiHandler(async () => {
 
   const unassignedSubjects = await prisma.scheduledSubject.findMany({
     where: {
-      scheduledInstructor: { none: {} },
+      scheduledInstructor: null,
       subject: { semester: currentSemester },
     },
     include: {
