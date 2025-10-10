@@ -87,6 +87,46 @@ export function TableToolbar({
           </div>
         </div>
 
+        {/* Filter Select - SECTION */}
+        <Select
+          value={
+            (tableState.columnFilters.find((f) => f.id === "section")
+              ?.value as string) ?? ""
+          }
+          onValueChange={(value) =>
+            setTableState((prev) => ({
+              ...prev,
+              columnFilters: value ? [{ id: "section", value }] : [],
+            }))
+          }
+        >
+          <SelectTrigger>
+            <Filter className="text-muted-foreground/80" />
+            <SelectValue placeholder="Section" />
+          </SelectTrigger>
+          <SelectContent side="bottom">
+            {(() => {
+              const uniqueTypes = Array.from(
+                new Set(
+                  entityData.map((item) => item.section?.name).filter(Boolean)
+                )
+              );
+
+              return uniqueTypes.length > 0 ? (
+                uniqueTypes.map((item) => (
+                  <SelectItem key={item} value={item ?? ""}>
+                    {item}
+                  </SelectItem>
+                ))
+              ) : (
+                <SelectItem disabled value="-">
+                  No data found
+                </SelectItem>
+              );
+            })()}
+          </SelectContent>
+        </Select>
+
         {/* Filter Select - DAY */}
         <Select
           value={
