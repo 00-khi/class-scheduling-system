@@ -1,9 +1,17 @@
+"use client";
+
 import { MainSection } from "@/ui/components/main-section";
 import SelectSectionGroup from "@/ui/components/select-section-group";
 import { Card, CardContent, CardHeader, CardTitle } from "@/ui/shadcn/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/shadcn/tabs";
+import { useState } from "react";
+import SectionTimetable from "./section-timetable";
 
 export default function SchedulesPage() {
+  const [selectedSectionId, setSelectedSectionId] = useState<number | null>(
+    null
+  );
+
   return (
     <MainSection>
       <MainSection.Section>
@@ -21,7 +29,7 @@ export default function SchedulesPage() {
               <TabsTrigger value="room">Room</TabsTrigger>
               <TabsTrigger value="instructor">Instructor</TabsTrigger>
             </TabsList>
-            <TabsContent value="section">
+            <TabsContent value="section" className="space-y-3">
               <Card className="gap-2">
                 <CardHeader>
                   <CardTitle className="text-card-foreground font-normal">
@@ -29,9 +37,19 @@ export default function SchedulesPage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <SelectSectionGroup />
+                  <SelectSectionGroup
+                    selectedSectionId={selectedSectionId}
+                    onSectionChange={setSelectedSectionId}
+                  />
                 </CardContent>
               </Card>
+
+              {selectedSectionId && (
+                <SectionTimetable
+                  sectionId={selectedSectionId}
+                  refreshKey={0}
+                />
+              )}
             </TabsContent>
             <TabsContent value="room">
               <Card className="gap-2">
