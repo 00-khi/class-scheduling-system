@@ -4,6 +4,7 @@ import { useManageEntities } from "@/hooks/use-manage-entities-v2";
 import { createApiClient } from "@/lib/api/api-client";
 import {
   INSTRUCTORS_API,
+  SCHEDULED_INSTRUCTORS_API,
   UNASSIGNED_SCHEDULED_SUBJECTS_API,
 } from "@/lib/api/api-endpoints";
 import { Card, CardContent, CardHeader, CardTitle } from "@/ui/shadcn/card";
@@ -41,7 +42,7 @@ export type UnassignedSubjectRow = ScheduledSubject & {
 };
 
 export type FormData = {
-  isntructorId?: number;
+  instructorId?: number;
   scheduledSubjectId?: number;
 } | null;
 
@@ -123,7 +124,7 @@ export default function UnassignedSubjectManager({
     entityManagement.setIsSubmitting(true);
 
     try {
-      const response = await fetch(UNASSIGNED_SCHEDULED_SUBJECTS_API, {
+      const response = await fetch(SCHEDULED_INSTRUCTORS_API, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -157,7 +158,7 @@ export default function UnassignedSubjectManager({
         field: data.scheduledSubjectId,
         message: "Scheduled Subject is required",
       },
-      { field: data.isntructorId, message: "Instructor is required" },
+      { field: data.instructorId, message: "Instructor is required" },
     ];
 
     for (const { field, message } of validations) {

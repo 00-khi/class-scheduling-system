@@ -108,11 +108,11 @@ export default function FormDialog({
           <div className="grid grid-cols-1 gap-2">
             <Label htmlFor="room">Instructor</Label>
             <Select
-              value={formData?.isntructorId?.toString() ?? ""}
+              value={formData?.instructorId?.toString() ?? ""}
               onValueChange={(value) =>
                 setFormData((prev) => ({
                   ...prev,
-                  isntructorId: Number(value),
+                  instructorId: Number(value),
                 }))
               }
               disabled={isSubmitting}
