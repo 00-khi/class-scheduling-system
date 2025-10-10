@@ -2,7 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/ui/shadcn/badge";
 import { Button } from "@/ui/shadcn/button";
 import { UserPen } from "lucide-react";
-import { formatTime } from "@/lib/schedule-utils";
+import { diffMinutes, formatTime, toHours } from "@/lib/schedule-utils";
 import { UnassignedSubjectRow } from "../../unassigned-subject-manager";
 
 export default function useTableColumns({
@@ -27,6 +27,11 @@ export default function useTableColumns({
       ),
       enableHiding: false,
       enableSorting: false,
+    },
+    {
+      id: "section",
+      header: "Section",
+      accessorFn: (row) => row.section?.name || "N/A",
     },
     {
       header: "Day",
@@ -68,6 +73,18 @@ export default function useTableColumns({
           {getValue<string>()}
         </Badge>
       ),
+    },
+    {
+      id: "hours",
+      header: "Hours",
+      cell: ({ row }) => {
+        const assignedMinutes = diffMinutes(
+          row.original.startTime,
+          row.original.endTime
+        );
+
+        return `${toHours(assignedMinutes)} hrs`;
+      },
     },
   ];
 }
