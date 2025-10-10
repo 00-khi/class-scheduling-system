@@ -258,74 +258,6 @@ export default function AutoClassSchedulingPage() {
             {selectedSectionData ? (
               <>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {/* Schedule Generation */}
-                  <Card className="gap-4">
-                    <CardHeader>
-                      <CardTitle className="text-card-foreground font-normal">
-                        Schedule Generation
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="border-y py-4 space-y-4 h-full">
-                      <div className="text-muted-foreground space-y-2">
-                        <div className="flex justify-between">
-                          <span>Section:</span>
-                          <span className="text-foreground">
-                            {selectedSectionData.name || "N/A"}
-                          </span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span>Unscheduled Subjects:</span>
-                          <span className="text-foreground">
-                            {unscheduledSubjects.length}
-                          </span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span>Days:</span>
-                          <span className="text-foreground">
-                            {selectedDays.length}
-                          </span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span>Rooms:</span>
-                          <span className="text-foreground">
-                            {selectedRoomIds.length}
-                          </span>
-                        </div>
-                      </div>
-
-                      <Button
-                        className="w-full"
-                        disabled={
-                          isGenerating ||
-                          unscheduledSubjects.length === 0 ||
-                          isApplying
-                        }
-                        onClick={handleGenerateSchedule}
-                      >
-                        {isGenerating ? (
-                          <>
-                            <Loader2Icon className="animate-spin" />
-                            Generating Schedule...
-                          </>
-                        ) : (
-                          <>
-                            <Zap />
-                            Generate Schedule
-                          </>
-                        )}
-                      </Button>
-
-                      {unscheduledSubjects.length === 0 && (
-                        <Alert>
-                          <CheckCircle />
-                          <AlertDescription>
-                            All subjects for this section are already scheduled.
-                          </AlertDescription>
-                        </Alert>
-                      )}
-                    </CardContent>
-                  </Card>
-
                   {/* Scheduling Configuration */}
                   <Card className="gap-4">
                     <CardHeader>
@@ -419,6 +351,74 @@ export default function AutoClassSchedulingPage() {
                           </div>
                         </div>
                       </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Schedule Generation */}
+                  <Card className="gap-4">
+                    <CardHeader>
+                      <CardTitle className="text-card-foreground font-normal">
+                        Schedule Generation
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="border-y py-4 space-y-4 h-full">
+                      <div className="text-muted-foreground space-y-2">
+                        <div className="flex justify-between">
+                          <span>Section:</span>
+                          <span className="text-foreground">
+                            {selectedSectionData.name || "N/A"}
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span>Unscheduled Subjects:</span>
+                          <span className="text-foreground">
+                            {unscheduledSubjects.length}
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Days:</span>
+                          <span className="text-foreground">
+                            {selectedDays.length}
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Rooms:</span>
+                          <span className="text-foreground">
+                            {selectedRoomIds.length}
+                          </span>
+                        </div>
+                      </div>
+
+                      <Button
+                        className="w-full"
+                        disabled={
+                          isGenerating ||
+                          unscheduledSubjects.length === 0 ||
+                          isApplying
+                        }
+                        onClick={handleGenerateSchedule}
+                      >
+                        {isGenerating ? (
+                          <>
+                            <Loader2Icon className="animate-spin" />
+                            Generating Schedule...
+                          </>
+                        ) : (
+                          <>
+                            <Zap />
+                            Generate Schedule
+                          </>
+                        )}
+                      </Button>
+
+                      {unscheduledSubjects.length === 0 && (
+                        <Alert>
+                          <CheckCircle />
+                          <AlertDescription>
+                            All subjects for this section are already scheduled.
+                          </AlertDescription>
+                        </Alert>
+                      )}
                     </CardContent>
                   </Card>
                 </div>
