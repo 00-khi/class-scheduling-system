@@ -293,16 +293,16 @@ export const POST = createApiHandler(async (request) => {
   }
 
   // If all checks pass, create all schedules at once
-  // const created = await prisma.scheduledSubject.createMany({
-  //   data: schedules.map((sched: ScheduledSubject) => ({
-  //     roomId: sched.roomId,
-  //     sectionId: sched.sectionId,
-  //     subjectId: sched.subjectId,
-  //     startTime: sched.startTime,
-  //     endTime: sched.endTime,
-  //     day: capitalizeEachWord(sched.day) as Day,
-  //   })),
-  // });
+  const created = await prisma.scheduledSubject.createMany({
+    data: schedules.map((sched: ScheduledSubject) => ({
+      roomId: sched.roomId,
+      sectionId: sched.sectionId,
+      subjectId: sched.subjectId,
+      startTime: sched.startTime,
+      endTime: sched.endTime,
+      day: capitalizeEachWord(sched.day) as Day,
+    })),
+  });
 
-  return NextResponse.json(schedules);
+  return NextResponse.json(created);
 });
