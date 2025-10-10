@@ -55,7 +55,7 @@ export default function FormDialog({
   instructorOptions: Option[];
 }) {
   const selectedUnassignedSubjects = unassignedSubjects.find(
-    (s) => s.subjectId === formData?.scheduledSubjectId
+    (s) => s.id === formData?.scheduledSubjectId
   );
 
   return (

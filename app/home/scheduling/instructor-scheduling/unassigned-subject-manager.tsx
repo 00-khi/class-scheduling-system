@@ -107,7 +107,7 @@ export default function UnassignedSubjectManager({
 
   function handleEdit(item: UnassignedSubjectRow) {
     setFormData({
-      scheduledSubjectId: item.subjectId,
+      scheduledSubjectId: item.id,
     });
 
     entityManagement.setIsFormDialogOpen(true);
