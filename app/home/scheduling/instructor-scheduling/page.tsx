@@ -5,6 +5,7 @@ import { useState } from "react";
 import UnassignedSubjectManager from "./unassigned-subject-manager";
 import { Separator } from "@/ui/shadcn/separator";
 import { Card } from "@/ui/shadcn/card";
+import AssignedSubjectManager from "./assigned-subject-manager";
 
 export default function InstructorSchedulingPage() {
   const [selectedInstructorId, setSelectedInstructorId] = useState<
@@ -42,11 +43,10 @@ export default function InstructorSchedulingPage() {
       <MainSection.Section>
         <MainSection.ContentTitle>Assigned Subjects</MainSection.ContentTitle>
         <MainSection.Content>
-          Add the AssignedSubjectManager component here
-          {/* <UnassignedSubjectManager
+          <AssignedSubjectManager
             onChange={triggerRefresh}
             refreshKey={refreshKey}
-          /> */}
+          />
         </MainSection.Content>
       </MainSection.Section>
     </MainSection>
