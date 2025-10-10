@@ -37,10 +37,12 @@ export default function SelectSectionGroup({
   onSectionChange,
   disabled = false,
   reset = false,
+  selectedSectionId = null,
 }: {
   onSectionChange?: (section: number | null) => void;
   disabled?: boolean;
   reset?: boolean;
+  selectedSectionId?: number | null;
 }) {
   const [selectedData, setSelectedData] = useState<{
     academicLevelId?: number;
@@ -242,7 +244,13 @@ export default function SelectSectionGroup({
 
         {/* Section */}
         <Select
-          value={selectedData?.sectionId?.toString() ?? ""}
+          value={
+            !entityManagement.isLoading
+              ? selectedSectionId?.toString() ??
+                selectedData?.sectionId?.toString() ??
+                ""
+              : ""
+          }
           onValueChange={(value) => {
             handleSectionChange(Number(value));
           }}
