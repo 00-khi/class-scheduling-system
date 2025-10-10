@@ -33,6 +33,11 @@ export const GET = createApiHandler(async (request, context) => {
     include: {
       room: true,
       subject: true,
+      scheduledInstructor: {
+        select: {
+          instructor: true,
+        },
+      },
     },
   });
 
