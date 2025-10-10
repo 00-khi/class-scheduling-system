@@ -1,16 +1,8 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { Checkbox } from "@/ui/shadcn/checkbox";
 import { Badge } from "@/ui/shadcn/badge";
 import { Button } from "@/ui/shadcn/button";
-import { EditIcon, Trash2, TrashIcon } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/tooltip";
-import { Progress } from "@/ui/shadcn/progress";
-import {
-  diffMinutes,
-  formatTime,
-  toHours,
-  toMinutes,
-} from "@/lib/schedule-utils";
+import { UserMinus } from "lucide-react";
+import { diffMinutes, formatTime, toHours } from "@/lib/schedule-utils";
 import { ScheduledInstructorRow } from "../../assigned-subject-manager";
 
 export default function useTableColumns({
@@ -30,7 +22,7 @@ export default function useTableColumns({
             onClick={() => onDelete(row.original)}
             className="size-7"
           >
-            <Trash2 size={16} />
+            <UserMinus size={16} />
           </Button>
         </div>
       ),
