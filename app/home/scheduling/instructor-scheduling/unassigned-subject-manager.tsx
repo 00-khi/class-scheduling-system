@@ -28,9 +28,9 @@ import {
   DataTableSection,
   DataTableSkeleton,
 } from "@/ui/components/data-table-components";
-import { TableToolbar } from "./components/assigned/table-toolbar";
-import TableComponent from "./components/assigned/table-component";
-import FormDialog from "./components/assigned/form-dialog";
+import { TableToolbar } from "./components/unassigned/table-toolbar";
+import TableComponent from "./components/unassigned/table-component";
+import FormDialog from "./components/unassigned/form-dialog";
 import { Badge } from "@/ui/shadcn/badge";
 import { Separator } from "@/ui/shadcn/separator";
 
