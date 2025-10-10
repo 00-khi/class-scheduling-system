@@ -19,3 +19,5 @@ export const SCHEDULED_SUBJECTS_API = `${API_PATH}/scheduled-subjects`;
 export const SETTINGS_API = `${API_PATH}/settings`;
 
 export const UNASSIGNED_SCHEDULED_SUBJECTS_API = `${SCHEDULED_SUBJECTS_API}/unassigned`;
+
+export const SCHEDULED_INSTRUCTORS_API = `${API_PATH}/scheduled-instructors`;
