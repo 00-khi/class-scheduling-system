@@ -90,14 +90,14 @@ export default function Timetable({ schedule }: Props) {
   }
 
   return (
-    <>
+    <div className="min-w-180">
       {/* Header row */}
       <div className="grid grid-cols-7 border-b">
-        <div className="border-r bg-muted/50 p-4">Time</div>
+        <div className="border-r bg-muted p-4 sticky left-0 z-10">Time</div>
         {AVAILABLE_DAYS.map((day) => (
           <div
             key={day}
-            className="border-r last:border-r-0 bg-muted/50 p-4 text-center"
+            className="border-r last:border-r-0 bg-muted p-4 text-center"
           >
             <div>{day}</div>
           </div>
@@ -107,7 +107,7 @@ export default function Timetable({ schedule }: Props) {
       {/* Body grid */}
       <div className="grid grid-cols-7 relative">
         {/* Time labels column */}
-        <div className="border-r">
+        <div className="border-r sticky left-0 z-10 bg-background">
           {timeLabels.map((time) => (
             <div
               key={time}
@@ -221,6 +221,6 @@ export default function Timetable({ schedule }: Props) {
           </div>
         ))}
       </div>
-    </>
+    </div>
   );
 }
