@@ -6,6 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/ui/shadcn/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/shadcn/tabs";
 import { useState } from "react";
 import SectionTimetable from "./section-timetable";
+import { Button } from "@/ui/shadcn/button";
+import { FileSpreadsheet } from "lucide-react";
 
 export default function SchedulesPage() {
   const [selectedSectionId, setSelectedSectionId] = useState<number | null>(
@@ -36,11 +38,15 @@ export default function SchedulesPage() {
                     Filter by Section
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="space-y-3">
                   <SelectSectionGroup
                     selectedSectionId={selectedSectionId}
                     onSectionChange={setSelectedSectionId}
                   />
+                  <Button>
+                    <FileSpreadsheet />
+                    Export to CSV
+                  </Button>
                 </CardContent>
               </Card>
 
