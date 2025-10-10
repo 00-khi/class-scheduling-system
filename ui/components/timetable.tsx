@@ -137,12 +137,12 @@ export default function Timetable({ schedule }: Props) {
                     className="absolute bg-primary text-primary-foreground p-2 rounded text-xs overflow-hidden hover:opacity-90 transition-opacity border"
                     style={blockStyle(s.startTime, s.endTime)}
                   >
-                    <div className="text-xs opacity-70">
+                    {/* <div className="text-xs opacity-70">
                       {formatTime(s.startTime)} -
                     </div>
                     <div className="text-xs opacity-70">
                       {formatTime(s.endTime)}
-                    </div>
+                    </div> */}
 
                     {s.section?.name && (
                       <div className="font-medium truncate">
@@ -176,9 +176,45 @@ export default function Timetable({ schedule }: Props) {
                   </div>
                 </TooltipTrigger>
                 <TooltipContent>
-                  {`${formatTime(s.startTime)} - ${formatTime(s.endTime)} | ${
-                    s.subject?.name ?? "Subject"
-                  } | ${s.room?.name ?? ""}`}
+                  <div>
+                    <span className="font-medium">Time: </span>
+                    <span className="opacity-80">
+                      {formatTime(s.startTime)} - {formatTime(s.endTime)}
+                    </span>
+                  </div>
+
+                  {s.subject?.name && (
+                    <div>
+                      <span className="font-medium">Subject: </span>
+                      <span className="opacity-80">
+                        {s.subject.code ? `${s.subject.code} - ` : ""}
+                        {s.subject.name}
+                      </span>
+                    </div>
+                  )}
+
+                  {s.section?.name && (
+                    <div>
+                      <span className="font-medium">Section: </span>
+                      <span className="opacity-80">{s.section.name}</span>
+                    </div>
+                  )}
+
+                  {s.room?.name && (
+                    <div>
+                      <span className="font-medium">Room: </span>
+                      <span className="opacity-80">{s.room.name}</span>
+                    </div>
+                  )}
+
+                  {!(s.room?.name && s.section?.name && s.subject?.name) && (
+                    <div>
+                      <span className="font-medium">Instructor: </span>
+                      <span className="opacity-80">
+                        {s.scheduledInstructor?.instructor?.name || "TBA"}
+                      </span>
+                    </div>
+                  )}
                 </TooltipContent>
               </Tooltip>
             ))}
