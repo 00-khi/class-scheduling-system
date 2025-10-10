@@ -77,5 +77,7 @@ export const GET = createApiHandler(async (request, context) => {
     );
   });
 
-  return NextResponse.json(sorted);
+  const schedule = sorted.map((s) => s.scheduledSubject);
+
+  return NextResponse.json(schedule);
 });
