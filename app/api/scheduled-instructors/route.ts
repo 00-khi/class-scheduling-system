@@ -1,10 +1,12 @@
 import { createApiHandler } from "@/lib/api/api-handler";
 import { prisma } from "@/lib/prisma";
-import { hasInstructorScheduleConflict } from "@/lib/schedule-utils";
-import { Semester } from "@prisma/client";
+import { hasInstructorScheduleConflict, toMinutes } from "@/lib/schedule-utils";
+import { Day, Semester } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 export const GET = createApiHandler(async () => {
+  const DAYS_ORDER = Object.values(Day);
+
   // get current semester from settings
   const semesterSetting = await prisma.setting.findUnique({
     where: { key: "semester" },
@@ -29,7 +31,18 @@ export const GET = createApiHandler(async () => {
     },
   });
 
-  return NextResponse.json(scheduledInstructors);
+  const sorted = scheduledInstructors.sort((a, b) => {
+    const dayDiff =
+      DAYS_ORDER.indexOf(a.scheduledSubject.day) -
+      DAYS_ORDER.indexOf(b.scheduledSubject.day);
+    if (dayDiff !== 0) return dayDiff;
+    return (
+      toMinutes(a.scheduledSubject.startTime) -
+      toMinutes(b.scheduledSubject.startTime)
+    );
+  });
+
+  return NextResponse.json(sorted);
 });
 
 export const POST = createApiHandler(async (request) => {
