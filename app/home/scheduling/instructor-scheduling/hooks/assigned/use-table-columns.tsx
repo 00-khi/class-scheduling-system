@@ -33,6 +33,7 @@ export default function useTableColumns({
       id: "instructor",
       header: "Instructor",
       accessorFn: (row) => row.instructor.name,
+      filterFn: "equals",
     },
     {
       id: "section",
