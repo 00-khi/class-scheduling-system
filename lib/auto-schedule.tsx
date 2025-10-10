@@ -6,7 +6,7 @@ import {
   toMinutes,
   toTime,
   diffMinutes,
-  isConflict,
+  isSectionAndRoomConflict,
 } from "./schedule-utils";
 
 ////////////////////////////
@@ -190,7 +190,7 @@ export function autoScheduleSubjects(
           }))
         );
 
-        if (!isConflict(candidate as any, allExisting as any)) {
+        if (!isSectionAndRoomConflict(candidate as any, allExisting as any)) {
           const newSched: NewSchedule = {
             startTime,
             endTime,

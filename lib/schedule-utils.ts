@@ -158,7 +158,7 @@ export function calculateRemainingUnits(
 }
 
 // checks if the provided schedule have conflict
-export function isConflict(
+export function isSectionAndRoomConflict(
   toSchedule: ScheduleWithRelations,
   existingSchedule: ScheduleWithRelations[]
 ): boolean {
@@ -235,7 +235,7 @@ export function autoSchedule(
         subjectId: subj.id,
       };
 
-      if (!isConflict(candidate, [...existing, ...results])) {
+      if (!isSectionAndRoomConflict(candidate, [...existing, ...results])) {
         results.push(candidate);
         minutesLeft -= duration;
       }
