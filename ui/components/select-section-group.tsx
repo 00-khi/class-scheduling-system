@@ -133,6 +133,15 @@ export default function SelectSectionGroup({
     }
   }, [reset]);
 
+  useEffect(() => {
+    if (selectedSectionId) {
+      setSelectedData((prev) => ({
+        ...prev,
+        sectionId: selectedSectionId,
+      }));
+    }
+  }, [selectedSectionId]);
+
   function handleSectionChange(sectionId: number | null) {
     setSelectedData((prev) => ({ ...prev, sectionId }));
 
@@ -146,6 +155,7 @@ export default function SelectSectionGroup({
         <Select
           value={selectedData?.academicLevelId?.toString() ?? ""}
           onValueChange={(value) => {
+            handleSectionChange(null);
             setSelectedData((prev) => ({
               ...prev,
               academicLevelId: Number(value),
@@ -178,6 +188,7 @@ export default function SelectSectionGroup({
         <Select
           value={selectedData?.courseId?.toString() ?? ""}
           onValueChange={(value) => {
+            handleSectionChange(null);
             setSelectedData((prev) => ({
               ...prev,
               courseId: Number(value),
@@ -212,6 +223,7 @@ export default function SelectSectionGroup({
         <Select
           value={selectedData?.year?.toString() ?? ""}
           onValueChange={(value) => {
+            handleSectionChange(null);
             setSelectedData((prev) => ({
               ...prev,
               year: Number(value),
@@ -246,9 +258,7 @@ export default function SelectSectionGroup({
         <Select
           value={
             !entityManagement.isLoading
-              ? selectedSectionId?.toString() ??
-                selectedData?.sectionId?.toString() ??
-                ""
+              ? selectedData?.sectionId?.toString() ?? ""
               : ""
           }
           onValueChange={(value) => {
