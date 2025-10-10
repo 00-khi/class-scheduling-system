@@ -81,8 +81,6 @@ export default function Timetable({ schedule }: Props) {
     const topRem = ((s - startMinutes) / 15) * 2;
     const heightRem = Math.max(((e - s) / 15) * 2);
 
-    console.log(startMinutes, "START MINUTES");
-
     return {
       top: `${topRem}rem`,
       height: `${heightRem}rem`,
