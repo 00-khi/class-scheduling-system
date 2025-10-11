@@ -54,6 +54,10 @@ export default function DashboardPage() {
           throw new Error(data?.error || "Response error");
         }
 
+        if (data.length === 0) {
+          throw new Error("No data found.");
+        }
+
         exportSectionSchedule(data);
       } catch (err) {
         const message = err instanceof Error ? err.message : "Unexpected error";
@@ -79,6 +83,10 @@ export default function DashboardPage() {
           throw new Error(data?.error || "Response error");
         }
 
+        if (data.length === 0) {
+          throw new Error("No data found.");
+        }
+
         exportRoomSchedule(data);
       } catch (err) {
         const message = err instanceof Error ? err.message : "Unexpected error";
@@ -102,6 +110,10 @@ export default function DashboardPage() {
 
         if (!response.ok) {
           throw new Error(data?.error || "Response error");
+        }
+
+        if (data.length === 0) {
+          throw new Error("No data found.");
         }
 
         exportInstructorSchedule(data);
