@@ -21,3 +21,10 @@ export const SETTINGS_API = `${API_PATH}/settings`;
 export const UNASSIGNED_SCHEDULED_SUBJECTS_API = `${SCHEDULED_SUBJECTS_API}/unassigned`;
 
 export const SCHEDULED_INSTRUCTORS_API = `${API_PATH}/scheduled-instructors`;
+
+// COUNTS
+const COUNT_PATH = "/count";
+export const SECTIONS_COUNT_API = SECTIONS_API + COUNT_PATH;
+export const INSTRUCTORS_COUNT_API = INSTRUCTORS_API + COUNT_PATH;
+export const SUBJECTS_COUNT_API = SUBJECTS_API + COUNT_PATH;
+export const ROOMS_COUNT_API = ROOMS_API + COUNT_PATH;

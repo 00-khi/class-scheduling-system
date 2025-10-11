@@ -1,9 +1,6 @@
 "use client";
 
-// import { getInstructorCount } from "@/services/instructorService";
-// import { getRoomCount } from "@/services/roomService";
-// import { getSectionCount } from "@/services/sectionService";
-// import { getSubjectCount } from "@/services/subjectService";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardAction,
@@ -18,28 +15,80 @@ import {
   Users,
   type LucideIcon,
 } from "lucide-react";
-import { useState } from "react";
+import {
+  INSTRUCTORS_COUNT_API,
+  ROOMS_COUNT_API,
+  SECTIONS_COUNT_API,
+  SUBJECTS_COUNT_API,
+} from "@/lib/api/api-endpoints";
 
 export function InfoCardWrapper() {
   const [stats, setStats] = useState([
-    { label: "Sections", value: "--", icon: GraduationCap },
-    { label: "Instructors", value: "--", icon: Users },
-    { label: "Subjects", value: "--", icon: BookOpen },
-    { label: "Rooms", value: "--", icon: Building },
+    {
+      label: "Sections",
+      value: 0,
+      target: 0,
+      icon: GraduationCap,
+      api: SECTIONS_COUNT_API,
+    },
+    {
+      label: "Instructors",
+      value: 0,
+      target: 0,
+      icon: Users,
+      api: INSTRUCTORS_COUNT_API,
+    },
+    {
+      label: "Subjects",
+      value: 0,
+      target: 0,
+      icon: BookOpen,
+      api: SUBJECTS_COUNT_API,
+    },
+    {
+      label: "Rooms",
+      value: 0,
+      target: 0,
+      icon: Building,
+      api: ROOMS_COUNT_API,
+    },
   ]);
 
-  // const refreshStats = () => {
-  //   setStats([
-  //     { label: "Sections", value: 0, icon: GraduationCap },
-  //     { label: "Instructors", value: 0, icon: Users },
-  //     { label: "Subjects", value: 0, icon: BookOpen },
-  //     { label: "Rooms", value: 0, icon: Building },
-  //   ]);
-  // };
+  useEffect(() => {
+    async function fetchCounts() {
+      const updated = await Promise.all(
+        stats.map(async (stat) => {
+          try {
+            const res = await fetch(stat.api);
+            const data = await res.json();
+            return { ...stat, target: data.count || 0 };
+          } catch {
+            return { ...stat, target: 0 };
+          }
+        })
+      );
+      setStats(updated);
+    }
 
-  // useEffect(() => {
-  //   refreshStats();
-  // }, []);
+    fetchCounts();
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setStats((prev) =>
+        prev.map((s) => {
+          if (s.value < s.target) {
+            const diff = s.target - s.value;
+            const step = diff > 10 ? Math.ceil(diff / 10) : 1;
+            return { ...s, value: s.value + step };
+          }
+          return s;
+        })
+      );
+    }, 50);
+
+    return () => clearInterval(interval);
+  }, [stats]);
 
   return (
     <>
