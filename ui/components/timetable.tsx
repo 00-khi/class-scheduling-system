@@ -170,7 +170,7 @@ export default function Timetable({ schedule }: Props) {
 
                     {!(s.room?.name && s.section?.name && s.subject?.name) && (
                       <div className="font-medium truncate">
-                        {s.scheduledInstructor?.instructor?.name || "TBA"}
+                        {s.scheduledInstructor?.instructor?.name || "N/A"}
                       </div>
                     )}
                   </div>
@@ -211,7 +211,7 @@ export default function Timetable({ schedule }: Props) {
                     <div>
                       <span className="font-medium">Instructor: </span>
                       <span className="opacity-80">
-                        {s.scheduledInstructor?.instructor?.name || "TBA"}
+                        {s.scheduledInstructor?.instructor?.name || "N/A"}
                       </span>
                     </div>
                   )}
