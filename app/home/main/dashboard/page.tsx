@@ -12,9 +12,13 @@ import { useState } from "react";
 import SectionTimetable from "./section-timetable";
 import { useManageEntities } from "@/hooks/use-manage-entities-v2";
 import { createApiClient } from "@/lib/api/api-client";
-import { SCHEDULED_SUBJECTS_API } from "@/lib/api/api-endpoints";
+import {
+  SCHEDULED_INSTRUCTORS_API,
+  SCHEDULED_SUBJECTS_API,
+} from "@/lib/api/api-endpoints";
 import { ScheduledSubject } from "@prisma/client";
 import {
+  exportInstructorSchedule,
   exportRoomSchedule,
   exportSectionSchedule,
 } from "@/lib/export-functions";
@@ -68,6 +72,31 @@ export default function DashboardPage() {
         }
 
         exportRoomSchedule(data);
+      } catch (err) {
+        const message = err instanceof Error ? err.message : "Unexpected error";
+        toast.error(message);
+        console.error("Error saving section:", err);
+      }
+
+      setIsExportingCsv(false);
+    }
+
+    if (type === "instructor") {
+      setIsExportingCsv(true);
+
+      try {
+        const response = await fetch(SCHEDULED_INSTRUCTORS_API, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data?.error || "Response error");
+        }
+
+        exportInstructorSchedule(data);
       } catch (err) {
         const message = err instanceof Error ? err.message : "Unexpected error";
         toast.error(message);
@@ -161,7 +190,15 @@ export default function DashboardPage() {
                     Filter by Instructor
                   </CardTitle>
                 </CardHeader>
-                <CardContent>{/* selects */}</CardContent>
+                <CardContent>
+                  <Button
+                    disabled={isExportingCsv}
+                    onClick={() => handleCsvExport("instructor")}
+                  >
+                    <FileSpreadsheet />
+                    Export to CSV
+                  </Button>
+                </CardContent>
               </Card>
             </TabsContent>
           </Tabs>
