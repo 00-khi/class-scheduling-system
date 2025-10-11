@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // reactStrictMode: false, // uncomment this temporarily for debugging API calls
+  reactStrictMode: false, // uncomment this temporarily for debugging API calls
 
   /* config options here */
   async redirects() {
