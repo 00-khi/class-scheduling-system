@@ -47,7 +47,7 @@ export async function csvExport<T>({
     cell.alignment = { horizontal: "center", vertical: "middle" };
   });
 
-  let processedData = [...data];
+  const processedData = [...data];
 
   if (sortByKey) {
     processedData.sort((a, b) => {

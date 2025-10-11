@@ -114,9 +114,9 @@ export function findSlot(
 
   for (let i = 0; i < allSlots.length - 1; i++) {
     // Current block ends, add spacing
-    let currentEnd = toMinutes(allSlots[i].endTime);
+    const currentEnd = toMinutes(allSlots[i].endTime);
     // Next block starts, subtract spacing
-    let nextStart = toMinutes(allSlots[i + 1].startTime);
+    const nextStart = toMinutes(allSlots[i + 1].startTime);
 
     // Apply spacing only if not at day boundary
     // if (allSlots[i].endTime !== DAY_START) {

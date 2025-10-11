@@ -351,7 +351,7 @@ function DataFormArrayField({
         !allowed.some((v) => String(v) === String(tempItem[fieldKey]))
     );
     if (tempInvalid) setTempItem({});
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [JSON.stringify(validValuesByField)]); // stringified so effect runs when content changes
 
   const handleAdd = () => {
