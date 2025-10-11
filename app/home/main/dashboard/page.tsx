@@ -14,7 +14,10 @@ import { useManageEntities } from "@/hooks/use-manage-entities-v2";
 import { createApiClient } from "@/lib/api/api-client";
 import { SCHEDULED_SUBJECTS_API } from "@/lib/api/api-endpoints";
 import { ScheduledSubject } from "@prisma/client";
-import { exportSectionSchedule } from "@/lib/export-functions";
+import {
+  exportRoomSchedule,
+  exportSectionSchedule,
+} from "@/lib/export-functions";
 import { toast } from "sonner";
 
 export default function DashboardPage() {
@@ -48,6 +51,31 @@ export default function DashboardPage() {
 
       setIsExportingCsv(false);
     }
+
+    if (type === "room") {
+      setIsExportingCsv(true);
+
+      try {
+        const response = await fetch(SCHEDULED_SUBJECTS_API, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data?.error || "Response error");
+        }
+
+        exportRoomSchedule(data);
+      } catch (err) {
+        const message = err instanceof Error ? err.message : "Unexpected error";
+        toast.error(message);
+        console.error("Error saving section:", err);
+      }
+
+      setIsExportingCsv(false);
+    }
   }
 
   return (
@@ -68,18 +96,6 @@ export default function DashboardPage() {
       </MainSection.Section>
 
       <Separator />
-      {/* TEST */}
-
-      {/* <MainSection.Section>
-        <MainSection.Title>Today's Class Schedule</MainSection.Title>
-        <MainSection.Content>
-          <Card className="h-[600px]">
-            <CardHeader>
-              <CardDescription>Heh</CardDescription>
-            </CardHeader>
-          </Card>
-        </MainSection.Content>
-      </MainSection.Section> */}
 
       <MainSection.Section>
         <MainSection.ContentTitle>Schedules</MainSection.ContentTitle>
@@ -127,7 +143,15 @@ export default function DashboardPage() {
                     Filter by Room
                   </CardTitle>
                 </CardHeader>
-                <CardContent>{/* selects */}</CardContent>
+                <CardContent>
+                  <Button
+                    disabled={isExportingCsv}
+                    onClick={() => handleCsvExport("room")}
+                  >
+                    <FileSpreadsheet />
+                    Export to CSV
+                  </Button>
+                </CardContent>
               </Card>
             </TabsContent>
             <TabsContent value="instructor">
