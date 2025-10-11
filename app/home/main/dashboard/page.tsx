@@ -25,6 +25,7 @@ import {
 import { toast } from "sonner";
 import SelectRoomGroup from "@/ui/components/select-room-group";
 import SelectInstructorGroup from "@/ui/components/select-instructor-group";
+import RoomTimetable from "./room-timetable";
 
 export default function DashboardPage() {
   const [selectedSectionId, setSelectedSectionId] = useState<number | null>(
@@ -192,6 +193,10 @@ export default function DashboardPage() {
                   </Button>
                 </CardContent>
               </Card>
+
+              {selectedRoomId && (
+                <RoomTimetable roomId={selectedRoomId} refreshKey={0} />
+              )}
             </TabsContent>
             <TabsContent value="instructor">
               <Card className="gap-2">
