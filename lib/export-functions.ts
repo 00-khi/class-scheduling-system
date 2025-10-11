@@ -71,17 +71,20 @@ export function exportInstructorSchedule(data: any[]) {
   const formatted = data
     .map((item) => ({
       ...item,
-      startTime: formatTime(item.startTime),
-      endTime: formatTime(item.endTime),
+      scheduledSubject: {
+        ...item.scheduledSubject,
+        startTime: formatTime(item.scheduledSubject.startTime),
+        endTime: formatTime(item.scheduledSubject.endTime),
+      },
     }))
     .sort((a, b) => {
       const dayDiff =
-        AVAILABLE_DAYS.indexOf(a.day) - AVAILABLE_DAYS.indexOf(b.day);
+        AVAILABLE_DAYS.indexOf(a.scheduledSubject.day) -
+        AVAILABLE_DAYS.indexOf(b.scheduledSubject.day);
       if (dayDiff !== 0) return dayDiff;
 
-      // compare by start time (HH:mm)
-      const timeA = toMinutes(a.startTime);
-      const timeB = toMinutes(b.startTime);
+      const timeA = toMinutes(a.scheduledSubject.startTime);
+      const timeB = toMinutes(b.scheduledSubject.startTime);
       return timeA - timeB;
     });
 
