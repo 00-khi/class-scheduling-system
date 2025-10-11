@@ -1,8 +1,15 @@
 import { csvExport } from "./export-csv";
+import { AVAILABLE_DAYS, formatTime, toMinutes } from "./schedule-utils";
 
 export function exportSectionSchedule(data: any[]) {
+  const formatted = data.map((item) => ({
+    ...item,
+    startTime: formatTime(item.startTime),
+    endTime: formatTime(item.endTime),
+  }));
+
   csvExport({
-    data,
+    data: formatted,
     fileName: "Section-Schedules",
     groupBy: (item) => item.section.name,
     columns: [
@@ -23,17 +30,34 @@ export function exportSectionSchedule(data: any[]) {
 }
 
 export function exportRoomSchedule(data: any[]) {
+  const formatted = data
+    .map((item) => ({
+      ...item,
+      startTime: formatTime(item.startTime),
+      endTime: formatTime(item.endTime),
+    }))
+    .sort((a, b) => {
+      const dayDiff =
+        AVAILABLE_DAYS.indexOf(a.day) - AVAILABLE_DAYS.indexOf(b.day);
+      if (dayDiff !== 0) return dayDiff;
+
+      // compare by start time (HH:mm)
+      const timeA = toMinutes(a.startTime);
+      const timeB = toMinutes(b.startTime);
+      return timeA - timeB;
+    });
+
   csvExport({
-    data,
+    data: formatted,
     fileName: "Room-Schedules",
     groupBy: (item) => item.room.name,
     columns: [
       { header: "Room", key: "room.name", width: 15 },
-      { header: "Section", key: "section.name", width: 15 },
-      { header: "Subject", key: "subject.name", width: 35 },
       { header: "Day", key: "day", width: 12 },
       { header: "Start", key: "startTime", width: 10 },
       { header: "End", key: "endTime", width: 10 },
+      { header: "Section", key: "section.name", width: 15 },
+      { header: "Subject", key: "subject.name", width: 35 },
       {
         header: "Instructor",
         key: "scheduledInstructor.instructor.name",
@@ -44,8 +68,25 @@ export function exportRoomSchedule(data: any[]) {
 }
 
 export function exportInstructorSchedule(data: any[]) {
+  const formatted = data
+    .map((item) => ({
+      ...item,
+      startTime: formatTime(item.startTime),
+      endTime: formatTime(item.endTime),
+    }))
+    .sort((a, b) => {
+      const dayDiff =
+        AVAILABLE_DAYS.indexOf(a.day) - AVAILABLE_DAYS.indexOf(b.day);
+      if (dayDiff !== 0) return dayDiff;
+
+      // compare by start time (HH:mm)
+      const timeA = toMinutes(a.startTime);
+      const timeB = toMinutes(b.startTime);
+      return timeA - timeB;
+    });
+
   csvExport({
-    data,
+    data: formatted,
     fileName: "Instructor-Schedules",
     groupBy: (item) => item.instructor.name,
     columns: [
