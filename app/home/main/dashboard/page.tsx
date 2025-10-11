@@ -10,11 +10,45 @@ import { FileSpreadsheet } from "lucide-react";
 import SelectSectionGroup from "@/ui/components/select-section-group";
 import { useState } from "react";
 import SectionTimetable from "./section-timetable";
+import { useManageEntities } from "@/hooks/use-manage-entities-v2";
+import { createApiClient } from "@/lib/api/api-client";
+import { SCHEDULED_SUBJECTS_API } from "@/lib/api/api-endpoints";
+import { ScheduledSubject } from "@prisma/client";
+import { exportSectionSchedule } from "@/lib/export-functions";
+import { toast } from "sonner";
 
 export default function DashboardPage() {
   const [selectedSectionId, setSelectedSectionId] = useState<number | null>(
     null
   );
+  const [isExportingCsv, setIsExportingCsv] = useState(false);
+
+  async function handleCsvExport(type: "section" | "room" | "instructor") {
+    if (type === "section") {
+      setIsExportingCsv(true);
+
+      try {
+        const response = await fetch(SCHEDULED_SUBJECTS_API, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data?.error || "Response error");
+        }
+
+        exportSectionSchedule(data);
+      } catch (err) {
+        const message = err instanceof Error ? err.message : "Unexpected error";
+        toast.error(message);
+        console.error("Error saving section:", err);
+      }
+
+      setIsExportingCsv(false);
+    }
+  }
 
   return (
     <MainSection>
@@ -69,7 +103,10 @@ export default function DashboardPage() {
                     selectedSectionId={selectedSectionId}
                     onSectionChange={setSelectedSectionId}
                   />
-                  <Button>
+                  <Button
+                    disabled={isExportingCsv}
+                    onClick={() => handleCsvExport("section")}
+                  >
                     <FileSpreadsheet />
                     Export to CSV
                   </Button>
