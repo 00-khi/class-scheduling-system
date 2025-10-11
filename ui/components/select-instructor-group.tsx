@@ -1,24 +1,24 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useManageEntities } from "@/hooks/use-manage-entities-v2";
 import { createApiClient } from "@/lib/api/api-client";
 import {
   ACADEMIC_QUALIFICATIONS_API,
   INSTRUCTORS_API,
 } from "@/lib/api/api-endpoints";
-import { AcademicQualification, Instructor } from "@prisma/client";
-import { useEffect, useState } from "react";
-import {
-  DataTableToolbar,
-  DataTableToolbarGroup,
-} from "./data-table-components";
+import { Instructor, AcademicQualification } from "@prisma/client";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../shadcn/select";
+} from "@/ui/shadcn/select";
+import {
+  DataTableToolbar,
+  DataTableToolbarGroup,
+} from "./data-table-components";
 
 type Option = { value: string | number; label: string };
 
@@ -26,58 +26,55 @@ export default function SelectInstructorGroup({
   onInstructorChange,
   disabled = false,
   reset = false,
+  selectedInstructorId = null,
 }: {
-  onInstructorChange?: (instructorId: number | null) => void;
+  onInstructorChange?: (instructor: number | null) => void;
   disabled?: boolean;
   reset?: boolean;
+  selectedInstructorId?: number | null;
 }) {
   const [selectedData, setSelectedData] = useState<{
-    academicQualificationId?: number;
+    qualificationId?: number;
     instructorId?: number | null;
   } | null>(null);
 
   const instructorApi = createApiClient<Instructor>(INSTRUCTORS_API);
-  const academicQualificationApi = createApiClient<AcademicQualification>(
+  const qualificationApi = createApiClient<AcademicQualification>(
     ACADEMIC_QUALIFICATIONS_API
   );
 
   const entityManagement = useManageEntities<Instructor>({
     apiService: { fetch: instructorApi.getAll },
     relatedApiServices: [
-      { key: "academicQualifications", fetch: academicQualificationApi.getAll },
+      { key: "qualifications", fetch: qualificationApi.getAll },
     ],
   });
 
-  const academicQualifications: AcademicQualification[] =
-    entityManagement.relatedData?.academicQualifications || [];
+  const qualifications = entityManagement.relatedData.qualifications || [];
+  const instructors = entityManagement.data || [];
 
-  const academicQualifcationOptions: Option[] = academicQualifications.map(
-    (academicQualification) => ({
-      value: academicQualification.id,
-      label: academicQualification.name,
-    })
-  );
-  const instructorOptions: Option[] = entityManagement.data
-    .filter((i) => {
-      if (!selectedData?.academicQualificationId) {
-        return true;
-      }
+  const qualificationOptions: Option[] = qualifications.map((q) => ({
+    label: q.name,
+    value: q.id,
+  }));
 
-      let match = true;
-      if (selectedData?.academicQualificationId) {
-        match =
-          match &&
-          i.academicQualificationId === selectedData.academicQualificationId;
-      }
+  const instructorOptions: Option[] =
+    selectedData?.qualificationId !== undefined
+      ? instructors
+          .filter(
+            (inst) =>
+              inst.academicQualificationId === selectedData?.qualificationId
+          )
+          .map((inst) => ({
+            label: inst.name,
+            value: inst.id,
+          }))
+      : instructors.map((inst) => ({
+          label: inst.name,
+          value: inst.id,
+        }));
 
-      return match;
-    })
-    .map((instructor) => ({
-      value: instructor.id,
-      label: instructor.name,
-    }));
-
-  // Reset trigger
+  // Reset
   useEffect(() => {
     if (reset) {
       setSelectedData(null);
@@ -85,9 +82,18 @@ export default function SelectInstructorGroup({
     }
   }, [reset]);
 
+  // Preselect instructor
+  useEffect(() => {
+    if (selectedInstructorId) {
+      setSelectedData((prev) => ({
+        ...prev,
+        instructorId: selectedInstructorId,
+      }));
+    }
+  }, [selectedInstructorId]);
+
   function handleInstructorChange(instructorId: number | null) {
     setSelectedData((prev) => ({ ...prev, instructorId }));
-
     if (onInstructorChange && instructorId !== undefined)
       onInstructorChange(instructorId);
   }
@@ -97,22 +103,23 @@ export default function SelectInstructorGroup({
       <DataTableToolbarGroup>
         {/* Academic Qualification */}
         <Select
-          value={selectedData?.academicQualificationId?.toString() ?? ""}
+          value={selectedData?.qualificationId?.toString() ?? ""}
           onValueChange={(value) => {
+            handleInstructorChange(null);
             setSelectedData((prev) => ({
               ...prev,
-              academicQualificationId: Number(value),
+              qualificationId: Number(value),
               instructorId: null,
             }));
           }}
           disabled={disabled || entityManagement.isLoading}
         >
           <SelectTrigger>
-            <SelectValue placeholder="Select Academic Qualification" />
+            <SelectValue placeholder="Select Qualification" />
           </SelectTrigger>
           <SelectContent>
-            {academicQualifcationOptions.length > 0 ? (
-              academicQualifcationOptions.map((opt) => (
+            {qualificationOptions.length > 0 ? (
+              qualificationOptions.map((opt) => (
                 <SelectItem key={opt.value} value={String(opt.value)}>
                   {opt.label}
                 </SelectItem>
@@ -123,32 +130,34 @@ export default function SelectInstructorGroup({
               </SelectItem>
             )}
           </SelectContent>
+        </Select>
 
-          {/* Section */}
-          <Select
-            value={selectedData?.instructorId?.toString() ?? ""}
-            onValueChange={(value) => {
-              handleInstructorChange(Number(value));
-            }}
-            disabled={disabled || entityManagement.isLoading}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Select Instructor" />
-            </SelectTrigger>
-            <SelectContent>
-              {instructorOptions.length > 0 ? (
-                instructorOptions.map((opt) => (
-                  <SelectItem key={opt.value} value={String(opt.value)}>
-                    {opt.label}
-                  </SelectItem>
-                ))
-              ) : (
-                <SelectItem disabled value="-">
-                  No data found
+        {/* Instructor */}
+        <Select
+          value={
+            !entityManagement.isLoading
+              ? selectedData?.instructorId?.toString() ?? ""
+              : ""
+          }
+          onValueChange={(value) => handleInstructorChange(Number(value))}
+          disabled={disabled || entityManagement.isLoading}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Select Instructor" />
+          </SelectTrigger>
+          <SelectContent>
+            {instructorOptions.length > 0 ? (
+              instructorOptions.map((opt) => (
+                <SelectItem key={opt.value} value={String(opt.value)}>
+                  {opt.label}
                 </SelectItem>
-              )}
-            </SelectContent>
-          </Select>
+              ))
+            ) : (
+              <SelectItem disabled value="-">
+                No data found
+              </SelectItem>
+            )}
+          </SelectContent>
         </Select>
       </DataTableToolbarGroup>
     </DataTableToolbar>
