@@ -33,11 +33,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             url: "/home/main/dashboard",
             icon: LayoutDashboard,
           },
-          {
-            title: "Schedules",
-            url: "/home/main/schedules",
-            icon: BarChart3,
-          },
+          // {
+          //   title: "Schedules",
+          //   url: "/home/main/schedules",
+          //   icon: BarChart3,
+          // },
         ],
       },
       {
