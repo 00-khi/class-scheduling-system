@@ -60,7 +60,7 @@ export default function FormDialog({
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, name: e.target.value }))
               }
-              placeholder="e.g., LAB A, 201"
+              placeholder="e.g., Lab A, 201"
               disabled={isSubmitting}
             />
           </div>
