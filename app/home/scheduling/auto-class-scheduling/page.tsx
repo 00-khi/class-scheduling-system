@@ -562,7 +562,7 @@ export default function AutoClassSchedulingPage() {
               </>
             ) : (
               <Card>
-                <div className="flex flex-col justify-center items-center gap-2 text-muted-foreground">
+                <div className="flex flex-col justify-center items-center gap-2 text-muted-foreground  px-4 text-center">
                   <ArrowRight size={32} />
                   <span className=" text-sm">
                     Select a section to start generating class schedules
