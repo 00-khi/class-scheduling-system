@@ -7,7 +7,7 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
-    "dev:setup": "pnpm i && pnpm prisma generate && pnpm prisma migrate dev --name init"
+    "dev:setup": "pnpm i && pnpm prisma migrate reset && pnpm prisma generate && pnpm prisma migrate dev --name init"
   },
   "dependencies": {
     "@prisma/client": "^6.15.0",
