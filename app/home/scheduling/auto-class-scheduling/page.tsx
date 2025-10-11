@@ -297,57 +297,72 @@ export default function AutoClassSchedulingPage() {
                       <div className="space-y-2">
                         <Label>Rooms</Label>
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+                          {/* Lecture Rooms */}
                           <div>
                             <Label className="mb-2">Lecture</Label>
-                            <div className="grid grid-cols-2 gap-1">
-                              {lectureRooms.map((lec) => (
-                                <div
-                                  key={lec.id}
-                                  className="flex items-center space-x-2"
-                                >
-                                  <Checkbox
-                                    id={`lecture-${lec.id}`}
-                                    disabled={isGenerating}
-                                    checked={selectedRoomIds.includes(lec.id)}
-                                    onCheckedChange={(checked) =>
-                                      handleRoomToggle(lec.id, !!checked)
-                                    }
-                                  />
-                                  <Label
-                                    htmlFor={`lecture-${lec.id}`}
-                                    className="text-sm"
+                            {lectureRooms.length === 0 ? (
+                              <p className="text-sm text-muted-foreground">
+                                No rooms found.
+                              </p>
+                            ) : (
+                              <div className="grid grid-cols-2 gap-1">
+                                {lectureRooms.map((lec) => (
+                                  <div
+                                    key={lec.id}
+                                    className="flex items-center space-x-2"
                                   >
-                                    {lec.name}
-                                  </Label>
-                                </div>
-                              ))}
-                            </div>
+                                    <Checkbox
+                                      id={`lecture-${lec.id}`}
+                                      disabled={isGenerating}
+                                      checked={selectedRoomIds.includes(lec.id)}
+                                      onCheckedChange={(checked) =>
+                                        handleRoomToggle(lec.id, !!checked)
+                                      }
+                                    />
+                                    <Label
+                                      htmlFor={`lecture-${lec.id}`}
+                                      className="text-sm"
+                                    >
+                                      {lec.name}
+                                    </Label>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
                           </div>
+
+                          {/* Laboratory Rooms */}
                           <div>
                             <Label className="mb-2">Laboratory</Label>
-                            <div className="grid grid-cols-2 gap-1">
-                              {laboratoryRooms.map((lab) => (
-                                <div
-                                  key={lab.id}
-                                  className="flex items-center space-x-2"
-                                >
-                                  <Checkbox
-                                    id={`lecture-${lab.id}`}
-                                    disabled={isGenerating}
-                                    checked={selectedRoomIds.includes(lab.id)}
-                                    onCheckedChange={(checked) =>
-                                      handleRoomToggle(lab.id, !!checked)
-                                    }
-                                  />
-                                  <Label
-                                    htmlFor={`lecture-${lab.id}`}
-                                    className="text-sm"
+                            {laboratoryRooms.length === 0 ? (
+                              <p className="text-sm text-muted-foreground">
+                                No rooms found.
+                              </p>
+                            ) : (
+                              <div className="grid grid-cols-2 gap-1">
+                                {laboratoryRooms.map((lab) => (
+                                  <div
+                                    key={lab.id}
+                                    className="flex items-center space-x-2"
                                   >
-                                    {lab.name}
-                                  </Label>
-                                </div>
-                              ))}
-                            </div>
+                                    <Checkbox
+                                      id={`lab-${lab.id}`}
+                                      disabled={isGenerating}
+                                      checked={selectedRoomIds.includes(lab.id)}
+                                      onCheckedChange={(checked) =>
+                                        handleRoomToggle(lab.id, !!checked)
+                                      }
+                                    />
+                                    <Label
+                                      htmlFor={`lab-${lab.id}`}
+                                      className="text-sm"
+                                    >
+                                      {lab.name}
+                                    </Label>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>
