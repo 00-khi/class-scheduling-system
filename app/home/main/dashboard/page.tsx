@@ -26,6 +26,7 @@ import { toast } from "sonner";
 import SelectRoomGroup from "@/ui/components/select-room-group";
 import SelectInstructorGroup from "@/ui/components/select-instructor-group";
 import RoomTimetable from "./room-timetable";
+import InstructorTimetable from "./instructor-timetable";
 
 export default function DashboardPage() {
   const [selectedSectionId, setSelectedSectionId] = useState<number | null>(
@@ -172,7 +173,7 @@ export default function DashboardPage() {
                 />
               )}
             </TabsContent>
-            <TabsContent value="room">
+            <TabsContent value="room" className="space-y-3">
               <Card className="gap-2">
                 <CardHeader>
                   <CardTitle className="text-card-foreground font-normal">
@@ -198,7 +199,7 @@ export default function DashboardPage() {
                 <RoomTimetable roomId={selectedRoomId} refreshKey={0} />
               )}
             </TabsContent>
-            <TabsContent value="instructor">
+            <TabsContent value="instructor" className="space-y-3">
               <Card className="gap-2">
                 <CardHeader>
                   <CardTitle className="text-card-foreground font-normal">
@@ -219,6 +220,13 @@ export default function DashboardPage() {
                   </Button>
                 </CardContent>
               </Card>
+
+              {selectedInstructorId && (
+                <InstructorTimetable
+                  instructorId={selectedInstructorId}
+                  refreshKey={0}
+                />
+              )}
             </TabsContent>
           </Tabs>
         </MainSection.Content>
