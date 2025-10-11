@@ -85,26 +85,26 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           },
         ],
       },
-      {
-        category: "ASSIGNMENT",
-        items: [
-          // {
-          //   title: "Subject Assigning",
-          //   url: "/home/assignment/subject-assigning",
-          //   icon: NotebookText,
-          // },
-          // {
-          //   title: "Auto Assign Instructor",
-          //   url: "/home/assignment/auto-assign-instructor",
-          //   icon: Zap,
-          // },
-          {
-            title: "Exam Assigning",
-            url: "/home/assignment/exam-assigning",
-            icon: Ticket,
-          },
-        ],
-      },
+      // {
+      //   category: "ASSIGNMENT",
+      //   items: [
+      //     // {
+      //     //   title: "Subject Assigning",
+      //     //   url: "/home/assignment/subject-assigning",
+      //     //   icon: NotebookText,
+      //     // },
+      //     // {
+      //     //   title: "Auto Assign Instructor",
+      //     //   url: "/home/assignment/auto-assign-instructor",
+      //     //   icon: Zap,
+      //     // },
+      //     {
+      //       title: "Exam Assigning",
+      //       url: "/home/assignment/exam-assigning",
+      //       icon: Ticket,
+      //     },
+      //   ],
+      // },
       {
         category: "SCHEDULING",
         items: [
@@ -123,11 +123,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             url: "/home/scheduling/auto-class-scheduling",
             icon: Zap,
           },
-          {
-            title: "Custom Scheduling",
-            url: "/home/scheduling/custom-scheduling",
-            icon: Sparkles,
-          },
+          // {
+          //   title: "Custom Scheduling",
+          //   url: "/home/scheduling/custom-scheduling",
+          //   icon: Sparkles,
+          // },
         ],
       },
       // {
