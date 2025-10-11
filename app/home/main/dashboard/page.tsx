@@ -23,11 +23,17 @@ import {
   exportSectionSchedule,
 } from "@/lib/export-functions";
 import { toast } from "sonner";
+import SelectRoomGroup from "@/ui/components/select-room-group";
+import SelectInstructorGroup from "@/ui/components/select-instructor-group";
 
 export default function DashboardPage() {
   const [selectedSectionId, setSelectedSectionId] = useState<number | null>(
     null
   );
+  const [selectedRoomId, setSelectedRoomId] = useState<number | null>(null);
+  const [selectedInstructorId, setSelectedInstructorId] = useState<
+    number | null
+  >(null);
   const [isExportingCsv, setIsExportingCsv] = useState(false);
 
   async function handleCsvExport(type: "section" | "room" | "instructor") {
@@ -172,7 +178,11 @@ export default function DashboardPage() {
                     Filter by Room
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="space-y-3">
+                  <SelectRoomGroup
+                    selectedRoomId={selectedRoomId}
+                    onRoomChange={setSelectedRoomId}
+                  />
                   <Button
                     disabled={isExportingCsv}
                     onClick={() => handleCsvExport("room")}
@@ -190,7 +200,11 @@ export default function DashboardPage() {
                     Filter by Instructor
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="space-y-3">
+                  <SelectInstructorGroup
+                    selectedInstructorId={selectedInstructorId}
+                    onInstructorChange={setSelectedInstructorId}
+                  />
                   <Button
                     disabled={isExportingCsv}
                     onClick={() => handleCsvExport("instructor")}
