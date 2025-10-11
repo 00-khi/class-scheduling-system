@@ -15,14 +15,14 @@ export function exportSectionSchedule(data: any[]) {
     columns: [
       { header: "Section", key: "section.name", width: 15 },
       { header: "Subject", key: "subject.name", width: 35 },
-      { header: "Day", key: "day", width: 12 },
-      { header: "Start", key: "startTime", width: 10 },
-      { header: "End", key: "endTime", width: 10 },
+      { header: "Day", key: "day", width: 15 },
+      { header: "Start", key: "startTime", width: 12 },
+      { header: "End", key: "endTime", width: 12 },
       { header: "Room", key: "room.name", width: 15 },
       {
         header: "Instructor",
         key: "scheduledInstructor.instructor.name",
-        width: 25,
+        width: 35,
       },
     ],
     sortByKey: "subject.name",
@@ -53,15 +53,15 @@ export function exportRoomSchedule(data: any[]) {
     groupBy: (item) => item.room.name,
     columns: [
       { header: "Room", key: "room.name", width: 15 },
-      { header: "Day", key: "day", width: 12 },
-      { header: "Start", key: "startTime", width: 10 },
-      { header: "End", key: "endTime", width: 10 },
+      { header: "Day", key: "day", width: 15 },
+      { header: "Start", key: "startTime", width: 12 },
+      { header: "End", key: "endTime", width: 12 },
       { header: "Section", key: "section.name", width: 15 },
       { header: "Subject", key: "subject.name", width: 35 },
       {
         header: "Instructor",
         key: "scheduledInstructor.instructor.name",
-        width: 25,
+        width: 35,
       },
     ],
   });
@@ -93,13 +93,13 @@ export function exportInstructorSchedule(data: any[]) {
     fileName: "Instructor-Schedules",
     groupBy: (item) => item.instructor.name,
     columns: [
-      { header: "Instructor", key: "instructor.name", width: 20 },
+      { header: "Instructor", key: "instructor.name", width: 30 },
       { header: "Section", key: "scheduledSubject.section.name", width: 15 },
       { header: "Subject", key: "scheduledSubject.subject.name", width: 35 },
-      { header: "Day", key: "scheduledSubject.day", width: 12 },
-      { header: "Start", key: "scheduledSubject.startTime", width: 10 },
-      { header: "End", key: "scheduledSubject.endTime", width: 10 },
-      { header: "Room", key: "scheduledSubject.room.name", width: 15 },
+      { header: "Day", key: "scheduledSubject.day", width: 15 },
+      { header: "Start", key: "scheduledSubject.startTime", width: 12 },
+      { header: "End", key: "scheduledSubject.endTime", width: 12 },
+      { header: "Room", key: "scheduledSubject.room.name", width: 20 },
     ],
   });
 }
