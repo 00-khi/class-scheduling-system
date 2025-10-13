@@ -1,7 +1,7 @@
 import { createApiHandler } from "@/lib/api/api-handler";
 import { createEntityCollectionHandlers } from "@/lib/api/entity-collection-handler";
 import { capitalizeEachWord } from "@/lib/utils";
-import { Room, RoomType } from "@prisma/client";
+import { Room, CategoryType } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 const handlers = createEntityCollectionHandlers<Room>({
@@ -12,11 +12,11 @@ const handlers = createEntityCollectionHandlers<Room>({
     { key: "type", type: "string" },
   ],
   validateCreate: async (data) => {
-    const validRoomTypes = Object.values(RoomType);
+    const validRoomTypes = Object.values(CategoryType);
 
     if (
       data.type &&
-      !validRoomTypes.includes(capitalizeEachWord(data.type) as RoomType)
+      !validRoomTypes.includes(capitalizeEachWord(data.type) as CategoryType)
     ) {
       return NextResponse.json(
         {
@@ -33,7 +33,8 @@ const handlers = createEntityCollectionHandlers<Room>({
 
     if (data.name) transformed.name = capitalizeEachWord(data.name);
 
-    if (data.type) transformed.type = capitalizeEachWord(data.type) as RoomType;
+    if (data.type)
+      transformed.type = capitalizeEachWord(data.type) as CategoryType;
 
     return transformed;
   },

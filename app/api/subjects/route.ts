@@ -1,7 +1,7 @@
 import { createApiHandler } from "@/lib/api/api-handler";
 import { createEntityCollectionHandlers } from "@/lib/api/entity-collection-handler";
 import { capitalizeEachWord, toUppercase } from "@/lib/utils";
-import { RoomType, Semester, Subject } from "@prisma/client";
+import { CategoryType, Semester, Subject } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 const handlers = createEntityCollectionHandlers<
@@ -25,7 +25,7 @@ const handlers = createEntityCollectionHandlers<
     { key: "courseSubjects", type: "array" },
   ],
   validateCreate: async (data) => {
-    const validTypes = Object.values(RoomType);
+    const validTypes = Object.values(CategoryType);
     const validSemesters = Object.values(Semester);
 
     if (data.units !== undefined && data.units < 0) {
@@ -39,7 +39,7 @@ const handlers = createEntityCollectionHandlers<
 
     if (
       data.type &&
-      !validTypes.includes(capitalizeEachWord(data.type) as RoomType)
+      !validTypes.includes(capitalizeEachWord(data.type) as CategoryType)
     ) {
       return NextResponse.json(
         {
@@ -107,7 +107,8 @@ const handlers = createEntityCollectionHandlers<
     if (data.semester)
       transformed.semester = capitalizeEachWord(data.semester) as Semester;
 
-    if (data.type) transformed.type = capitalizeEachWord(data.type) as RoomType;
+    if (data.type)
+      transformed.type = capitalizeEachWord(data.type) as CategoryType;
 
     if (data.courseSubjects) {
       transformed.courseSubjects = {

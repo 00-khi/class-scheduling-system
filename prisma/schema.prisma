@@ -23,7 +23,7 @@ enum InstructorStatus {
   FT
 }
 
-enum RoomType {
+enum CategoryType {
   Lecture
   Laboratory
 }
@@ -101,12 +101,12 @@ model Course {
 }
 
 model Subject {
-  id       Int      @id @default(autoincrement())
-  code     String   @unique
-  name     String   @unique
+  id       Int          @id @default(autoincrement())
+  code     String       @unique
+  name     String       @unique
   semester Semester
   units    Int
-  type     RoomType
+  type     CategoryType
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -136,9 +136,9 @@ model CourseSubject {
 }
 
 model Room {
-  id   Int      @id @default(autoincrement())
-  name String   @unique
-  type RoomType
+  id   Int          @id @default(autoincrement())
+  name String       @unique
+  type CategoryType
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

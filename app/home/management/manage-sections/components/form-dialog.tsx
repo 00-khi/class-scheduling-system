@@ -17,7 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/ui/shadcn/select";
-import { RoomType, Semester } from "@prisma/client";
+import { CategoryType, Semester } from "@prisma/client";
 import { PlusIcon, TrashIcon } from "lucide-react";
 import { Card } from "@/ui/shadcn/card";
 import { toast } from "sonner";

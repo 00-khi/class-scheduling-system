@@ -1,4 +1,10 @@
-import { Day, Room, RoomType, ScheduledSubject, Subject } from "@prisma/client";
+import {
+  Day,
+  Room,
+  CategoryType,
+  ScheduledSubject,
+  Subject,
+} from "@prisma/client";
 import {
   AVAILABLE_DAYS,
   DAY_START,
@@ -17,7 +23,7 @@ type SubjectWithSchedule = {
   name?: string;
   semester?: string;
   units: number;
-  type: RoomType;
+  type: CategoryType;
   scheduledSubject?: {
     id?: number;
     startTime: string;

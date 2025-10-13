@@ -2,7 +2,7 @@
 
 import { useState, useEffect, FormEvent } from "react";
 import { toast } from "sonner";
-import { AcademicLevel, Room, RoomType } from "@prisma/client";
+import { AcademicLevel, Room, CategoryType } from "@prisma/client";
 import {
   ColumnDef,
   SortingState,
@@ -39,7 +39,7 @@ export type RoomRow = Room;
 export type FormData = {
   id?: number;
   name?: string;
-  type?: RoomType;
+  type?: CategoryType;
 } | null;
 
 export type TableState = {
@@ -72,7 +72,7 @@ export default function RoomManager() {
     apiService: { fetch: roomLevelApi.getAll },
   });
 
-  const typeOptions = Object.values(RoomType).map((type) => ({
+  const typeOptions = Object.values(CategoryType).map((type) => ({
     value: type,
     label: type,
   }));

@@ -6,7 +6,7 @@ import {
   AcademicLevel,
   Course,
   CourseSubject,
-  RoomType,
+  CategoryType,
   Semester,
   Setting,
   Subject,
@@ -57,7 +57,7 @@ export type FormData = {
   code?: string;
   name?: string;
   semester?: Semester;
-  type?: RoomType;
+  type?: CategoryType;
   units?: number;
   academicLevelId?: number;
   courseSubjects?: { courseId?: number; year?: number }[];
@@ -133,7 +133,7 @@ export default function SubjectManager() {
     value: sem,
     label: sem,
   }));
-  const typeOptions = Object.values(RoomType).map((type) => ({
+  const typeOptions = Object.values(CategoryType).map((type) => ({
     value: type,
     label: type,
   }));
