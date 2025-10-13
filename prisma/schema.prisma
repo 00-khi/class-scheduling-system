@@ -105,7 +105,7 @@ model Subject {
   code     String
   name     String
   semester Semester
-  units    Int
+  units    Float
   type     CategoryType
 
   createdAt DateTime @default(now())

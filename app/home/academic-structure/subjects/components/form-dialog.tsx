@@ -261,6 +261,7 @@ export default function FormDialog({
             <Input
               id="units"
               type="number"
+              step={0.1}
               value={formData?.units ?? ""}
               onChange={(e) =>
                 setFormData((prev) => ({
