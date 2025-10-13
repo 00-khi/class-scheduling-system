@@ -27,10 +27,10 @@ const handlers = createEntityHandlers<
     const validTypes = Object.values(RoomType);
     const validSemesters = Object.values(Semester);
 
-    if (data.units !== undefined && data.units <= 0) {
+    if (data.units !== undefined && data.units < 0) {
       return NextResponse.json(
         {
-          error: `Units must not be zero or negative`,
+          error: `Units must not be negative`,
         },
         { status: 400 }
       );
