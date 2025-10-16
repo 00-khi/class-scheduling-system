@@ -6,15 +6,77 @@ export function toUppercase(str: string): string {
 export function capitalizeEachWord(str: string): string {
   if (!str) return "";
 
+  const minorWords = new Set([
+    "a",
+    "an",
+    "and",
+    "as",
+    "at",
+    "but",
+    "by",
+    "for",
+    "from",
+    "if",
+    "in",
+    "into",
+    "like",
+    "near",
+    "nor",
+    "of",
+    "off",
+    "on",
+    "onto",
+    "or",
+    "over",
+    "past",
+    "per",
+    "plus",
+    "so",
+    "than",
+    "that",
+    "the",
+    "to",
+    "up",
+    "upon",
+    "via",
+    "with",
+    "when",
+    "yet",
+    "is",
+    "was",
+    "be",
+    "been",
+    "being",
+    "do",
+    "does",
+    "did",
+    "has",
+    "have",
+    "had",
+    "will",
+    "would",
+    "should",
+    "could",
+    "might",
+    "must",
+  ]);
+
   return removeExtraSpaces(
-    str
-      .split(/([ _./()]+)/g) // keep spaces, underscores, dots, slashes, and parentheses
-      .map((word) => {
-        if (!word.trim() || /[ _./()]+/.test(word)) return word; // keep separators
-        if (word === word.toUpperCase()) return word; // keep fully uppercase
-        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-      })
-      .join("")
+    str.replace(/[A-Za-z0-9]+(?:\.[A-Za-z0-9]+)*/g, (word, index) => {
+      const isAllUpper = /^[^a-z]*$/.test(word);
+      if (isAllUpper) return word; // keep acronyms
+
+      const lower = word.toLowerCase();
+      const isFirst = index === 0;
+
+      if (!isFirst && minorWords.has(lower)) return lower;
+
+      // capitalize word and preserve dot-separated parts like P.E
+      return lower
+        .split(".")
+        .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
+        .join(".");
+    })
   );
 }
 
