@@ -2,7 +2,7 @@ import { createApiHandler } from "@/lib/api/api-handler";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { Semester } from "@prisma/client";
-import { toLetters } from "@/lib/utils";
+import { capitalizeEachWord, toLetters } from "@/lib/utils";
 
 export const GET = createApiHandler(async () => {
   // get current semester from settings
@@ -18,7 +18,11 @@ export const GET = createApiHandler(async () => {
   const currentSemester = semesterSetting.value as Semester;
 
   const sections = await prisma.section.findMany({
-    where: { semester: currentSemester },
+    where: {
+      semester: {
+        in: [currentSemester, "Whole_Semester"],
+      },
+    },
     include: {
       course: {
         include: {
@@ -43,6 +47,7 @@ export const POST = createApiHandler(async (request) => {
     { key: "courseId", type: "number" },
     { key: "year", type: "number" },
     { key: "totalSections", type: "number" },
+    { key: "semester", type: "string" },
   ];
 
   for (const { key, type } of requiredFields) {
@@ -66,9 +71,12 @@ export const POST = createApiHandler(async (request) => {
     }
   }
 
+  const validSemesters = Object.values(Semester);
+
   const courseId = Number(rawData.courseId);
   const year = Number(rawData.year);
   const totalSections = Number(rawData.totalSections);
+  const semester = capitalizeEachWord(rawData.semester) as Semester;
 
   if (isNaN(courseId)) {
     return NextResponse.json({ error: "Invalid course ID." }, { status: 400 });
@@ -85,24 +93,23 @@ export const POST = createApiHandler(async (request) => {
     );
   }
 
+  if (semester && !validSemesters.includes(semester)) {
+    return NextResponse.json(
+      {
+        error: `Invalid semester value. It must be one of: ${validSemesters.join(
+          ", "
+        )}`,
+      },
+      { status: 400 }
+    );
+  }
+
   if (totalSections !== undefined && totalSections < 0) {
     return NextResponse.json(
       { error: "Total section must not be negative" },
       { status: 400 }
     );
   }
-
-  // get current semester from settings
-  const semesterSetting = await prisma.setting.findUnique({
-    where: { key: "semester" },
-  });
-  if (!semesterSetting) {
-    return NextResponse.json(
-      { error: "Semester setting not found" },
-      { status: 400 }
-    );
-  }
-  const currentSemester = semesterSetting.value as Semester;
 
   const course = await prisma.course.findUniqueOrThrow({
     where: { id: courseId },
@@ -112,7 +119,7 @@ export const POST = createApiHandler(async (request) => {
     where: {
       courseId: courseId,
       year: year,
-      semester: currentSemester,
+      semester,
     },
     orderBy: { name: "asc" },
   });
@@ -124,7 +131,7 @@ export const POST = createApiHandler(async (request) => {
   for (let i = 0; i < (totalSections || 0); i++) {
     const suffix = toLetters(i); // A, B, C... AA...
     const name = `${course.code}${year}0${
-      currentSemester === "First_Semester" ? 1 : 2
+      semester === "First_Semester" || semester === "Whole_Semester" ? 1 : 2
     }${suffix}`;
     targetNames.push(name);
   }
@@ -138,7 +145,7 @@ export const POST = createApiHandler(async (request) => {
       where: {
         courseId: courseId,
         year: year,
-        semester: currentSemester,
+        semester,
         name: { in: toDelete },
       },
     });
@@ -148,7 +155,7 @@ export const POST = createApiHandler(async (request) => {
     data: toInsert.map((name) => ({
       name,
       year: year,
-      semester: currentSemester,
+      semester,
       courseId: courseId,
     })),
   });

@@ -35,6 +35,7 @@ export default function FormDialog({
   courseOptions,
   yearOptions,
   academicLevelOptions,
+  semesterOptions,
 }: {
   isOpen: boolean;
   onClose: () => void;
@@ -45,6 +46,7 @@ export default function FormDialog({
   courseOptions: Option[];
   yearOptions: Option[];
   academicLevelOptions: Option[];
+  semesterOptions: Option[];
 }) {
   return (
     <Dialog
@@ -60,6 +62,38 @@ export default function FormDialog({
         </DialogHeader>
 
         <form onSubmit={onSubmit} className="space-y-4">
+          {/* SEMESTER SELECT */}
+          <div className="grid grid-cols-1 gap-2">
+            <Label htmlFor="semester">Semester</Label>
+            <Select
+              value={formData?.semester?.toString() ?? ""}
+              onValueChange={(value) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  semester: value as Semester,
+                }))
+              }
+              disabled={isSubmitting}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select Semester" />
+              </SelectTrigger>
+              <SelectContent className="w-[var(--radix-select-trigger-width)] min-w-[var(--radix-select-trigger-width)]">
+                {semesterOptions.length > 0 ? (
+                  semesterOptions.map((opt) => (
+                    <SelectItem key={opt.value} value={String(opt.value)}>
+                      {replaceUnderscores(opt.label)}
+                    </SelectItem>
+                  ))
+                ) : (
+                  <SelectItem disabled value="-">
+                    No data found
+                  </SelectItem>
+                )}
+              </SelectContent>
+            </Select>
+          </div>
+
           {/* ACADEMIC LEVEL SELECT */}
           <div className="grid grid-cols-1 gap-2">
             <Label htmlFor="academicLevelId">Academic Level</Label>

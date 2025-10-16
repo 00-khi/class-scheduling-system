@@ -56,6 +56,7 @@ export type FormData = {
   courseId?: number;
   year?: number;
   totalSections?: number;
+  semester?: Semester;
 } | null;
 
 export type TableState = {
@@ -100,6 +101,10 @@ export default function SectionManager() {
   const academicLevelOptions = academicLevels.map((al) => ({
     label: al.name,
     value: al.id,
+  }));
+  const semesterOptions = Object.values(Semester).map((sem) => ({
+    value: sem,
+    label: sem,
   }));
   const courseOptions =
     formData?.academicLevelId !== null
@@ -179,6 +184,7 @@ export default function SectionManager() {
     if (!data) return false;
 
     const validations = [
+      { field: data.semester, message: "Semester is required" },
       { field: data.academicLevelId, message: "Academic level is required" },
       { field: data.courseId, message: "Course is required" },
       { field: data.year, message: "Year is required" },
@@ -226,6 +232,7 @@ export default function SectionManager() {
             setTableState={setTableState}
           />
           <FormDialog
+            semesterOptions={semesterOptions}
             courseOptions={courseOptions}
             yearOptions={yearOptions}
             academicLevelOptions={academicLevelOptions}
