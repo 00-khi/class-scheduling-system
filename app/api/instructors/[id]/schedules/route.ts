@@ -47,7 +47,9 @@ export const GET = createApiHandler(async (request, context) => {
       instructorId: numericId,
       scheduledSubject: {
         subject: {
-          semester: currentSemester,
+          semester: {
+            in: [currentSemester, "Whole_Semester"],
+          },
         },
       },
     },

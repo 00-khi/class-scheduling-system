@@ -242,21 +242,33 @@ export const POST = createApiHandler(async (request) => {
         where: {
           roomId,
           day: capitalizeEachWord(day) as Day,
-          subject: { semester: currentSemester },
+          subject: {
+            semester: {
+              in: [currentSemester, "Whole_Semester"],
+            },
+          },
         },
       }),
       prisma.scheduledSubject.findMany({
         where: {
           sectionId,
           day: capitalizeEachWord(day) as Day,
-          subject: { semester: currentSemester },
+          subject: {
+            semester: {
+              in: [currentSemester, "Whole_Semester"],
+            },
+          },
         },
       }),
       prisma.scheduledSubject.findMany({
         where: {
           subjectId,
           sectionId,
-          subject: { semester: currentSemester },
+          subject: {
+            semester: {
+              in: [currentSemester, "Whole_Semester"],
+            },
+          },
         },
         include: { subject: true },
       }),

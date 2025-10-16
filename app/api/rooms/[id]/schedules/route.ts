@@ -40,7 +40,9 @@ export const GET = createApiHandler(async (request, context) => {
     where: {
       roomId: numericId,
       subject: {
-        semester: currentSemester,
+        semester: {
+          in: [currentSemester, "Whole_Semester"],
+        },
       },
     },
     include: {

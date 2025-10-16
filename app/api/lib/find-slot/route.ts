@@ -98,7 +98,11 @@ export const POST = createApiHandler(async (request) => {
     where: {
       roomId,
       day: capitalizeEachWord(day) as Day,
-      subject: { semester: currentSemester }, // schedules only for current semester
+      subject: {
+        semester: {
+          in: [currentSemester, "Whole_Semester"],
+        },
+      }, // schedules only for current semester
     },
   });
 
@@ -106,7 +110,11 @@ export const POST = createApiHandler(async (request) => {
     where: {
       sectionId,
       day: capitalizeEachWord(day) as Day,
-      subject: { semester: currentSemester }, // schedules only for current semester
+      subject: {
+        semester: {
+          in: [currentSemester, "Whole_Semester"],
+        },
+      }, // schedules only for current semester
     },
   });
 
@@ -118,7 +126,11 @@ export const POST = createApiHandler(async (request) => {
     where: {
       subjectId,
       sectionId,
-      subject: { semester: currentSemester },
+      subject: {
+        semester: {
+          in: [currentSemester, "Whole_Semester"],
+        },
+      },
     },
     include: { subject: true },
   });
