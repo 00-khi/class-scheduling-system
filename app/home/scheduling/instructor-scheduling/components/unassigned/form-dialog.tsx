@@ -44,6 +44,7 @@ export default function FormDialog({
   onSubmit,
   isSubmitting,
   instructorOptions,
+  academicQualificationOptions,
 }: {
   unassignedSubjects: UnassignedSubjectRow[];
   isOpen: boolean;
@@ -53,6 +54,7 @@ export default function FormDialog({
   onSubmit: (e: FormEvent) => void;
   isSubmitting: boolean;
   instructorOptions: Option[];
+  academicQualificationOptions: Option[];
 }) {
   const selectedUnassignedSubjects = unassignedSubjects.find(
     (s) => s.id === formData?.scheduledSubjectId
@@ -104,6 +106,41 @@ export default function FormDialog({
         <Separator />
 
         <form onSubmit={onSubmit} className="space-y-4">
+          {/* ACADEMIC QUALIFICATION SELECT */}
+          <div className="grid grid-cols-1 gap-2">
+            <Label htmlFor="academicQualificaitonId">
+              Academic Qualification
+            </Label>
+            <Select
+              value={formData?.academicQualificationId?.toString() ?? ""}
+              onValueChange={(value) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  academicQualificationId: Number(value),
+                  instructorId: undefined,
+                }))
+              }
+              disabled={isSubmitting}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select Academic Qualification" />
+              </SelectTrigger>
+              <SelectContent className="w-[var(--radix-select-trigger-width)] min-w-[var(--radix-select-trigger-width)]">
+                {academicQualificationOptions.length > 0 ? (
+                  academicQualificationOptions.map((opt) => (
+                    <SelectItem key={opt.value} value={String(opt.value)}>
+                      {opt.label}
+                    </SelectItem>
+                  ))
+                ) : (
+                  <SelectItem disabled value="-">
+                    No data found
+                  </SelectItem>
+                )}
+              </SelectContent>
+            </Select>
+          </div>
+
           {/* INSTRUCTOR SELECT */}
           <div className="grid grid-cols-1 gap-2">
             <Label htmlFor="room">Instructor</Label>

@@ -3,12 +3,14 @@
 import { useManageEntities } from "@/hooks/use-manage-entities-v2";
 import { createApiClient } from "@/lib/api/api-client";
 import {
+  ACADEMIC_QUALIFICATIONS_API,
   INSTRUCTORS_API,
   SCHEDULED_INSTRUCTORS_API,
   UNASSIGNED_SCHEDULED_SUBJECTS_API,
 } from "@/lib/api/api-endpoints";
 import { Card, CardContent, CardHeader, CardTitle } from "@/ui/shadcn/card";
 import {
+  AcademicQualification,
   Instructor,
   Room,
   ScheduledSubject,
@@ -44,6 +46,7 @@ export type UnassignedSubjectRow = ScheduledSubject & {
 export type FormData = {
   instructorId?: number;
   scheduledSubjectId?: number;
+  academicQualificationId?: number;
 } | null;
 
 export type TableState = {
@@ -79,10 +82,19 @@ export default function UnassignedSubjectManager({
     UNASSIGNED_SCHEDULED_SUBJECTS_API
   );
   const instructorApi = createApiClient<Instructor>(INSTRUCTORS_API);
+  const academicQualificationsApi = createApiClient<AcademicQualification>(
+    ACADEMIC_QUALIFICATIONS_API
+  );
 
   const entityManagement = useManageEntities<ScheduledSubject>({
     apiService: { fetch: unassignedSubjectApi.getAll },
-    relatedApiServices: [{ key: "instructors", fetch: instructorApi.getAll }],
+    relatedApiServices: [
+      { key: "instructors", fetch: instructorApi.getAll },
+      {
+        key: "academicQualifications",
+        fetch: academicQualificationsApi.getAll,
+      },
+    ],
   });
 
   useEffect(() => {
@@ -92,9 +104,29 @@ export default function UnassignedSubjectManager({
   const instructors: Instructor[] =
     entityManagement.relatedData.instructors || [];
 
-  const instructorOptions = instructors.map((instructor) => ({
-    value: instructor.id,
-    label: instructor.name,
+  const academicQualifications: AcademicQualification[] =
+    entityManagement.relatedData.academicQualifications || [];
+
+  const instructorOptions =
+    formData?.academicQualificationId !== undefined
+      ? instructors
+          .filter(
+            (instructor) =>
+              instructor.academicQualificationId ===
+              formData?.academicQualificationId
+          )
+          .map((instructor) => ({
+            value: instructor.id,
+            label: instructor.name,
+          }))
+      : instructors.map((instructor) => ({
+          value: instructor.id,
+          label: instructor.name,
+        }));
+
+  const academicQualificationsOptions = academicQualifications.map((aq) => ({
+    value: aq.id,
+    label: aq.name,
   }));
 
   const columns = useTableColumns({ onEdit: handleEdit });
@@ -241,6 +273,7 @@ export default function UnassignedSubjectManager({
           />
 
           <FormDialog
+            academicQualificationOptions={academicQualificationsOptions}
             unassignedSubjects={entityManagement.data}
             instructorOptions={instructorOptions}
             isOpen={entityManagement.isFormDialogOpen}
