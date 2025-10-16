@@ -45,7 +45,6 @@ next-env.d.ts
 *.test.*
 
 # database
-prisma/dev.db
 /lib/generated/prisma
 prisma/migrations/*
 !prisma/migrations/migration_lock.toml
