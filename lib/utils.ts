@@ -8,13 +8,12 @@ export function capitalizeEachWord(str: string): string {
 
   return removeExtraSpaces(
     str
-      .toLowerCase()
-      .split(/([ _])/g) // keep spaces and underscores as separators
-      .map((word) =>
-        word === " " || word === "_"
-          ? word
-          : word.charAt(0).toUpperCase() + word.slice(1)
-      )
+      .split(/([ _./()]+)/g) // keep spaces, underscores, dots, slashes, and parentheses
+      .map((word) => {
+        if (!word.trim() || /[ _./()]+/.test(word)) return word; // keep separators
+        if (word === word.toUpperCase()) return word; // keep fully uppercase
+        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+      })
       .join("")
   );
 }
