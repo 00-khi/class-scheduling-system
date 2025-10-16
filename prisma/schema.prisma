@@ -31,6 +31,7 @@ enum CategoryType {
 enum Semester {
   First_Semester
   Second_Semester
+  Whole_Semester
 }
 
 enum Day {
