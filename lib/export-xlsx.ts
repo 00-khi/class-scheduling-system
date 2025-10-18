@@ -15,7 +15,7 @@ type ExportOptions<T> = {
   sortByKey?: string; // optional sorting key
 };
 
-export async function csvExport<T>({
+export async function xlsxExport<T>({
   data,
   fileName,
   columns,

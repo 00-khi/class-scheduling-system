@@ -36,11 +36,11 @@ export default function DashboardPage() {
   const [selectedInstructorId, setSelectedInstructorId] = useState<
     number | null
   >(null);
-  const [isExportingCsv, setIsExportingCsv] = useState(false);
+  const [isExportingXlsx, setIsExportingXlsx] = useState(false);
 
-  async function handleCsvExport(type: "section" | "room" | "instructor") {
+  async function handleXlsxExport(type: "section" | "room" | "instructor") {
     if (type === "section") {
-      setIsExportingCsv(true);
+      setIsExportingXlsx(true);
 
       try {
         const response = await fetch(SCHEDULED_SUBJECTS_API, {
@@ -65,11 +65,11 @@ export default function DashboardPage() {
         console.error("Error saving section:", err);
       }
 
-      setIsExportingCsv(false);
+      setIsExportingXlsx(false);
     }
 
     if (type === "room") {
-      setIsExportingCsv(true);
+      setIsExportingXlsx(true);
 
       try {
         const response = await fetch(SCHEDULED_SUBJECTS_API, {
@@ -94,11 +94,11 @@ export default function DashboardPage() {
         console.error("Error saving section:", err);
       }
 
-      setIsExportingCsv(false);
+      setIsExportingXlsx(false);
     }
 
     if (type === "instructor") {
-      setIsExportingCsv(true);
+      setIsExportingXlsx(true);
 
       try {
         const response = await fetch(SCHEDULED_INSTRUCTORS_API, {
@@ -123,7 +123,7 @@ export default function DashboardPage() {
         console.error("Error saving section:", err);
       }
 
-      setIsExportingCsv(false);
+      setIsExportingXlsx(false);
     }
   }
 
@@ -169,11 +169,11 @@ export default function DashboardPage() {
                     onSectionChange={setSelectedSectionId}
                   />
                   <Button
-                    disabled={isExportingCsv}
-                    onClick={() => handleCsvExport("section")}
+                    disabled={isExportingXlsx}
+                    onClick={() => handleXlsxExport("section")}
                   >
                     <FileSpreadsheet />
-                    Export to CSV
+                    Export to Excel
                   </Button>
                 </CardContent>
               </Card>
@@ -198,11 +198,11 @@ export default function DashboardPage() {
                     onRoomChange={setSelectedRoomId}
                   />
                   <Button
-                    disabled={isExportingCsv}
-                    onClick={() => handleCsvExport("room")}
+                    disabled={isExportingXlsx}
+                    onClick={() => handleXlsxExport("room")}
                   >
                     <FileSpreadsheet />
-                    Export to CSV
+                    Export to Excel
                   </Button>
                 </CardContent>
               </Card>
@@ -224,11 +224,11 @@ export default function DashboardPage() {
                     onInstructorChange={setSelectedInstructorId}
                   />
                   <Button
-                    disabled={isExportingCsv}
-                    onClick={() => handleCsvExport("instructor")}
+                    disabled={isExportingXlsx}
+                    onClick={() => handleXlsxExport("instructor")}
                   >
                     <FileSpreadsheet />
-                    Export to CSV
+                    Export to Excel
                   </Button>
                 </CardContent>
               </Card>

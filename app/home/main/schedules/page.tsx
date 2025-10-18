@@ -45,7 +45,7 @@ export default function SchedulesPage() {
                   />
                   <Button>
                     <FileSpreadsheet />
-                    Export to CSV
+                    Export to Excel
                   </Button>
                 </CardContent>
               </Card>

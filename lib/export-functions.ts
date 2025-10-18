@@ -1,4 +1,4 @@
-import { csvExport } from "./export-csv";
+import { xlsxExport } from "./export-xlsx";
 import { AVAILABLE_DAYS, formatTime, toMinutes } from "./schedule-utils";
 
 export function exportSectionSchedule(data: any[]) {
@@ -8,7 +8,7 @@ export function exportSectionSchedule(data: any[]) {
     endTime: formatTime(item.endTime),
   }));
 
-  csvExport({
+  xlsxExport({
     data: formatted,
     fileName: "Section-Schedules",
     groupBy: (item) => item.section.name,
@@ -47,7 +47,7 @@ export function exportRoomSchedule(data: any[]) {
       return timeA - timeB;
     });
 
-  csvExport({
+  xlsxExport({
     data: formatted,
     fileName: "Room-Schedules",
     groupBy: (item) => item.room.name,
@@ -88,7 +88,7 @@ export function exportInstructorSchedule(data: any[]) {
       return timeA - timeB;
     });
 
-  csvExport({
+  xlsxExport({
     data: formatted,
     fileName: "Instructor-Schedules",
     groupBy: (item) => item.instructor.name,
