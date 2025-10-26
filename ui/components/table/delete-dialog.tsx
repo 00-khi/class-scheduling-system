@@ -37,7 +37,10 @@ export default function DeleteDialog({
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
               This action cannot be undone.
-              {itemName && <span className="font-semibold"> {itemName}</span>}.
+              {itemName && (
+                <span className="font-semibold"> {itemName}</span>
+              )}{" "}
+              will be deleted permanently
             </AlertDialogDescription>
           </AlertDialogHeader>
         </div>
