@@ -104,12 +104,13 @@ model Course {
 }
 
 model Subject {
-  id       Int          @id @default(autoincrement())
-  code     String
-  name     String
-  semester Semester
-  units    Float
-  type     CategoryType
+  id                    Int          @id @default(autoincrement())
+  code                  String
+  name                  String
+  semester              Semester
+  units                 Float
+  type                  CategoryType
+  fieldOfSpecialization String       @default("N/A")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
