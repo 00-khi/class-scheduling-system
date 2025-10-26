@@ -115,19 +115,24 @@ export default function UnassignedSubjectManager({
               instructor.academicQualificationId ===
               formData?.academicQualificationId
           )
+          .sort((a, b) => a.name.localeCompare(b.name))
           .map((instructor) => ({
             value: instructor.id,
             label: instructor.name,
           }))
-      : instructors.map((instructor) => ({
-          value: instructor.id,
-          label: instructor.name,
-        }));
+      : instructors
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .map((instructor) => ({
+            value: instructor.id,
+            label: instructor.name,
+          }));
 
-  const academicQualificationsOptions = academicQualifications.map((aq) => ({
-    value: aq.id,
-    label: aq.name,
-  }));
+  const academicQualificationsOptions = academicQualifications
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map((aq) => ({
+      value: aq.id,
+      label: aq.name,
+    }));
 
   const columns = useTableColumns({ onEdit: handleEdit });
 
