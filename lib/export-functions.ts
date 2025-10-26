@@ -2,7 +2,14 @@ import { xlsxExport } from "./export-xlsx";
 import { AVAILABLE_DAYS, formatTime, toMinutes } from "./schedule-utils";
 
 export function exportSectionSchedule(data: any[]) {
-  const formatted = data.map((item) => ({
+  const sortedByDayAndTime = data.sort((a, b) => {
+    const dayDiff =
+      AVAILABLE_DAYS.indexOf(a.day) - AVAILABLE_DAYS.indexOf(b.day);
+    if (dayDiff !== 0) return dayDiff;
+    return toMinutes(a.startTime) - toMinutes(b.startTime);
+  });
+
+  const formatted = sortedByDayAndTime.map((item) => ({
     ...item,
     startTime: formatTime(item.startTime),
     endTime: formatTime(item.endTime),
@@ -25,12 +32,18 @@ export function exportSectionSchedule(data: any[]) {
         width: 35,
       },
     ],
-    sortByKey: "subject.name",
   });
 }
 
 export function exportRoomSchedule(data: any[]) {
-  const formatted = data
+  const sortedByDayAndTime = data.sort((a, b) => {
+    const dayDiff =
+      AVAILABLE_DAYS.indexOf(a.day) - AVAILABLE_DAYS.indexOf(b.day);
+    if (dayDiff !== 0) return dayDiff;
+    return toMinutes(a.startTime) - toMinutes(b.startTime);
+  });
+
+  const formatted = sortedByDayAndTime
     .map((item) => ({
       ...item,
       startTime: formatTime(item.startTime),
@@ -68,7 +81,18 @@ export function exportRoomSchedule(data: any[]) {
 }
 
 export function exportInstructorSchedule(data: any[]) {
-  const formatted = data
+  const sortedByDayAndTime = data.sort((a, b) => {
+    const dayDiff =
+      AVAILABLE_DAYS.indexOf(a.scheduledSubject.day) -
+      AVAILABLE_DAYS.indexOf(b.scheduledSubject.day);
+    if (dayDiff !== 0) return dayDiff;
+    return (
+      toMinutes(a.scheduledSubject.startTime) -
+      toMinutes(b.scheduledSubject.startTime)
+    );
+  });
+
+  const formatted = sortedByDayAndTime
     .map((item) => ({
       ...item,
       scheduledSubject: {
