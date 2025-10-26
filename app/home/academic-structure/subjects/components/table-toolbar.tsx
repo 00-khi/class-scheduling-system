@@ -281,6 +281,56 @@ export function TableToolbar({
           </SelectContent>
         </Select>
 
+        {/* Filter Select - FIELD OF SPECIALIZATION */}
+        <Select
+          value={
+            (tableState.columnFilters.find(
+              (f) => f.id === "fieldOfSpecialization"
+            )?.value as string) ?? ""
+          }
+          onValueChange={(value) =>
+            setTableState((prev) => {
+              const newFilters = prev.columnFilters.filter(
+                (f) => f.id !== "fieldOfSpecialization"
+              );
+              return {
+                ...prev,
+                columnFilters: value
+                  ? [...newFilters, { id: "fieldOfSpecialization", value }]
+                  : newFilters,
+              };
+            })
+          }
+        >
+          <SelectTrigger>
+            <Filter className="text-muted-foreground/80" />
+            <SelectValue placeholder="Field of Specialization" />
+          </SelectTrigger>
+          <SelectContent side="bottom">
+            {(() => {
+              const unique = Array.from(
+                new Set(
+                  entityData
+                    .map((item) => item.fieldOfSpecialization)
+                    .filter(Boolean)
+                )
+              );
+
+              return unique.length > 0 ? (
+                unique.map((item) => (
+                  <SelectItem key={item} value={item}>
+                    {item}
+                  </SelectItem>
+                ))
+              ) : (
+                <SelectItem disabled value="-">
+                  No data found
+                </SelectItem>
+              );
+            })()}
+          </SelectContent>
+        </Select>
+
         {/* Clear Filters */}
         {hasFilters && (
           <Button variant="outline" onClick={clearFilters}>

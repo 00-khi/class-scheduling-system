@@ -63,6 +63,7 @@ export type FormData = {
   courseSubjects?: { courseId?: number; year?: number }[];
   courseId?: number;
   year?: number;
+  fieldOfSpecialization?: string;
 } | null;
 
 export type TableState = {
@@ -189,6 +190,7 @@ export default function SubjectManager() {
       code: item.code,
       name: item.name,
       semester: item.semester,
+      fieldOfSpecialization: item.fieldOfSpecialization,
       type: item.type,
       units: item.units,
       academicLevelId: item.academicLevelId,
@@ -343,6 +345,13 @@ export default function SubjectManager() {
     const validations = [
       { field: data.code, message: "Subject Code is required" },
       { field: data.name, message: "Subject Name is required" },
+      { field: data.semester, message: "Semester is required" },
+      { field: data.type, message: "Type is required" },
+      { field: data.units, message: "Units is required" },
+      {
+        field: data.fieldOfSpecialization,
+        message: "Field of Specialization is required",
+      },
       { field: data.academicLevelId, message: "Academic Level is required" },
       { field: data.courseSubjects, message: "Course Subjects are required" },
     ];

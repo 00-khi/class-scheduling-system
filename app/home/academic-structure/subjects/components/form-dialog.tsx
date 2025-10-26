@@ -274,6 +274,25 @@ export default function FormDialog({
             />
           </div>
 
+          {/* FIELD OF SPECIALIZATION INPUT */}
+          <div className="space-y-2">
+            <Label htmlFor="fieldOfSpecialization">
+              Field of Specialization
+            </Label>
+            <Input
+              id="fieldOfSpecialization"
+              value={formData?.fieldOfSpecialization ?? ""}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  fieldOfSpecialization: e.target.value,
+                }))
+              }
+              placeholder="e.g., English / Foreign Language"
+              disabled={isSubmitting}
+            />
+          </div>
+
           {/* ACADEMIC LEVEL SELECT */}
           <div className="grid grid-cols-1 gap-2">
             <Label htmlFor="academicLevelId">Academic Level</Label>

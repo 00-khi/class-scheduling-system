@@ -126,6 +126,10 @@ export default function useTableColumns({
       },
     },
     {
+      header: "Field of Specialization",
+      accessorKey: "fieldOfSpecialization",
+    },
+    {
       id: "actions",
       header: () => <span className="sr-only">Actions</span>,
       cell: ({ row }) => (

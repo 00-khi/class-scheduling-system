@@ -18,6 +18,7 @@ const handlers = createEntityHandlers<
     { key: "code", type: "string" },
     { key: "name", type: "string" },
     { key: "semester", type: "string" },
+    { key: "fieldOfSpecialization", type: "string" },
     { key: "units", type: "number" },
     { key: "type", type: "string" },
     { key: "academicLevelId", type: "number" },
@@ -103,6 +104,11 @@ const handlers = createEntityHandlers<
 
     if (data.name) transformed.name = capitalizeEachWord(data.name);
 
+    if (data.fieldOfSpecialization)
+      transformed.fieldOfSpecialization = capitalizeEachWord(
+        data.fieldOfSpecialization
+      );
+
     if (data.semester)
       transformed.semester = capitalizeEachWord(data.semester) as Semester;
 
@@ -120,6 +126,8 @@ const handlers = createEntityHandlers<
         })),
       };
     }
+
+    console.log(transformed);
 
     return transformed;
   },
