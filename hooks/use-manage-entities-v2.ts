@@ -39,6 +39,9 @@ export function useManageEntities<T extends Entity>({
   const [isArchiving, setIsArchiving] = useState(false);
   const [isArchivingSelected, setIsArchivingSelected] = useState(false);
 
+  const [isRestoring, setIsRestoring] = useState(false);
+  const [isRestoringSelected, setIsRestoringSelected] = useState(false);
+
   const [isFormDialogOpen, setIsFormDialogOpen] = useState(false);
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -47,6 +50,10 @@ export function useManageEntities<T extends Entity>({
 
   const [isArchiveDialogOpen, setIsArchiveDialogOpen] = useState(false);
   const [isArchiveSelectedDialogOpen, setIsArchiveSelectedDialogOpen] =
+    useState(false);
+
+  const [isRestoreDialogOpen, setIsRestoreDialogOpen] = useState(false);
+  const [isRestoreSelectedDialogOpen, setIsRestoreSelectedDialogOpen] =
     useState(false);
 
   const [failedDialogOpen, setFailedDialogOpen] = useState(false);
@@ -108,6 +115,12 @@ export function useManageEntities<T extends Entity>({
     isArchivingSelected,
     setIsArchivingSelected,
 
+    isRestoring,
+    setIsRestoring,
+
+    isRestoringSelected,
+    setIsRestoringSelected,
+
     isFormDialogOpen,
     setIsFormDialogOpen,
 
@@ -122,6 +135,12 @@ export function useManageEntities<T extends Entity>({
 
     isArchiveSelectedDialogOpen,
     setIsArchiveSelectedDialogOpen,
+
+    isRestoreDialogOpen,
+    setIsRestoreDialogOpen,
+
+    isRestoreSelectedDialogOpen,
+    setIsRestoreSelectedDialogOpen,
 
     failedDialogOpen,
     setFailedDialogOpen,
