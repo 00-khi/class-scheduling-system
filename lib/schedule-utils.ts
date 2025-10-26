@@ -211,7 +211,7 @@ export function hasInstructorScheduleConflict(
   });
 }
 
-// ---------------- AUTO SCHEDULE
+// ---------------- AUTO SCHEDULE (OLD FUNCTTION)
 
 // gets 1 randomly in an array
 function randomChoice<T>(arr: T[]): T {
