@@ -81,10 +81,12 @@ export default function CourseManager() {
 
   const academicLevels = entityManagement.relatedData.academicLevels || [];
 
-  const academicLevelOptions = academicLevels.map((al) => ({
-    label: al.name,
-    value: al.id,
-  }));
+  const academicLevelOptions = academicLevels
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map((al) => ({
+      label: al.name,
+      value: al.id,
+    }));
 
   const columns = useTableColumns({
     onEdit: handleEdit,

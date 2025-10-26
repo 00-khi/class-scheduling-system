@@ -126,10 +126,12 @@ export default function SubjectManager() {
     }
   }, [settings]);
 
-  const academicLevelOptions = academicLevels.map((al) => ({
-    label: al.name,
-    value: al.id,
-  }));
+  const academicLevelOptions = academicLevels
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map((al) => ({
+      label: al.name,
+      value: al.id,
+    }));
   const semesterOptions = Object.values(Semester).map((sem) => ({
     value: sem,
     label: sem,
@@ -144,6 +146,7 @@ export default function SubjectManager() {
           .filter(
             (course) => course.academicLevelId === formData?.academicLevelId
           )
+          .sort((a, b) => a.name.localeCompare(b.name))
           .map((course) => ({
             label: course.name,
             value: course.id,

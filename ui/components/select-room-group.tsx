@@ -55,6 +55,7 @@ export default function SelectRoomGroup({
       if (!selectedData?.type) return true;
       return r.type === selectedData.type;
     })
+    .sort((a, b) => a.name.localeCompare(b.name))
     .map((r) => ({
       label: r.name,
       value: r.id,

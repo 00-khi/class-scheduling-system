@@ -53,10 +53,12 @@ export default function SelectInstructorGroup({
   const qualifications = entityManagement.relatedData.qualifications || [];
   const instructors = entityManagement.data || [];
 
-  const qualificationOptions: Option[] = qualifications.map((q) => ({
-    label: q.name,
-    value: q.id,
-  }));
+  const qualificationOptions: Option[] = qualifications
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map((q) => ({
+      label: q.name,
+      value: q.id,
+    }));
 
   const instructorOptions: Option[] =
     selectedData?.qualificationId !== undefined
@@ -65,14 +67,17 @@ export default function SelectInstructorGroup({
             (inst) =>
               inst.academicQualificationId === selectedData?.qualificationId
           )
+          .sort((a, b) => a.name.localeCompare(b.name))
           .map((inst) => ({
             label: inst.name,
             value: inst.id,
           }))
-      : instructors.map((inst) => ({
-          label: inst.name,
-          value: inst.id,
-        }));
+      : instructors
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .map((inst) => ({
+            label: inst.name,
+            value: inst.id,
+          }));
 
   // Reset
   useEffect(() => {

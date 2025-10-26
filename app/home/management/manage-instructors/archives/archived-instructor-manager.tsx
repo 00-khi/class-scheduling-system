@@ -99,10 +99,12 @@ export default function InstructorManager() {
   const academicQualifications =
     entityManagement.relatedData.academicQualification || [];
 
-  const academicQualificationOptions = academicQualifications.map((al) => ({
-    label: al.name,
-    value: al.id,
-  }));
+  const academicQualificationOptions = academicQualifications
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map((al) => ({
+      label: al.name,
+      value: al.id,
+    }));
 
   const statusOptions = Object.values(InstructorStatus).map((type) => ({
     value: type,
