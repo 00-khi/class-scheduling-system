@@ -2,7 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/ui/shadcn/checkbox";
 import { Badge } from "@/ui/shadcn/badge";
 import { Button } from "@/ui/shadcn/button";
-import { EditIcon, Trash2, TrashIcon } from "lucide-react";
+import { CalendarMinus, EditIcon, Trash2, TrashIcon } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/tooltip";
 import { Progress } from "@/ui/shadcn/progress";
 import {
@@ -30,7 +30,7 @@ export default function useTableColumns({
             onClick={() => onDelete(row.original)}
             className="size-7"
           >
-            <Trash2 size={16} />
+            <CalendarMinus size={16} />
           </Button>
         </div>
       ),

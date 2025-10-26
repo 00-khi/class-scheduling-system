@@ -9,6 +9,7 @@ import {
 import { Input } from "@/ui/shadcn/input";
 import { cn } from "@/lib/shadcn/utils";
 import {
+  CalendarPlus,
   CircleX,
   Columns3,
   Filter,
@@ -171,7 +172,7 @@ export function TableToolbar({
 
         {/* Add Button */}
         <Button onClick={onAdd}>
-          <PlusIcon />
+          <CalendarPlus />
           Add Schedule
         </Button>
       </DataTableToolbarGroup>
