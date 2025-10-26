@@ -6,6 +6,8 @@ export function toUppercase(str: string): string {
 export function capitalizeEachWord(str: string): string {
   if (!str) return "";
 
+  if (str === "n/a" || str === "N/a" || str === "n/A") return "N/A";
+
   const minorWords = new Set([
     "a",
     "an",
