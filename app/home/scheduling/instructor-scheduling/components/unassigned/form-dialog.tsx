@@ -75,32 +75,59 @@ export default function FormDialog({
           <DialogTitle>Assign Scheduled Subject</DialogTitle>
         </DialogHeader>
 
-        <div className="flex flex-wrap gap-2">
-          <Badge>{selectedUnassignedSubjects?.section?.name || "-"}</Badge>
-          <Badge variant="outline">
-            {selectedUnassignedSubjects?.subject?.name || "-"}
-          </Badge>
-          <Badge
-            variant={
-              selectedUnassignedSubjects?.subject?.type === "Laboratory"
-                ? "default"
-                : "secondary"
-            }
-          >
-            {selectedUnassignedSubjects?.subject?.type || "-"}
-          </Badge>
-          <Badge variant="outline">
-            {selectedUnassignedSubjects?.day || "-"}
-          </Badge>
-          <Badge variant="outline">
-            {selectedUnassignedSubjects?.startTime
-              ? formatTime(selectedUnassignedSubjects.startTime)
-              : "-"}{" "}
-            -{" "}
-            {selectedUnassignedSubjects?.endTime
-              ? formatTime(selectedUnassignedSubjects.endTime)
-              : "-"}
-          </Badge>
+        <div className="flex flex-col gap-2 text-sm">
+          <div className="flex items-center gap-2">
+            <span className="text-muted-foreground">Section:</span>
+            <Badge variant="outline">
+              {selectedUnassignedSubjects?.section?.name}
+            </Badge>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="text-muted-foreground">Subject:</span>
+            <Badge variant="outline">
+              {selectedUnassignedSubjects?.subject?.name || "-"}
+            </Badge>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="text-muted-foreground">Type:</span>
+            <Badge
+              variant={
+                selectedUnassignedSubjects?.subject?.type === "Laboratory"
+                  ? "default"
+                  : "secondary"
+              }
+            >
+              {selectedUnassignedSubjects?.subject?.type || "-"}
+            </Badge>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="text-muted-foreground">Schedule:</span>
+            <Badge variant="outline">
+              {selectedUnassignedSubjects?.day || "-"}
+            </Badge>
+            <Badge variant="outline">
+              {selectedUnassignedSubjects?.startTime
+                ? formatTime(selectedUnassignedSubjects.startTime)
+                : "-"}{" "}
+              -{" "}
+              {selectedUnassignedSubjects?.endTime
+                ? formatTime(selectedUnassignedSubjects.endTime)
+                : "-"}
+            </Badge>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="text-muted-foreground">
+              Field of Specialization:
+            </span>
+            <Badge>
+              {selectedUnassignedSubjects?.subject?.fieldOfSpecialization ||
+                "-"}
+            </Badge>
+          </div>
         </div>
 
         <Separator />
