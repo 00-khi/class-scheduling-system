@@ -79,12 +79,25 @@ export default function useTableColumns({
     // {
     //   id: "hours",
     //   header: "Hours",
+    //   cell: ({ row }) => {
+    //     const subjectUnits = row.original.subject.units;
+    //     const requiredMinutes = subjectUnits * 60;
+    //     const scheduledMinutes = diffMinutes(
+    //       row.original.startTime,
+    //       row.original.endTime
+    //     );
+
+    //     return `${toHours(scheduledMinutes)} / ${toHours(requiredMinutes)} hrs`;
+    //   },
+    // },
+    // {
+    //   id: "status",
+    //   header: "Status",
     //   cell: ({ row, table }) => {
     //     const subjectId = row.original.subject.id;
     //     const subjectUnits = row.original.subject.units;
     //     const requiredMinutes = subjectUnits * 60;
 
-    //     // sum minutes for this subject across all rows in the table
     //     const scheduledMinutes = table
     //       .getRowModel()
     //       .rows.filter((r) => r.original.subject.id === subjectId)
@@ -95,49 +108,14 @@ export default function useTableColumns({
     //         0
     //       );
 
-    //     return `${toHours(scheduledMinutes)} / ${toHours(requiredMinutes)} hrs`;
+    //     if (scheduledMinutes === requiredMinutes) {
+    //       return <Badge>Complete</Badge>;
+    //     }
+    //     if (scheduledMinutes > requiredMinutes) {
+    //       return <Badge variant="destructive">Excess</Badge>;
+    //     }
+    //     return <Badge variant="secondary">Partial</Badge>;
     //   },
     // },
-    {
-      id: "hours",
-      header: "Hours",
-      cell: ({ row }) => {
-        const subjectUnits = row.original.subject.units;
-        const requiredMinutes = subjectUnits * 60;
-        const scheduledMinutes = diffMinutes(
-          row.original.startTime,
-          row.original.endTime
-        );
-
-        return `${toHours(scheduledMinutes)} / ${toHours(requiredMinutes)} hrs`;
-      },
-    },
-    {
-      id: "status",
-      header: "Status",
-      cell: ({ row, table }) => {
-        const subjectId = row.original.subject.id;
-        const subjectUnits = row.original.subject.units;
-        const requiredMinutes = subjectUnits * 60;
-
-        const scheduledMinutes = table
-          .getRowModel()
-          .rows.filter((r) => r.original.subject.id === subjectId)
-          .reduce(
-            (total, r) =>
-              total +
-              (toMinutes(r.original.endTime) - toMinutes(r.original.startTime)),
-            0
-          );
-
-        if (scheduledMinutes === requiredMinutes) {
-          return <Badge>Complete</Badge>;
-        }
-        if (scheduledMinutes > requiredMinutes) {
-          return <Badge variant="destructive">Excess</Badge>;
-        }
-        return <Badge variant="secondary">Partial</Badge>;
-      },
-    },
   ];
 }
