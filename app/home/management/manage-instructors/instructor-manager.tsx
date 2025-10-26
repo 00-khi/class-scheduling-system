@@ -2,7 +2,12 @@
 
 import { useState, useEffect, FormEvent } from "react";
 import { toast } from "sonner";
-import { AcademicLevel, AcademicQualification, Instructor, InstructorStatus } from "@prisma/client";
+import {
+  AcademicLevel,
+  AcademicQualification,
+  Instructor,
+  InstructorStatus,
+} from "@prisma/client";
 import {
   ColumnDef,
   SortingState,
@@ -27,11 +32,15 @@ import useTableColumns from "./hooks/use-table-columns";
 import { TableToolbar } from "./components/table-toolbar";
 import TableComponent from "./components/table-component";
 import FormDialog from "./components/form-dialog";
-import DeleteDialog from "../../../../ui/components/table/delete-dialog";
-import BulkDeleteDialog from "../../../../ui/components/table/bulk-delete-dialog";
-import FailedDeleteDialog from "../../../../ui/components/table/failed-delete-dialog";
 import { useInstructorTable } from "./hooks/use-instructor-table";
-import { ACADEMIC_LEVELS_API, ACADEMIC_QUALIFICATIONS_API, INSTRUCTORS_API } from "@/lib/api/api-endpoints";
+import {
+  ACADEMIC_LEVELS_API,
+  ACADEMIC_QUALIFICATIONS_API,
+  INSTRUCTORS_API,
+} from "@/lib/api/api-endpoints";
+import ArchiveDialog from "@/ui/components/table/archive-dialog";
+import BulkArchiveDialog from "@/ui/components/table/bulk-archive-dialog";
+import FailedArchiveDialog from "@/ui/components/table/failed-archive-dialog";
 
 // types
 export type InstructorRow = Instructor & {
@@ -41,7 +50,7 @@ export type InstructorRow = Instructor & {
 export type FormData = {
   id?: number;
   name?: string;
-  status?: InstructorStatus
+  status?: InstructorStatus;
   academicQualificationId?: number;
 } | null;
 
@@ -71,7 +80,9 @@ export default function InstructorManager() {
   const [formData, setFormData] = useState<FormData>(null);
 
   const instructorLevelApi = createApiClient<Instructor>(INSTRUCTORS_API);
-  const academicQualificationApi = createApiClient<AcademicLevel>(ACADEMIC_QUALIFICATIONS_API);
+  const academicQualificationApi = createApiClient<AcademicLevel>(
+    ACADEMIC_QUALIFICATIONS_API
+  );
   const entityManagement = useManageEntities<Instructor>({
     apiService: { fetch: instructorLevelApi.getAll },
     relatedApiServices: [
@@ -79,7 +90,8 @@ export default function InstructorManager() {
     ],
   });
 
-  const academicQualifications = entityManagement.relatedData.academicQualification || [];
+  const academicQualifications =
+    entityManagement.relatedData.academicQualification || [];
 
   const academicQualificationOptions = academicQualifications.map((al) => ({
     label: al.name,
@@ -93,7 +105,7 @@ export default function InstructorManager() {
 
   const columns = useTableColumns({
     onEdit: handleEdit,
-    onDelete: handleDelete,
+    onArchive: handleArchive,
   });
 
   const table = useInstructorTable(
@@ -117,14 +129,14 @@ export default function InstructorManager() {
       id: item.id,
       name: item.name,
       status: item.status,
-      academicQualificationId: item.academicQualificationId
+      academicQualificationId: item.academicQualificationId,
     });
     entityManagement.setIsFormDialogOpen(true);
   }
 
-  function handleDelete(item: InstructorRow) {
+  function handleArchive(item: InstructorRow) {
     setFormData({ id: item.id, name: item.name });
-    entityManagement.setIsDeleteDialogOpen(true);
+    entityManagement.setIsArchiveDialogOpen(true);
   }
 
   async function handleFormSubmit(e: FormEvent) {
@@ -135,7 +147,9 @@ export default function InstructorManager() {
     }
 
     const isUpdate = Boolean(formData.id);
-    const url = isUpdate ? `${INSTRUCTORS_API}/${formData.id}` : INSTRUCTORS_API;
+    const url = isUpdate
+      ? `${INSTRUCTORS_API}/${formData.id}`
+      : INSTRUCTORS_API;
 
     entityManagement.setIsSubmitting(true);
 
@@ -166,14 +180,14 @@ export default function InstructorManager() {
     }
   }
 
-  async function handleSingleDelete() {
+  async function handleSingleArchive() {
     if (!formData?.id) {
-      toast.error(`Error deleting ${formData?.name ?? "item"}: Invalid ID`);
-      entityManagement.setIsDeleteDialogOpen(false);
+      toast.error(`Error archiving ${formData?.name ?? "item"}: Invalid ID`);
+      entityManagement.setIsArchiveDialogOpen(false);
       return;
     }
 
-    entityManagement.setIsDeleting(true);
+    entityManagement.setIsArchiving(true);
     try {
       const response = await fetch(`${INSTRUCTORS_API}/${formData.id}`, {
         method: "DELETE",
@@ -186,73 +200,73 @@ export default function InstructorManager() {
       const data = await response.json();
 
       if (!response.ok) {
-        const msg = data?.error ?? "Response Error: Failed to delete item.";
+        const msg = data?.error ?? "Response Error: Failed to archive item.";
         throw new Error(msg);
       }
 
-      toast.success(`${formData.name ?? "Item"} deleted successfully`);
+      toast.success(`${formData.name ?? "Item"} archived successfully`);
       entityManagement.fetchData();
-      entityManagement.setIsDeleteDialogOpen(false);
+      entityManagement.setIsArchiveDialogOpen(false);
       setFormData(null);
     } catch (error) {
       const msg = error instanceof Error ? error.message : "Unexpected error";
       toast.error(msg);
-      console.error(`Error deleting item:`, error);
+      console.error(`Error archiving item:`, error);
     } finally {
-      entityManagement.setIsDeleting(false);
+      entityManagement.setIsArchiving(false);
       table.resetRowSelection();
     }
   }
 
-  async function handleBulkDelete() {
+  async function handleBulkArchive() {
     if (selectedIds.length === 0) return;
 
-    entityManagement.setIsDeletingSelected(true);
+    entityManagement.setIsArchivingSelected(true);
 
     try {
-      const deletePromises = selectedIds.map((id) =>
+      const archivePromises = selectedIds.map((id) =>
         fetch(`${INSTRUCTORS_API}/${id}`, { method: "DELETE" }).then(
           async (res) => {
             if (res.status === 404) throw new Error("Item not found");
             const data = await res.json();
             if (!res.ok)
-              throw new Error(data?.error ?? "Failed to delete item");
+              throw new Error(data?.error ?? "Failed to archive item");
             return true;
           }
         )
       );
 
-      const results = await Promise.allSettled(deletePromises);
+      const results = await Promise.allSettled(archivePromises);
 
-      const successfulDeletions = results.filter(
+      const successfulArchives = results.filter(
         (r) => r.status === "fulfilled"
       ).length;
 
-      const failedDeletions = results.filter(
+      const failedArchives = results.filter(
         (r) => r.status === "rejected"
       ).length;
 
-      if (successfulDeletions > 0) {
-        toast.success(`${successfulDeletions} item(s) deleted successfully`);
+      if (successfulArchives > 0) {
+        toast.success(`${successfulArchives} item(s) archived successfully`);
       }
 
-      if (failedDeletions > 0) {
+      if (failedArchives > 0) {
         const failedReasons = results
           .filter((r) => r.status === "rejected")
           .map((r) => (r as PromiseRejectedResult).reason.message);
 
         entityManagement.setFailedReasons(failedReasons);
-        entityManagement.setFailedCount(failedDeletions);
+        entityManagement.setFailedCount(failedArchives);
         entityManagement.setFailedDialogOpen(true);
       }
 
       entityManagement.fetchData();
-      entityManagement.setIsDeleteSelectedDialogOpen(false);
+      entityManagement.setIsArchiveSelectedDialogOpen(false);
     } catch (err) {
-      console.error("Error deleting items:", err);
+      console.error("Error archiving items:", err);
       toast.error("Unexpected error occurred");
     } finally {
-      entityManagement.setIsDeletingSelected(false);
+      entityManagement.setIsArchivingSelected(false);
       table.resetRowSelection();
     }
   }
@@ -263,7 +277,10 @@ export default function InstructorManager() {
     const validations = [
       { field: data.name, message: "Instructor Name is required" },
       { field: data.status, message: "Status is required" },
-      { field: data.academicQualificationId, message: "Academic Qualification is required" },
+      {
+        field: data.academicQualificationId,
+        message: "Academic Qualification is required",
+      },
     ];
 
     for (const { field, message } of validations) {
@@ -289,8 +306,8 @@ export default function InstructorManager() {
             entityData={entityManagement.data}
             selectedRowsCount={tableState.selectedRowsCount}
             onAdd={handleAdd}
-            onBulkDelete={() =>
-              entityManagement.setIsDeleteSelectedDialogOpen(true)
+            onBulkArchive={() =>
+              entityManagement.setIsArchiveSelectedDialogOpen(true)
             }
             entityManagement={entityManagement}
           />
@@ -315,28 +332,28 @@ export default function InstructorManager() {
             isSubmitting={entityManagement.isSubmitting}
           />
 
-          <DeleteDialog
-            isOpen={entityManagement.isDeleteDialogOpen}
-            onClose={() => entityManagement.setIsDeleteDialogOpen(false)}
+          <ArchiveDialog
+            isOpen={entityManagement.isArchiveDialogOpen}
+            onClose={() => entityManagement.setIsArchiveDialogOpen(false)}
             itemName={formData?.name}
-            onConfirm={handleSingleDelete}
-            isDeleting={entityManagement.isDeleting}
+            onConfirm={handleSingleArchive}
+            isArchiving={entityManagement.isArchiving}
           />
 
-          <BulkDeleteDialog
-            isOpen={entityManagement.isDeleteSelectedDialogOpen}
+          <BulkArchiveDialog
+            isOpen={entityManagement.isArchiveSelectedDialogOpen}
             onClose={() =>
-              entityManagement.setIsDeleteSelectedDialogOpen(false)
+              entityManagement.setIsArchiveSelectedDialogOpen(false)
             }
             selectedCount={tableState.selectedRowsCount}
-            onConfirm={handleBulkDelete}
-            isDeleting={entityManagement.isDeletingSelected}
+            onConfirm={handleBulkArchive}
+            isArchiving={entityManagement.isArchivingSelected}
             entityManagement={entityManagement}
           />
         </DataTableSection>
       )}
 
-      <FailedDeleteDialog
+      <FailedArchiveDialog
         isOpen={entityManagement.failedDialogOpen}
         onClose={() => entityManagement.setFailedDialogOpen(false)}
         failedCount={entityManagement.failedCount}
