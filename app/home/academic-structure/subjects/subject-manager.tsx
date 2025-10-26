@@ -59,6 +59,7 @@ export type FormData = {
   semester?: Semester;
   type?: CategoryType;
   units?: number;
+  hours?: number;
   academicLevelId?: number;
   courseSubjects?: { courseId?: number; year?: number }[];
   courseId?: number;
@@ -196,6 +197,7 @@ export default function SubjectManager() {
       fieldOfSpecialization: item.fieldOfSpecialization,
       type: item.type,
       units: item.units,
+      hours: item.hours,
       academicLevelId: item.academicLevelId,
       courseSubjects:
         item.courseSubjects?.map((cs) => ({
@@ -351,6 +353,7 @@ export default function SubjectManager() {
       { field: data.semester, message: "Semester is required" },
       { field: data.type, message: "Type is required" },
       { field: data.units, message: "Units is required" },
+      { field: data.hours, message: "Hours is required" },
       {
         field: data.fieldOfSpecialization,
         message: "Field of Specialization is required",

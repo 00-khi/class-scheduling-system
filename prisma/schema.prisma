@@ -109,6 +109,7 @@ model Subject {
   name                  String
   semester              Semester
   units                 Float
+  hours                 Float        @default(0)
   type                  CategoryType
   fieldOfSpecialization String       @default("N/A")
 

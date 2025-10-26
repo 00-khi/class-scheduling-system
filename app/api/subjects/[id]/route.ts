@@ -20,6 +20,7 @@ const handlers = createEntityHandlers<
     { key: "semester", type: "string" },
     { key: "fieldOfSpecialization", type: "string" },
     { key: "units", type: "number" },
+    { key: "hours", type: "number" },
     { key: "type", type: "string" },
     { key: "academicLevelId", type: "number" },
     { key: "courseSubjects", type: "array" },
@@ -32,6 +33,15 @@ const handlers = createEntityHandlers<
       return NextResponse.json(
         {
           error: `Units must not be negative`,
+        },
+        { status: 400 }
+      );
+    }
+
+    if (data.hours !== undefined && data.hours < 0) {
+      return NextResponse.json(
+        {
+          error: `Hours must not be negative`,
         },
         { status: 400 }
       );

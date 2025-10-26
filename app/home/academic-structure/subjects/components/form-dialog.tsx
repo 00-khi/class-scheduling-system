@@ -274,6 +274,25 @@ export default function FormDialog({
             />
           </div>
 
+          {/* HOURS INPUT */}
+          <div className="space-y-2">
+            <Label htmlFor="hours">Hours</Label>
+            <Input
+              id="hours"
+              type="number"
+              step={0.1}
+              value={formData?.hours ?? ""}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  hours: Number(e.target.value),
+                }))
+              }
+              placeholder="e.g., 3"
+              disabled={isSubmitting}
+            />
+          </div>
+
           {/* FIELD OF SPECIALIZATION INPUT */}
           <div className="space-y-2">
             <Label htmlFor="fieldOfSpecialization">

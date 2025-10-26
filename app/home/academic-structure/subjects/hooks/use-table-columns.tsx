@@ -57,6 +57,13 @@ export default function useTableColumns({
       },
     },
     {
+      header: "Hours",
+      accessorKey: "hours",
+      meta: {
+        filterVariant: "range",
+      },
+    },
+    {
       header: "Semester",
       accessorKey: "semester",
     },
