@@ -1,23 +1,87 @@
 import { createApiHandler } from "@/lib/api/api-handler";
-import { validateRequestBody } from "@/lib/api/api-validator";
 import { prisma } from "@/lib/prisma";
-import {
-  calculateRemainingUnits,
-  findSlot,
-  toMinutes,
-} from "@/lib/schedule-utils";
+import { DAY_END, DAY_START, toMinutes, toTime } from "@/lib/schedule-utils";
 import { capitalizeEachWord } from "@/lib/utils";
-import { Day, ScheduledSubject, Semester } from "@prisma/client";
+import { Day, Semester } from "@prisma/client";
 import { NextResponse } from "next/server";
+
+type Slot = { startTime: string; endTime: string; duration: number };
+
+const DAY_START_MINUTES = toMinutes(DAY_START);
+const DAY_END_MINUTES = toMinutes(DAY_END);
+
+// allowed durations in hours
+const STANDARD_DURATIONS = [1, 1.5, 2, 3, 4, 6];
+
+function mergeSchedules(
+  schedules: Array<{ startTime: string; endTime: string }>
+) {
+  const ranges = schedules
+    .map((s) => ({ s: toMinutes(s.startTime), e: toMinutes(s.endTime) }))
+    .sort((a, b) => a.s - b.s);
+
+  const merged: Array<{ s: number; e: number }> = [];
+  for (const r of ranges) {
+    if (!merged.length) {
+      merged.push({ ...r });
+      continue;
+    }
+    const last = merged[merged.length - 1];
+    if (r.s <= last.e) {
+      last.e = Math.max(last.e, r.e);
+    } else {
+      merged.push({ ...r });
+    }
+  }
+  return merged;
+}
+
+function invertRanges(occupied: Array<{ s: number; e: number }>) {
+  const free: Array<{ s: number; e: number }> = [];
+  let cursor = DAY_START_MINUTES;
+
+  for (const o of occupied) {
+    if (o.e <= DAY_START_MINUTES) continue;
+    if (o.s >= DAY_END_MINUTES) break;
+
+    const start = Math.max(cursor, DAY_START_MINUTES);
+    const end = Math.min(o.s, DAY_END_MINUTES);
+
+    if (end > start) free.push({ s: start, e: end });
+
+    cursor = Math.max(cursor, Math.min(o.e, DAY_END_MINUTES));
+  }
+
+  if (cursor < DAY_END_MINUTES) free.push({ s: cursor, e: DAY_END_MINUTES });
+
+  return free;
+}
+
+function generateSlotsFromGap(
+  gap: { s: number; e: number },
+  durationMins: number
+): Slot[] {
+  const slots: Slot[] = [];
+  // slide by 15 minute steps
+  const step = 15;
+  for (let start = gap.s; start + durationMins <= gap.e; start += step) {
+    const end = start + durationMins;
+    slots.push({
+      startTime: toTime(start),
+      endTime: toTime(end),
+      duration: durationMins / 60,
+    });
+  }
+  return slots;
+}
 
 export const POST = createApiHandler(async (request) => {
   if (!request) {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
+  const raw = await request.json();
 
-  const rawData = await request.json();
-
-  const requiredFields = [
+  const required = [
     { key: "sectionId", type: "number" },
     { key: "subjectId", type: "number" },
     { key: "roomId", type: "number" },
@@ -25,64 +89,33 @@ export const POST = createApiHandler(async (request) => {
     { key: "unitsToSched", type: "number" },
   ];
 
-  for (const { key, type } of requiredFields) {
-    const value = rawData[key];
-
-    if (value === undefined || value === null || value === "") {
-      return NextResponse.json(
-        { error: `Missing required field: ${key}` },
-        { status: 400 }
-      );
+  for (const r of required) {
+    const v = raw[r.key];
+    if (v === undefined || v === null || v === "") {
+      return NextResponse.json({ error: `Missing ${r.key}` }, { status: 400 });
     }
-
-    const actualType = Array.isArray(value) ? "array" : typeof value;
-    if (actualType !== type) {
+    const actualType = Array.isArray(v) ? "array" : typeof v;
+    if (actualType !== r.type) {
       return NextResponse.json(
         {
-          error: `Invalid type for field ${key}. Expected ${type}, got ${actualType}.`,
+          error: `Invalid type ${r.key}. Expected ${r.type}, got ${actualType}`,
         },
         { status: 400 }
       );
     }
   }
 
-  const sectionId = Number(rawData.sectionId);
-  const subjectId = Number(rawData.subjectId);
-  const roomId = Number(rawData.roomId);
-  const unitsToSched = Number(rawData.unitsToSched);
-  const day = rawData.day;
+  const sectionId = Number(raw.sectionId);
+  const subjectId = Number(raw.subjectId);
+  const roomId = Number(raw.roomId);
+  const unitsToSched = Number(raw.unitsToSched);
+  const day = raw.day;
 
   const validDays = Object.values(Day);
-
-  if (isNaN(sectionId)) {
-    return NextResponse.json({ error: "Invalid section ID." }, { status: 400 });
-  }
-
-  if (isNaN(subjectId)) {
-    return NextResponse.json({ error: "Invalid subject ID." }, { status: 400 });
-  }
-
-  if (isNaN(roomId)) {
-    return NextResponse.json({ error: "Invalid room ID." }, { status: 400 });
-  }
-
-  if (isNaN(unitsToSched)) {
-    return NextResponse.json(
-      { error: "Invalid units to schedule." },
-      { status: 400 }
-    );
-  }
-
   if (!validDays.includes(capitalizeEachWord(day) as Day)) {
-    return NextResponse.json(
-      {
-        error: `Invalid day. Must be: ${validDays.join(", ")}`,
-      },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "Invalid day" }, { status: 400 });
   }
 
-  // get current semester from settings
   const semesterSetting = await prisma.setting.findUnique({
     where: { key: "semester" },
   });
@@ -94,93 +127,63 @@ export const POST = createApiHandler(async (request) => {
   }
   const currentSemester = semesterSetting.value as Semester;
 
-  const existingRoomSchedules = await prisma.scheduledSubject.findMany({
+  const subject = await prisma.subject.findUnique({ where: { id: subjectId } });
+  if (!subject) {
+    return NextResponse.json({ error: "Subject not found" }, { status: 400 });
+  }
+
+  // scheduled entries for room and section for that day and semester
+  const roomSchedules = await prisma.scheduledSubject.findMany({
     where: {
       roomId,
       day: capitalizeEachWord(day) as Day,
-      subject: {
-        semester: {
-          in: [currentSemester, "Whole_Semester"],
-        },
-      }, // schedules only for current semester
+      subject: { semester: { in: [currentSemester, "Whole_Semester"] } },
     },
+    select: { startTime: true, endTime: true },
   });
 
-  const existingSectionSchedules = await prisma.scheduledSubject.findMany({
+  const sectionSchedules = await prisma.scheduledSubject.findMany({
     where: {
       sectionId,
       day: capitalizeEachWord(day) as Day,
-      subject: {
-        semester: {
-          in: [currentSemester, "Whole_Semester"],
-        },
-      }, // schedules only for current semester
+      subject: { semester: { in: [currentSemester, "Whole_Semester"] } },
     },
+    select: { startTime: true, endTime: true },
   });
 
-  const subject = await prisma.subject.findUnique({
-    where: { id: subjectId },
-  });
+  const mergedSchedules = mergeSchedules([
+    ...roomSchedules,
+    ...sectionSchedules,
+  ]);
+  const freeGaps = invertRanges(mergedSchedules);
 
-  const existingRoomSectionSchedules = await prisma.scheduledSubject.findMany({
-    where: {
-      subjectId,
-      sectionId,
-      subject: {
-        semester: {
-          in: [currentSemester, "Whole_Semester"],
-        },
-      },
-    },
-    include: { subject: true },
-  });
+  // pick durations to test. only include standard durations <= unitsToSched and <= subject.units
+  const maxUnits = Math.min(unitsToSched, subject.units);
+  const durations = STANDARD_DURATIONS.filter((d) => d <= maxUnits);
 
-  if (!subject) {
-    return NextResponse.json({ error: "Subject not found." }, { status: 400 });
+  const resultSlots: Record<number, Slot[]> = {};
+  for (const d of durations) {
+    const dMins = Math.round(d * 60);
+    const slotsForDur: Slot[] = [];
+    for (const gap of freeGaps) {
+      const generated = generateSlotsFromGap(gap, dMins);
+      slotsForDur.push(...generated);
+    }
+    // sort by start time
+    slotsForDur.sort((a, b) => toMinutes(a.startTime) - toMinutes(b.startTime));
+    resultSlots[d] = slotsForDur;
   }
 
-  const remainingUnits = calculateRemainingUnits(
-    subject.units,
-    existingRoomSectionSchedules
-  );
-
-  if (unitsToSched < 1) {
-    return NextResponse.json(
-      { error: "Schedule must be at least 1 unit." },
-      { status: 400 }
-    );
+  // flatten with duration key present for convenience
+  const flatSlots: Array<Slot & { duration: number }> = [];
+  for (const d of Object.keys(resultSlots)) {
+    const dur = Number(d);
+    for (const s of resultSlots[dur]) {
+      flatSlots.push({ ...s, duration: dur });
+    }
   }
 
-  if (unitsToSched * 2 !== Math.floor(unitsToSched * 2)) {
-    return NextResponse.json(
-      { error: "Schedule must be in increments of 0.5 unit." },
-      { status: 400 }
-    );
-  }
+  console.log(mergedSchedules);
 
-  if (unitsToSched > remainingUnits) {
-    return NextResponse.json(
-      {
-        error: `Units to schedule must not exceed remaining units: ${remainingUnits}`,
-      },
-      { status: 400 }
-    );
-  }
-
-  // merge both existing schedules of room and section
-  const mergedExistingSchedules = [
-    ...existingRoomSchedules,
-    ...existingSectionSchedules,
-  ].sort((a, b) => toMinutes(a.startTime) - toMinutes(b.startTime));
-
-  const slot = findSlot(unitsToSched, mergedExistingSchedules);
-
-  if (!slot) {
-    return NextResponse.json(
-      { error: "No slot found. Please select other room" },
-      { status: 400 }
-    );
-  }
-
-  return NextResponse.json(slot);
+  return NextResponse.json({ slots: flatSlots });
 });
