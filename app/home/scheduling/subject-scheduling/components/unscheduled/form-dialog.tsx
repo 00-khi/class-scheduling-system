@@ -327,16 +327,35 @@ export default function FormDialog({
               </Button>
             </div>
           </div>
+          <div className="flex flex-col gap-2 text-sm">
+            <div className="flex flex-row flex-wrap gap-4 text-sm items-center">
+              <div className="flex items-center gap-2">
+                <span className="text-muted-foreground">Duration</span>
+                <Badge
+                  variant={
+                    durationMins > remainingMins ||
+                    toHours(durationMins) % 0.5 !== 0
+                      ? "destructive"
+                      : "outline"
+                  }
+                >
+                  {toHours(durationMins)}h
+                </Badge>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-muted-foreground">Remaining</span>
+                <Badge variant="secondary">{toHours(remainingMins)}h</Badge>
+              </div>
+            </div>
 
-          <div className="flex flex-row flex-wrap gap-4 text-sm items-center">
-            <div className="flex items-center gap-2">
-              <span className="text-muted-foreground">Duration</span>
-              <Badge variant="outline">{toHours(durationMins)}h</Badge>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-muted-foreground">Remaining</span>
-              <Badge variant="secondary">{toHours(remainingMins)}h</Badge>
-            </div>
+            {(durationMins > remainingMins ||
+              toHours(durationMins) % 0.5 !== 0) && (
+              <span className="text-destructive text-sm">
+                {durationMins > remainingMins
+                  ? "Duration exceeds remaining hours."
+                  : "Duration must be a whole or half hour (e.g., 1, 1.5, 2)."}
+              </span>
+            )}
           </div>
 
           <DialogFooter>
