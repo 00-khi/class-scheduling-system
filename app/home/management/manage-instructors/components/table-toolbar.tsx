@@ -6,6 +6,7 @@ import {
 import { Input } from "@/ui/shadcn/input";
 import { cn } from "@/lib/shadcn/utils";
 import {
+  ArchiveIcon,
   CircleX,
   Columns3,
   Filter,
@@ -32,6 +33,7 @@ import { Dispatch, SetStateAction } from "react";
 import { ColumnDef, useReactTable } from "@tanstack/react-table";
 import { useInstructorTable } from "../hooks/use-instructor-table";
 import { Badge } from "@/ui/shadcn/badge";
+import Link from "next/link";
 
 export function TableToolbar({
   table,
@@ -40,7 +42,7 @@ export function TableToolbar({
   entityData,
   selectedRowsCount,
   onAdd,
-  onBulkDelete,
+  onBulkArchive,
   entityManagement,
 }: {
   table: ReturnType<typeof useInstructorTable>;
@@ -49,7 +51,7 @@ export function TableToolbar({
   entityData: InstructorRow[];
   selectedRowsCount: number;
   onAdd: () => void;
-  onBulkDelete: () => void;
+  onBulkArchive: () => void;
   entityManagement: any;
 }) {
   const hasFilters =
@@ -220,21 +222,28 @@ export function TableToolbar({
       </DataTableToolbarGroup>
 
       <DataTableToolbarGroup>
-        {/* Bulk Delete */}
+        {/* Bulk Archive */}
         {selectedRowsCount > 1 && (
           <AlertDialog
-            open={entityManagement.isDeleteSelectedDialogOpen}
-            onOpenChange={entityManagement.setIsDeleteSelectedDialogOpen}
+            open={entityManagement.isArchiveSelectedDialogOpen}
+            onOpenChange={entityManagement.setIsArchiveSelectedDialogOpen}
           >
             <AlertDialogTrigger asChild>
               <Button variant="outline">
-                <TrashIcon />
-                Delete
+                <ArchiveIcon />
+                Archive
                 <Badge variant="outline">{selectedRowsCount}</Badge>
               </Button>
             </AlertDialogTrigger>
           </AlertDialog>
         )}
+
+        {/* Archived Intructors Button */}
+        <Button asChild variant="outline">
+          <Link href="manage-instructors/archives">
+            View Archived Instructors
+          </Link>
+        </Button>
 
         {/* Add Button */}
         <Button onClick={onAdd}>

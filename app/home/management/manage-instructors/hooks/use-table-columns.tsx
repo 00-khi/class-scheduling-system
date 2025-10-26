@@ -3,15 +3,15 @@ import { InstructorRow } from "../instructor-manager";
 import { Checkbox } from "@/ui/shadcn/checkbox";
 import { Badge } from "@/ui/shadcn/badge";
 import { Button } from "@/ui/shadcn/button";
-import { EditIcon, TrashIcon } from "lucide-react";
+import { ArchiveIcon, EditIcon, TrashIcon } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/tooltip";
 
 export default function useTableColumns({
   onEdit,
-  onDelete,
+  onArchive,
 }: {
   onEdit: (item: InstructorRow) => void;
-  onDelete: (item: InstructorRow) => void;
+  onArchive: (item: InstructorRow) => void;
 }): ColumnDef<InstructorRow>[] {
   return [
     {
@@ -44,7 +44,7 @@ export default function useTableColumns({
       ),
       enableHiding: false,
     },
-    
+
     {
       header: "Status",
       accessorKey: "status",
@@ -86,9 +86,9 @@ export default function useTableColumns({
           <Button
             size="icon"
             variant="ghost"
-            onClick={() => onDelete(row.original)}
+            onClick={() => onArchive(row.original)}
           >
-            <TrashIcon size={16} />
+            <ArchiveIcon size={16} />
           </Button>
         </div>
       ),
