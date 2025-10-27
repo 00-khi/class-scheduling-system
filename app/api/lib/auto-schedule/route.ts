@@ -1,7 +1,7 @@
 import { createApiHandler } from "@/lib/api/api-handler";
 import { autoScheduleSubjects } from "@/lib/auto-schedule";
 import { prisma } from "@/lib/prisma";
-import { diffMinutes } from "@/lib/schedule-utils";
+import { AVAILABLE_DAYS, diffMinutes, toMinutes } from "@/lib/schedule-utils";
 import { Day } from "@prisma/client";
 import { NextResponse } from "next/server";
 
@@ -137,6 +137,14 @@ export const POST = createApiHandler(async (request) => {
       days,
     }
   );
+
+  // sort the generated draft schedules
+  result.newSchedules.sort((a, b) => {
+    const dayDiff =
+      AVAILABLE_DAYS.indexOf(a.day) - AVAILABLE_DAYS.indexOf(b.day);
+    if (dayDiff !== 0) return dayDiff;
+    return toMinutes(a.startTime) - toMinutes(b.startTime);
+  });
 
   return NextResponse.json(result);
 });
