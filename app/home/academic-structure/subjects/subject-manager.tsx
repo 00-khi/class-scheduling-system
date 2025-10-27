@@ -352,8 +352,8 @@ export default function SubjectManager() {
       { field: data.name, message: "Subject Name is required" },
       { field: data.semester, message: "Semester is required" },
       { field: data.type, message: "Type is required" },
-      { field: data.units, message: "Units is required" },
-      { field: data.hours, message: "Hours is required" },
+      { field: data.units, message: "Units is required", allowZero: true },
+      { field: data.hours, message: "Hours is required", allowZero: true },
       {
         field: data.fieldOfSpecialization,
         message: "Field of Specialization is required",
@@ -362,8 +362,14 @@ export default function SubjectManager() {
       { field: data.courseSubjects, message: "Course Subjects are required" },
     ];
 
-    for (const { field, message } of validations) {
-      if (!field) {
+    for (const { field, message, allowZero } of validations) {
+      const isEmpty =
+        field === null ||
+        field === undefined ||
+        (typeof field === "string" && field.trim() === "") ||
+        (!allowZero && !field);
+
+      if (isEmpty) {
         toast.error(message);
         return false;
       }
