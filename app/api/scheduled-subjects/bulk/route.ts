@@ -2,7 +2,7 @@ import { createApiHandler } from "@/lib/api/api-handler";
 import { NextResponse } from "next/server";
 import { Day, ScheduledSubject, Semester } from "@prisma/client";
 import {
-  calculateRemainingUnits,
+  calculateRemainingHours,
   diffMinutes,
   hasSectionAndRoomConflict,
   isValidRange,
@@ -274,16 +274,16 @@ export const POST = createApiHandler(async (request) => {
       }),
     ]);
 
-    const remainingUnits = calculateRemainingUnits(
-      subject.units,
+    const remainingHours = calculateRemainingHours(
+      subject.hours,
       existingRoomSectionSchedules
     );
 
     const duration = toHours(diffMinutes(startTime, endTime));
-    if (duration > remainingUnits) {
+    if (duration > remainingHours) {
       return NextResponse.json(
         {
-          error: `Duration must not exceed remaining units for subjectId ${subjectId}. Remaining: ${remainingUnits}`,
+          error: `Duration must not exceed remaining hours for subjectId ${subjectId}. Remaining: ${remainingHours}`,
         },
         { status: 400 }
       );

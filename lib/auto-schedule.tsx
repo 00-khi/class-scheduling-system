@@ -23,6 +23,7 @@ type SubjectWithSchedule = {
   name?: string;
   semester?: string;
   units: number;
+  hours: number;
   type: CategoryType;
   scheduledSubject?: {
     id?: number;
@@ -137,7 +138,7 @@ export function autoScheduleSubjects(
     const before = subj.scheduledMinutes ?? 0;
     let remaining = Math.max(
       0,
-      (subj.requiredMinutes ?? subj.units * 60) - (subj.scheduledMinutes ?? 0)
+      (subj.requiredMinutes ?? subj.hours * 60) - (subj.scheduledMinutes ?? 0)
     );
 
     const sessions = splitIntoSessions(remaining);

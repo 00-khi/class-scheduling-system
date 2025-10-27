@@ -36,7 +36,7 @@ const handlers = createEntityHandlers<Section>({
           0
         );
 
-        const requiredMinutes = subject.units * 60;
+        const requiredMinutes = subject.hours * 60;
 
         return {
           ...subject,

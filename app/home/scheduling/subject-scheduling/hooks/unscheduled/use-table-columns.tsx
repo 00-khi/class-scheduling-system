@@ -16,21 +16,20 @@ export default function useTableColumns(): ColumnDef<UnscheduledSubjectRow>[] {
       accessorFn: (row) => row.scheduledMinutes || 0,
       cell: ({ row }) => {
         const scheduledUnits = toHours(row.original.scheduledMinutes || 0);
-
         const totalUnits = toHours(
           row.original.requiredMinutes || row.original.units
         );
-        const percent = Math.min((scheduledUnits / totalUnits) * 100, 100);
+
+        const percent = (scheduledUnits / totalUnits) * 100;
+        const isExceed = scheduledUnits > totalUnits;
 
         return (
           <div className="w-full flex flex-row gap-2 items-center">
             <Tooltip>
               <TooltipTrigger>
                 <Progress
-                  value={percent}
-                  className={`w-40 ${
-                    scheduledUnits > totalUnits ? "[&>div]:bg-destructive" : ""
-                  }`}
+                  value={isExceed ? 100 : percent}
+                  className={`w-40 ${isExceed ? "[&>div]:bg-destructive" : ""}`}
                 />
               </TooltipTrigger>
               <TooltipContent>
@@ -42,8 +41,8 @@ export default function useTableColumns(): ColumnDef<UnscheduledSubjectRow>[] {
       },
     },
     {
-      header: "Units",
-      accessorKey: "units",
+      header: "Hours",
+      accessorKey: "hours",
       cell: ({ getValue }) => {
         return <Badge variant="secondary">{getValue<number>()}</Badge>;
       },

@@ -91,7 +91,7 @@ export default function FormDialog({
     [formData?.startTime, formData?.endTime]
   );
 
-  const requiredMins = selectedSubject ? selectedSubject.units * 60 : 0;
+  const requiredMins = selectedSubject ? selectedSubject.hours * 60 : 0;
   const scheduledMins =
     selectedSubject?.scheduledSubject?.reduce(
       (sum, sched) => sum + diffMinutes(sched.startTime, sched.endTime),
@@ -133,7 +133,7 @@ export default function FormDialog({
       roomId: formData.roomId,
       sectionId,
       subjectId: formData.subjectId,
-      unitsToSched: toHours(remainingMins),
+      hoursToSched: toHours(remainingMins),
       day: formData.day,
     };
 

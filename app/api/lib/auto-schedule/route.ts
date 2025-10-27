@@ -1,15 +1,8 @@
 import { createApiHandler } from "@/lib/api/api-handler";
-import { validateRequestBody } from "@/lib/api/api-validator";
 import { autoScheduleSubjects } from "@/lib/auto-schedule";
 import { prisma } from "@/lib/prisma";
-import {
-  calculateRemainingUnits,
-  diffMinutes,
-  findSlot,
-  toMinutes,
-} from "@/lib/schedule-utils";
-import { capitalizeEachWord } from "@/lib/utils";
-import { Day, ScheduledSubject } from "@prisma/client";
+import { diffMinutes } from "@/lib/schedule-utils";
+import { Day } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 export const POST = createApiHandler(async (request) => {
@@ -113,7 +106,7 @@ export const POST = createApiHandler(async (request) => {
         0
       );
 
-      const requiredMinutes = subject.units * 60;
+      const requiredMinutes = subject.hours * 60;
 
       return {
         ...subject,

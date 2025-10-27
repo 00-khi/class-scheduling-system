@@ -67,7 +67,7 @@ export function useUnscheduledSubjectTable(
       const valuesToSearch = [
         String(row.original.name ?? "").toLowerCase(),
         String(row.original.code ?? "").toLowerCase(),
-        String(row.original.units ?? "").toLowerCase(),
+        String(row.original.hours ?? "").toLowerCase(),
       ];
       return valuesToSearch.some((val) => val.includes(search));
     },

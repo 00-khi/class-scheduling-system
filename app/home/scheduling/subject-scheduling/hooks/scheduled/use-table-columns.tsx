@@ -80,8 +80,8 @@ export default function useTableColumns({
     //   id: "hours",
     //   header: "Hours",
     //   cell: ({ row }) => {
-    //     const subjectUnits = row.original.subject.units;
-    //     const requiredMinutes = subjectUnits * 60;
+    //     const subjectHours = row.original.subject.hours;
+    //     const requiredMinutes = subjectHours * 60;
     //     const scheduledMinutes = diffMinutes(
     //       row.original.startTime,
     //       row.original.endTime
@@ -95,8 +95,8 @@ export default function useTableColumns({
     //   header: "Status",
     //   cell: ({ row, table }) => {
     //     const subjectId = row.original.subject.id;
-    //     const subjectUnits = row.original.subject.units;
-    //     const requiredMinutes = subjectUnits * 60;
+    //     const subjectHours = row.original.subject.hours;
+    //     const requiredMinutes = subjectHours * 60;
 
     //     const scheduledMinutes = table
     //       .getRowModel()

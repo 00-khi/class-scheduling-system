@@ -86,7 +86,7 @@ export const POST = createApiHandler(async (request) => {
     { key: "subjectId", type: "number" },
     { key: "roomId", type: "number" },
     { key: "day", type: "string" },
-    { key: "unitsToSched", type: "number" },
+    { key: "hoursToSched", type: "number" },
   ];
 
   for (const r of required) {
@@ -108,7 +108,7 @@ export const POST = createApiHandler(async (request) => {
   const sectionId = Number(raw.sectionId);
   const subjectId = Number(raw.subjectId);
   const roomId = Number(raw.roomId);
-  const unitsToSched = Number(raw.unitsToSched);
+  const hoursToSched = Number(raw.hoursToSched);
   const day = raw.day;
 
   const validDays = Object.values(Day);
@@ -157,9 +157,9 @@ export const POST = createApiHandler(async (request) => {
   ]);
   const freeGaps = invertRanges(mergedSchedules);
 
-  // pick durations to test. only include standard durations <= unitsToSched and <= subject.units
-  const maxUnits = Math.min(unitsToSched, subject.units);
-  const durations = STANDARD_DURATIONS.filter((d) => d <= maxUnits);
+  // pick durations to test. only include standard durations <= hoursToSched and <= subject.hours
+  const maxHours = Math.min(hoursToSched, subject.hours);
+  const durations = STANDARD_DURATIONS.filter((d) => d <= maxHours);
 
   const resultSlots: Record<number, Slot[]> = {};
   for (const d of durations) {

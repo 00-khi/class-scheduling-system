@@ -66,7 +66,7 @@ export const GET = createApiHandler(async (request, context) => {
   );
 
   const enriched = scheduledSubject.map((sched) => {
-    const requiredMinutes = sched.subject.units * 60;
+    const requiredMinutes = sched.subject.hours * 60;
     const scheduledMinutes = grouped[sched.subjectId] || 0;
 
     return {

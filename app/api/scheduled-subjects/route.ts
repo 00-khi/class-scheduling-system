@@ -1,7 +1,7 @@
 import { createApiHandler } from "@/lib/api/api-handler";
 import { prisma } from "@/lib/prisma";
 import {
-  calculateRemainingUnits,
+  calculateRemainingHours,
   diffMinutes,
   hasSectionAndRoomConflict,
   isValidRange,
@@ -215,17 +215,17 @@ export const POST = createApiHandler(async (request) => {
     return NextResponse.json({ error: "Section not found." }, { status: 400 });
   }
 
-  const remainingUnits = calculateRemainingUnits(
-    subject.units,
+  const remainingHours = calculateRemainingHours(
+    subject.hours,
     existingRoomSectionSchedules
   );
 
   const duration = toHours(diffMinutes(startTime, endTime));
 
-  if (duration > remainingUnits) {
+  if (duration > remainingHours) {
     return NextResponse.json(
       {
-        error: `Duration must not exceed remaining units: ${remainingUnits}`,
+        error: `Duration must not exceed remaining hours: ${remainingHours}`,
       },
       { status: 400 }
     );

@@ -1,12 +1,12 @@
 import { Day, ScheduledInstructor, ScheduledSubject } from "@prisma/client";
 
-type Subject = {
-  id: number;
-  units: number;
-  requiredMinutes: number;
-  scheduledMinutes: number;
-  scheduledSubject: { startTime: string; endTime: string; day: string }[];
-};
+// type Subject = {
+//   id: number;
+//   units: number;
+//   requiredMinutes: number;
+//   scheduledMinutes: number;
+//   scheduledSubject: { startTime: string; endTime: string; day: string }[];
+// };
 
 type ScheduleWithRelations = {
   roomId: number;
@@ -94,11 +94,11 @@ export function isValidDays(value: string): boolean {
 
 // finds slot based on provided schedule array
 export function findSlot(
-  units: number,
+  hours: number,
   scheduled: FindSlotSchedule[]
   // spacingMinutes: number = 0
 ): FindSlotSchedule | boolean {
-  const unitMinutes = units * 60;
+  const hourToMinutes = hours * 60;
 
   // Sort schedules
   const sorted = [...scheduled].sort(
@@ -128,9 +128,9 @@ export function findSlot(
 
     const freeTime = nextStart - currentEnd;
 
-    if (freeTime >= unitMinutes) {
+    if (freeTime >= hourToMinutes) {
       const start = currentEnd;
-      const end = start + unitMinutes;
+      const end = start + hourToMinutes;
       return {
         startTime: toTime(start),
         endTime: toTime(end),
@@ -141,9 +141,9 @@ export function findSlot(
   return false;
 }
 
-// gets the unit and the schedule of the subject then calculate the scheduled time to get the remaining units
-export function calculateRemainingUnits(
-  subjectUnits: number,
+// gets the hours and the schedule of the subject then calculate the scheduled time to get the remaining hours
+export function calculateRemainingHours(
+  subjectHours: number,
   schedules: { startTime: string; endTime: string }[]
 ): number {
   // Total scheduled minutes
@@ -151,10 +151,10 @@ export function calculateRemainingUnits(
     return sum + (toMinutes(sched.endTime) - toMinutes(sched.startTime));
   }, 0);
 
-  const scheduledUnits = scheduledMinutes / 60;
-  const remainingUnits = subjectUnits - scheduledUnits;
+  const scheduledHours = scheduledMinutes / 60;
+  const remainingHours = subjectHours - scheduledHours;
 
-  return Math.max(remainingUnits, 0); // prevent negative
+  return Math.max(remainingHours, 0); // prevent negative
 }
 
 // checks if the provided subject schedule have conflict
@@ -214,62 +214,62 @@ export function hasInstructorScheduleConflict(
 // ---------------- AUTO SCHEDULE (OLD FUNCTTION)
 
 // gets 1 randomly in an array
-function randomChoice<T>(arr: T[]): T {
-  return arr[Math.floor(Math.random() * arr.length)];
-}
+// function randomChoice<T>(arr: T[]): T {
+//   return arr[Math.floor(Math.random() * arr.length)];
+// }
 
 // generates time slots starting 7:30 to 19:30, in 30 minutes step
-function generateTimeSlots(): string[] {
-  const slots: string[] = [];
-  let mins = 7 * 60 + 30; // 07:30 in minutes
-  const end = 19 * 60 + 30;
-  while (mins <= end) {
-    const h = Math.floor(mins / 60);
-    const m = mins % 60;
-    slots.push(`${h}:${m.toString().padStart(2, "0")}`);
-    mins += 30; // step of 30 mins
-  }
-  return slots;
-}
+// function generateTimeSlots(): string[] {
+//   const slots: string[] = [];
+//   let mins = 7 * 60 + 30; // 07:30 in minutes
+//   const end = 19 * 60 + 30;
+//   while (mins <= end) {
+//     const h = Math.floor(mins / 60);
+//     const m = mins % 60;
+//     slots.push(`${h}:${m.toString().padStart(2, "0")}`);
+//     mins += 30; // step of 30 mins
+//   }
+//   return slots;
+// }
 
 // auto schedule function na puro error
-export function autoSchedule(
-  subjects: Subject[],
-  existing: ScheduleWithRelations[],
-  sectionId: number,
-  roomId: number
-): ScheduleWithRelations[] {
-  const results: ScheduleWithRelations[] = [];
-  const slots = generateTimeSlots();
+// export function autoSchedule(
+//   subjects: Subject[],
+//   existing: ScheduleWithRelations[],
+//   sectionId: number,
+//   roomId: number
+// ): ScheduleWithRelations[] {
+//   const results: ScheduleWithRelations[] = [];
+//   const slots = generateTimeSlots();
 
-  for (const subj of subjects) {
-    const remaining = subj.requiredMinutes - subj.scheduledMinutes;
-    if (remaining <= 0) continue;
+//   for (const subj of subjects) {
+//     const remaining = subj.requiredMinutes - subj.scheduledMinutes;
+//     if (remaining <= 0) continue;
 
-    let minutesLeft = remaining;
+//     let minutesLeft = remaining;
 
-    while (minutesLeft > 0) {
-      const duration = Math.min(60, minutesLeft); // schedule in 1hr blocks
-      const day = randomChoice(Object.values(Day));
-      const start = randomChoice(slots);
-      const endMinutes = toMinutes(start) + duration;
-      const end = toTime(endMinutes);
+//     while (minutesLeft > 0) {
+//       const duration = Math.min(60, minutesLeft); // schedule in 1hr blocks
+//       const day = randomChoice(Object.values(Day));
+//       const start = randomChoice(slots);
+//       const endMinutes = toMinutes(start) + duration;
+//       const end = toTime(endMinutes);
 
-      const candidate: ScheduleWithRelations = {
-        startTime: start,
-        endTime: end,
-        day,
-        sectionId,
-        roomId,
-        subjectId: subj.id,
-      };
+//       const candidate: ScheduleWithRelations = {
+//         startTime: start,
+//         endTime: end,
+//         day,
+//         sectionId,
+//         roomId,
+//         subjectId: subj.id,
+//       };
 
-      if (!hasSectionAndRoomConflict(candidate, [...existing, ...results])) {
-        results.push(candidate);
-        minutesLeft -= duration;
-      }
-    }
-  }
+//       if (!hasSectionAndRoomConflict(candidate, [...existing, ...results])) {
+//         results.push(candidate);
+//         minutesLeft -= duration;
+//       }
+//     }
+//   }
 
-  return results;
-}
+//   return results;
+// }
