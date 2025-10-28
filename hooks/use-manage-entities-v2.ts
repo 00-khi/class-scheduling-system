@@ -116,11 +116,11 @@ export function useManageEntities<T extends Entity>({
     isDeletingSelected,
     setIsDeletingSelected,
 
-    isReseting: isResetting,
-    setIsReseting: setIsResetting,
+    isResetting,
+    setIsResetting,
 
-    isResetingSelected: isResettingSelected,
-    setIsResetingSelected: setIsResettingSelected,
+    isResettingSelected,
+    setIsResettingSelected,
 
     isArchiving,
     setIsArchiving,
