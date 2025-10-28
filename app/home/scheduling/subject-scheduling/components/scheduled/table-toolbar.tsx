@@ -9,6 +9,8 @@ import {
 import { Input } from "@/ui/shadcn/input";
 import { cn } from "@/lib/shadcn/utils";
 import {
+  CalendarMinus2,
+  CalendarSync,
   CircleX,
   Columns3,
   Filter,
@@ -43,12 +45,14 @@ export function TableToolbar({
   setTableState,
   entityData,
   onRefresh,
+  onReset,
 }: {
   table: ReturnType<typeof useScheduledSubjectTable>;
   tableState: TableState;
   setTableState: Dispatch<SetStateAction<TableState>>;
   entityData: ScheduledSubjectRow[];
   onRefresh: () => void;
+  onReset: () => void;
 }) {
   const hasFilters =
     tableState.globalFilter || tableState.columnFilters.length > 0;
@@ -167,6 +171,12 @@ export function TableToolbar({
         <Button variant="outline" onClick={onRefresh}>
           <RefreshCcw className="-ms-1 opacity-60" size={16} />
           Refresh
+        </Button>
+
+        {/* Reset Button */}
+        <Button onClick={onReset} variant="destructive">
+          <CalendarMinus2 />
+          Reset Schedule
         </Button>
       </DataTableToolbarGroup>
     </DataTableToolbar>

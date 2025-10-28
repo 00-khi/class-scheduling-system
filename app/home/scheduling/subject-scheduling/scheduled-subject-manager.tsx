@@ -23,6 +23,7 @@ import TableComponent from "./components/scheduled/table-component";
 import DeleteDialog from "@/ui/components/table/delete-dialog";
 import { toast } from "sonner";
 import { formatTime } from "@/lib/schedule-utils";
+import ConfirmDialog from "@/ui/components/table/confirm-dialog";
 
 export type ScheduledSubjectRow = ScheduledSubject & {
   room: Room;
@@ -141,6 +142,39 @@ export default function ScheduledSubjectManager({
     }
   }
 
+  async function handleResetSchedule() {
+    entityManagement.setIsResetting(true);
+    try {
+      const response = await fetch(
+        `${SECTIONS_API}/${sectionId}/schedules/reset`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (response.status === 404) {
+        throw new Error("Not found.");
+      }
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        const msg = data?.error ?? "Response Error: Failed to reset schedule.";
+        throw new Error(msg);
+      }
+
+      toast.success("Section schedule reset successfully.");
+      onChange();
+      entityManagement.setIsResetDialogOpen(false);
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : "Unexpected error";
+      toast.error(msg);
+      console.error(`Error resetting schedule:`, error);
+    } finally {
+      entityManagement.setIsResetting(false);
+    }
+  }
+
   // return (
   //   <Card className="gap-4">
   //     <CardHeader>
@@ -196,6 +230,7 @@ export default function ScheduledSubjectManager({
             setTableState={setTableState}
             entityData={entityManagement.data}
             onRefresh={entityManagement.fetchData}
+            onReset={() => entityManagement.setIsResetDialogOpen(true)}
           />
 
           <TableComponent
@@ -210,6 +245,17 @@ export default function ScheduledSubjectManager({
             itemName={deleteData?.placeholder}
             onConfirm={handleSingleDelete}
             isDeleting={entityManagement.isDeleting}
+          />
+
+          <ConfirmDialog
+            isOpen={entityManagement.isResetDialogOpen}
+            onClose={() => entityManagement.setIsResetDialogOpen(false)}
+            onConfirm={handleResetSchedule}
+            isProcessing={entityManagement.isResetting}
+            title="Reset section schedule?"
+            description="This will delete all schedules for this section."
+            confirmText="Reset"
+            variant="destructive"
           />
         </DataTableSection>
       )}
