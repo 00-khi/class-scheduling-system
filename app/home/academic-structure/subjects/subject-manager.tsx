@@ -102,30 +102,30 @@ export default function SubjectManager() {
     relatedApiServices: [
       { key: "academicLevels", fetch: academicLevelApi.getAll },
       { key: "courses", fetch: courseApi.getAll },
-      { key: "settings", fetch: settingsApi.getAll },
+      // { key: "settings", fetch: settingsApi.getAll },
     ],
   });
 
   const academicLevels = entityManagement.relatedData.academicLevels || [];
   const courses = entityManagement.relatedData.courses || [];
-  const settings = entityManagement.relatedData.settings || [];
+  // const settings = entityManagement.relatedData.settings || [];
 
-  useEffect(() => {
-    if (!settings.length) return;
+  // useEffect(() => {
+  //   if (!settings.length) return;
 
-    const defaultSemester =
-      settings.find((s) => s.key === "semester")?.value ?? "";
+  //   const defaultSemester =
+  //     settings.find((s) => s.key === "semester")?.value ?? "";
 
-    if (defaultSemester) {
-      setTableState((prev) => ({
-        ...prev,
-        columnFilters: [
-          ...prev.columnFilters.filter((f) => f.id !== "semester"),
-          { id: "semester", value: defaultSemester },
-        ],
-      }));
-    }
-  }, [settings]);
+  //   if (defaultSemester) {
+  //     setTableState((prev) => ({
+  //       ...prev,
+  //       columnFilters: [
+  //         ...prev.columnFilters.filter((f) => f.id !== "semester"),
+  //         { id: "semester", value: defaultSemester },
+  //       ],
+  //     }));
+  //   }
+  // }, [settings]);
 
   const academicLevelOptions = academicLevels
     .sort((a, b) => a.name.localeCompare(b.name))
