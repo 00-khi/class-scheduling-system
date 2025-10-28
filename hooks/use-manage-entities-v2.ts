@@ -36,6 +36,9 @@ export function useManageEntities<T extends Entity>({
   const [isDeleting, setIsDeleting] = useState(false);
   const [isDeletingSelected, setIsDeletingSelected] = useState(false);
 
+  const [isReseting, setIsReseting] = useState(false);
+  const [isResetingSelected, setIsResetingSelected] = useState(false);
+
   const [isArchiving, setIsArchiving] = useState(false);
   const [isArchivingSelected, setIsArchivingSelected] = useState(false);
 
@@ -46,6 +49,10 @@ export function useManageEntities<T extends Entity>({
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isDeleteSelectedDialogOpen, setIsDeleteSelectedDialogOpen] =
+    useState(false);
+
+  const [isResetDialogOpen, setIsResetDialogOpen] = useState(false);
+  const [isResetSelectedDialogOpen, setIsResetSelectedDialogOpen] =
     useState(false);
 
   const [isArchiveDialogOpen, setIsArchiveDialogOpen] = useState(false);
@@ -109,6 +116,12 @@ export function useManageEntities<T extends Entity>({
     isDeletingSelected,
     setIsDeletingSelected,
 
+    isReseting,
+    setIsReseting,
+
+    isResetingSelected,
+    setIsResetingSelected,
+
     isArchiving,
     setIsArchiving,
 
@@ -129,6 +142,12 @@ export function useManageEntities<T extends Entity>({
 
     isDeleteSelectedDialogOpen,
     setIsDeleteSelectedDialogOpen,
+
+    isResetDialogOpen,
+    setIsResetDialogOpen,
+
+    isResetSelectedDialogOpen,
+    setIsResetSelectedDialogOpen,
 
     isArchiveDialogOpen,
     setIsArchiveDialogOpen,
