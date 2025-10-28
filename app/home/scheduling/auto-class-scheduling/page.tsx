@@ -268,8 +268,8 @@ export default function AutoClassSchedulingPage() {
                     <CardContent className="border-y py-4 space-y-4 h-full">
                       {/* DAYS TOGGLE */}
                       <div className="space-y-2">
-                        <Label>Days</Label>
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+                        <Badge>Days</Badge>
+                        <div className="grid grid-cols-2 lg:grid-cols-3 gap-1">
                           {AVAILABLE_DAYS.map((day) => (
                             <div
                               key={day}
@@ -294,12 +294,12 @@ export default function AutoClassSchedulingPage() {
                       <Separator />
 
                       {/* ROOMS TOGGLE */}
-                      <div className="space-y-2">
-                        <Label>Rooms</Label>
+                      <div>
+                        <Badge>Rooms</Badge>
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
                           {/* Lecture Rooms */}
-                          <div>
-                            <Label className="mb-2">Lecture</Label>
+                          <div className="space-y-2">
+                            <Badge variant="outline">Lecture</Badge>
                             {lectureRooms.length === 0 ? (
                               <p className="text-sm text-muted-foreground">
                                 No rooms found.
@@ -332,8 +332,8 @@ export default function AutoClassSchedulingPage() {
                           </div>
 
                           {/* Laboratory Rooms */}
-                          <div>
-                            <Label className="mb-2">Laboratory</Label>
+                          <div className="space-y-2">
+                            <Badge variant="outline">Laboratory</Badge>
                             {laboratoryRooms.length === 0 ? (
                               <p className="text-sm text-muted-foreground">
                                 No rooms found.
