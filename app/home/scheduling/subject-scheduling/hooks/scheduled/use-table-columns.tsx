@@ -44,8 +44,38 @@ export default function useTableColumns({
     {
       id: "time",
       header: "Time",
-      accessorFn: (row) =>
-        `${formatTime(row.startTime)} - ${formatTime(row.endTime)}`,
+      cell: ({ row, table }) => {
+        const subjectId = row.original.subject.id;
+        const subjectHours = row.original.subject.hours;
+        const requiredMinutes = subjectHours * 60;
+
+        const scheduledMinutes = table
+          .getRowModel()
+          .rows.filter((r) => r.original.subject.id === subjectId)
+          .reduce(
+            (total, r) =>
+              total +
+              (toMinutes(r.original.endTime) - toMinutes(r.original.startTime)),
+            0
+          );
+
+        const isExceed = scheduledMinutes > requiredMinutes;
+        const timeText = `${formatTime(row.original.startTime)} - ${formatTime(
+          row.original.endTime
+        )}`;
+
+        return (
+          <span className={isExceed ? "text-destructive" : ""}>
+            {timeText}
+            {isExceed && (
+              <span className="m-1">
+                (Exceeds by{" "}
+                {Math.floor((scheduledMinutes - requiredMinutes) / 60)}h)
+              </span>
+            )}
+          </span>
+        );
+      },
     },
     {
       id: "room",
