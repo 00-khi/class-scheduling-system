@@ -44,7 +44,6 @@ export default function useTableColumns({
       ),
       enableHiding: false,
     },
-
     {
       header: "Status",
       accessorKey: "status",
@@ -71,6 +70,13 @@ export default function useTableColumns({
         );
       },
     },
+    // {
+    //   header: "Total Units Loaded",
+    //   accessorKey: "unitsLoaded",
+    //   cell: ({ row }) => (
+    //     <Badge variant="secondary">{row.getValue("unitsLoaded")}</Badge>
+    //   ),
+    // },
     {
       id: "actions",
       header: () => <span className="sr-only">Actions</span>,

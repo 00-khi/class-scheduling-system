@@ -50,9 +50,30 @@ export const GET = createApiHandler(async () => {
     },
     include: {
       academicQualification: true,
+      scheduledInstructor: {
+        include: {
+          scheduledSubject: {
+            include: {
+              subject: true,
+            },
+          },
+        },
+      },
     },
     orderBy: { updatedAt: "desc" },
   });
 
-  return NextResponse.json(instructors);
+  // Calculate total units per instructor
+  const data = instructors.map((instructor) => {
+    const unitsLoaded = instructor.scheduledInstructor.reduce((sum, si) => {
+      return sum + (si.scheduledSubject?.subject?.units || 0);
+    }, 0);
+
+    return {
+      ...instructor,
+      unitsLoaded,
+    };
+  });
+
+  return NextResponse.json(data);
 });
