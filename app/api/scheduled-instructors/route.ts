@@ -88,32 +88,26 @@ export const POST = createApiHandler(async (request) => {
   const scheduledSubjectId = Number(rawData.scheduledSubjectId);
 
   const instructor = await prisma.instructor.findUnique({
-    where: {
-      id: instructorId,
-    },
+    where: { id: instructorId },
   });
-
-  const scheduledSubject = await prisma.scheduledSubject.findUnique({
-    where: {
-      id: scheduledSubjectId,
-      scheduledInstructor: null,
-    },
-  });
-
   if (!instructor) {
     return NextResponse.json(
-      {
-        error: "Instructor not found.",
-      },
+      { error: "Instructor not found." },
       { status: 400 }
     );
   }
 
+  const scheduledSubject = await prisma.scheduledSubject.findUnique({
+    where: { id: scheduledSubjectId },
+    include: {
+      subject: true,
+      section: true,
+    },
+  });
+
   if (!scheduledSubject) {
     return NextResponse.json(
-      {
-        error: "Scheduled Subject not found or might be already assigned.",
-      },
+      { error: "Scheduled Subject not found." },
       { status: 400 }
     );
   }
@@ -130,43 +124,54 @@ export const POST = createApiHandler(async (request) => {
   }
   const currentSemester = semesterSetting.value as Semester;
 
-  const exisitingInstructorSchedules =
-    await prisma.scheduledInstructor.findMany({
+  // Get instructor's existing schedules
+  const existingInstructorSchedules = await prisma.scheduledInstructor.findMany(
+    {
       where: {
         instructorId,
         scheduledSubject: {
           subject: {
-            semester: {
-              in: [currentSemester, "Whole_Semester"],
-            },
+            semester: { in: [currentSemester, "Whole_Semester"] },
           },
         },
       },
-      select: {
-        scheduledSubject: true,
-      },
-    });
+      select: { scheduledSubject: true },
+    }
+  );
 
-  if (
-    hasInstructorScheduleConflict(
-      scheduledSubject,
-      exisitingInstructorSchedules
-    )
-  ) {
-    return NextResponse.json(
-      {
-        error: `Conflict detected.`,
-      },
-      { status: 400 }
-    );
-  }
-
-  const newInstructorSchedule = await prisma.scheduledInstructor.create({
-    data: {
-      instructorId,
-      scheduledSubjectId,
+  // Find all scheduledSubjects with same section + subject
+  const sameSectionSubjects = await prisma.scheduledSubject.findMany({
+    where: {
+      sectionId: scheduledSubject.sectionId,
+      subjectId: scheduledSubject.subjectId,
     },
   });
 
-  return NextResponse.json(newInstructorSchedule);
+  // Check conflicts for each of them
+  for (const sub of sameSectionSubjects) {
+    if (hasInstructorScheduleConflict(sub, existingInstructorSchedules)) {
+      return NextResponse.json(
+        { error: "Conflict detected." },
+        { status: 400 }
+      );
+    }
+  }
+
+  // Assign instructor to all same-section same-subject schedules
+  const assigned = await prisma.$transaction(
+    sameSectionSubjects.map((sub) =>
+      prisma.scheduledInstructor.upsert({
+        where: {
+          scheduledSubjectId: sub.id,
+        },
+        update: { instructorId },
+        create: {
+          instructorId,
+          scheduledSubjectId: sub.id,
+        },
+      })
+    )
+  );
+
+  return NextResponse.json(assigned);
 });
