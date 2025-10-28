@@ -36,8 +36,8 @@ export function useManageEntities<T extends Entity>({
   const [isDeleting, setIsDeleting] = useState(false);
   const [isDeletingSelected, setIsDeletingSelected] = useState(false);
 
-  const [isReseting, setIsReseting] = useState(false);
-  const [isResetingSelected, setIsResetingSelected] = useState(false);
+  const [isResetting, setIsResetting] = useState(false);
+  const [isResettingSelected, setIsResettingSelected] = useState(false);
 
   const [isArchiving, setIsArchiving] = useState(false);
   const [isArchivingSelected, setIsArchivingSelected] = useState(false);
@@ -116,11 +116,11 @@ export function useManageEntities<T extends Entity>({
     isDeletingSelected,
     setIsDeletingSelected,
 
-    isReseting,
-    setIsReseting,
+    isReseting: isResetting,
+    setIsReseting: setIsResetting,
 
-    isResetingSelected,
-    setIsResetingSelected,
+    isResetingSelected: isResettingSelected,
+    setIsResetingSelected: setIsResettingSelected,
 
     isArchiving,
     setIsArchiving,
