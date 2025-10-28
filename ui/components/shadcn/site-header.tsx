@@ -45,10 +45,21 @@ export function SiteHeader() {
     load();
   }, []);
 
-  const semesterOptions = Object.values(Semester).map((sem) => ({
-    value: sem,
-    label: sem,
-  }));
+  // const semesterOptions = Object.values(Semester).map((sem) => ({
+  //   value: sem,
+  //   label: sem,
+  // }));
+
+  const semesterOptions = [
+    {
+      value: Semester.First_Semester,
+      label: Semester.First_Semester,
+    },
+    {
+      value: Semester.Second_Semester,
+      label: Semester.Second_Semester,
+    },
+  ];
 
   const handleSemesterSelect = async (selectedSemester: Semester) => {
     setIsChangingSemester(true);
