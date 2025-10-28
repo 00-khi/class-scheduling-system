@@ -231,14 +231,19 @@ export const POST = createApiHandler(async (request) => {
     );
   }
 
+  const isSharedRoom = room.name.toLowerCase() === "n/a";
+
   const mergedExistingSchedules = [
     ...existingRoomSchedules,
     ...existingSectionSchedules,
   ].sort((a, b) => toMinutes(a.startTime) - toMinutes(b.startTime));
 
-  console.log(mergedExistingSchedules);
+  // Filter existing schedules depending on room type
+  const schedulesToCheck = isSharedRoom
+    ? existingSectionSchedules // Only check section conflicts
+    : mergedExistingSchedules; // Check both section and room conflicts
 
-  if (hasSectionAndRoomConflict(toSchedule, mergedExistingSchedules)) {
+  if (hasSectionAndRoomConflict(toSchedule, schedulesToCheck)) {
     return NextResponse.json(
       {
         error: `Conflict detected.`,
