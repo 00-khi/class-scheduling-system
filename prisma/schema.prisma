@@ -20,7 +20,6 @@ enum InstructorStatus {
   PT
   PTFL
   PROBY
-  FT
 }
 
 enum CategoryType {

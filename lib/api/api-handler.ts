@@ -31,7 +31,7 @@ function handlePrismaError(error: unknown) {
         );
 
       case "P2003": // Foreign key constraint failed
-        const foreignKeyMessage = `Foreign key constraint error.`;
+        const foreignKeyMessage = `Foreign key constraint error. The action failed because this item links to other data in the database. Remove or update the linked data first.`;
         return NextResponse.json(
           { error: foreignKeyMessage },
           { status: 400 } // Bad Request
@@ -55,7 +55,9 @@ function handlePrismaError(error: unknown) {
   );
 }
 
-export function createApiHandler(handlerFunction: NextRouteHandler): NextRouteHandler {
+export function createApiHandler(
+  handlerFunction: NextRouteHandler
+): NextRouteHandler {
   return async (request, context) => {
     try {
       const response = await handlerFunction(request, context);
