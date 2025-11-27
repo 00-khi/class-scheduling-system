@@ -25,6 +25,7 @@ export async function xlsxExport<T>({
   const workbook = new ExcelJS.Workbook();
   const worksheet = workbook.addWorksheet("Sheet 1");
 
+  // set columns (this creates the header row initially at row 1)
   worksheet.columns = columns.map(
     (col): Partial<ExcelJS.Column> => ({
       header: col.header,
@@ -33,10 +34,20 @@ export async function xlsxExport<T>({
     })
   );
 
-  // Write header row
-  const headerRow = worksheet.getRow(1);
+  // move header down so column headers end up at row 4
+  // insert rows at the top: 1 -> title, 2 -> datetime, 3 -> blank
+  worksheet.insertRow(1, ["STI College Legazpi"]);
+  const generatedDateStr = new Date().toLocaleString("en-PH", {
+    timeZone: "Asia/Manila",
+  });
+  worksheet.insertRow(2, [generatedDateStr]);
+  worksheet.insertRow(3, []); // blank row
+
+  const headerRowIndex = 4;
+  const headerRow = worksheet.getRow(headerRowIndex);
   headerRow.height = 20;
 
+  // style the column header row
   headerRow.eachCell((cell) => {
     cell.font = { bold: true, color: { argb: "FFFFFFFF" } };
     cell.fill = {
@@ -46,6 +57,18 @@ export async function xlsxExport<T>({
     };
     cell.alignment = { horizontal: "center", vertical: "middle" };
   });
+
+  // style the main title (row 1) and merge across columns
+  const lastColLetter = columnNumberToName(columns.length);
+  worksheet.mergeCells(`A1:${lastColLetter}1`);
+  const titleRow = worksheet.getRow(1);
+  titleRow.getCell(1).font = { bold: true, size: 14 };
+  titleRow.getCell(1).alignment = { horizontal: "center", vertical: "middle" };
+
+  // style the generated datetime row (row 2) and merge across columns
+  worksheet.mergeCells(`A2:${lastColLetter}2`);
+  const dateRow = worksheet.getRow(2);
+  dateRow.getCell(1).alignment = { horizontal: "right", vertical: "middle" };
 
   const processedData = [...data];
 
@@ -65,7 +88,7 @@ export async function xlsxExport<T>({
       return acc;
     }, {} as Record<string, T[]>);
 
-    let rowIndex = 2;
+    let rowIndex = headerRowIndex + 1; // start after the header row
 
     Object.keys(groups)
       .sort()
@@ -79,52 +102,8 @@ export async function xlsxExport<T>({
           fgColor: { argb: "FFD966" },
         };
 
-        worksheet.mergeCells(
-          `A${rowIndex}:${String.fromCharCode(64 + columns.length)}${rowIndex}`
-        );
+        worksheet.mergeCells(`A${rowIndex}:${lastColLetter}${rowIndex}`);
         rowIndex++;
-
-        // // second grouping inside each academic level
-        // const nestedGroups = groups[level].reduce((acc, item) => {
-        //   const sectionName = resolveKey(item, "section.name");
-        //   if (!acc[sectionName]) acc[sectionName] = [];
-        //   acc[sectionName].push(item);
-        //   return acc;
-        // }, {} as Record<string, T[]>);
-
-        // let nestedGroups: Record<string, T[]> = {};
-
-        // if (sortByKey === "section.name") {
-        //   nestedGroups = groups[level].reduce((acc, item) => {
-        //     const sectionName = resolveKey(item, "section.name");
-        //     if (!acc[sectionName]) acc[sectionName] = [];
-        //     acc[sectionName].push(item);
-        //     return acc;
-        //   }, {} as Record<string, T[]>);
-        // } else if (sortByKey === "room.name") {
-        //   nestedGroups = groups[level].reduce((acc, item) => {
-        //     const roomName = resolveKey(item, "room.name");
-        //     if (!acc[roomName]) acc[roomName] = [];
-        //     acc[roomName].push(item);
-        //     return acc;
-        //   }, {} as Record<string, T[]>);
-        // } else if (sortByKey === "instructor.name") {
-        //   nestedGroups = groups[level].reduce((acc, item) => {
-        //     const instructorName = resolveKey(item, "instructor.name");
-        //     if (!acc[instructorName]) acc[instructorName] = [];
-        //     acc[instructorName].push(item);
-        //     return acc;
-        //   }, {} as Record<string, T[]>);
-        // } else {
-        //   // FALLBACK: use the first column key
-        //   const fallbackKey = columns[0].key as string;
-        //   nestedGroups = groups[level].reduce((acc, item) => {
-        //     const key = resolveKey(item, fallbackKey);
-        //     if (!acc[key]) acc[key] = [];
-        //     acc[key].push(item);
-        //     return acc;
-        //   }, {} as Record<string, T[]>);
-        // }
 
         const fallbackKey = columns[0].key as string;
         const nestedGroups = groups[level].reduce((acc, item) => {
@@ -145,11 +124,7 @@ export async function xlsxExport<T>({
               fgColor: { argb: "FFF2CC" },
             };
 
-            worksheet.mergeCells(
-              `A${rowIndex}:${String.fromCharCode(
-                64 + columns.length
-              )}${rowIndex}`
-            );
+            worksheet.mergeCells(`A${rowIndex}:${lastColLetter}${rowIndex}`);
             rowIndex++;
 
             nestedGroups[sub].forEach((item) => {
@@ -181,8 +156,8 @@ export async function xlsxExport<T>({
     });
   }
 
-  // Add borders and alignments to all cells except the header’s fill area
-  worksheet.eachRow((row, rowNumber) => {
+  // Add borders and alignments to all cells
+  worksheet.eachRow((row) => {
     row.eachCell((cell) => {
       cell.border = {
         top: { style: "thin", color: { argb: "000000" } },
@@ -200,4 +175,14 @@ export async function xlsxExport<T>({
 
 function resolveKey(obj: any, keyPath: string): any {
   return keyPath.split(".").reduce((acc, key) => acc?.[key], obj) ?? "";
+}
+
+function columnNumberToName(num: number) {
+  let s = "";
+  while (num > 0) {
+    const mod = (num - 1) % 26;
+    s = String.fromCharCode(65 + mod) + s;
+    num = Math.floor((num - mod) / 26);
+  }
+  return s;
 }
