@@ -59,41 +59,118 @@ export async function xlsxExport<T>({
 
   if (groupBy) {
     const groups = processedData.reduce((acc, item) => {
-      const key = groupBy(item);
-      if (!acc[key]) acc[key] = [];
-      acc[key].push(item);
+      const groupKey = groupBy(item);
+      if (!acc[groupKey]) acc[groupKey] = [];
+      acc[groupKey].push(item);
       return acc;
     }, {} as Record<string, T[]>);
 
     let rowIndex = 2;
 
-    for (const [groupKey, items] of Object.entries(groups)) {
-      const groupRow = worksheet.addRow([groupKey]);
-      groupRow.font = { bold: true };
-      groupRow.alignment = { horizontal: "center" };
-      groupRow.getCell(1).fill = {
-        type: "pattern",
-        pattern: "solid",
-        fgColor: { argb: "FFE699" },
-      };
+    Object.keys(groups)
+      .sort()
+      .forEach((level) => {
+        const mainRow = worksheet.addRow([level]);
+        mainRow.font = { bold: true };
+        mainRow.alignment = { horizontal: "center" };
+        mainRow.getCell(1).fill = {
+          type: "pattern",
+          pattern: "solid",
+          fgColor: { argb: "FFD966" },
+        };
 
-      worksheet.mergeCells(
-        `A${rowIndex}:${String.fromCharCode(64 + columns.length)}${rowIndex}`
-      );
-      rowIndex++;
+        worksheet.mergeCells(
+          `A${rowIndex}:${String.fromCharCode(64 + columns.length)}${rowIndex}`
+        );
+        rowIndex++;
 
-      items.forEach((item) => {
-        const rowData: Record<string, any> = {};
-        columns.forEach((col) => {
-          rowData[col.key as string] = resolveKey(item, col.key as string);
-        });
-        worksheet.addRow(rowData);
+        // // second grouping inside each academic level
+        // const nestedGroups = groups[level].reduce((acc, item) => {
+        //   const sectionName = resolveKey(item, "section.name");
+        //   if (!acc[sectionName]) acc[sectionName] = [];
+        //   acc[sectionName].push(item);
+        //   return acc;
+        // }, {} as Record<string, T[]>);
+
+        // let nestedGroups: Record<string, T[]> = {};
+
+        // if (sortByKey === "section.name") {
+        //   nestedGroups = groups[level].reduce((acc, item) => {
+        //     const sectionName = resolveKey(item, "section.name");
+        //     if (!acc[sectionName]) acc[sectionName] = [];
+        //     acc[sectionName].push(item);
+        //     return acc;
+        //   }, {} as Record<string, T[]>);
+        // } else if (sortByKey === "room.name") {
+        //   nestedGroups = groups[level].reduce((acc, item) => {
+        //     const roomName = resolveKey(item, "room.name");
+        //     if (!acc[roomName]) acc[roomName] = [];
+        //     acc[roomName].push(item);
+        //     return acc;
+        //   }, {} as Record<string, T[]>);
+        // } else if (sortByKey === "instructor.name") {
+        //   nestedGroups = groups[level].reduce((acc, item) => {
+        //     const instructorName = resolveKey(item, "instructor.name");
+        //     if (!acc[instructorName]) acc[instructorName] = [];
+        //     acc[instructorName].push(item);
+        //     return acc;
+        //   }, {} as Record<string, T[]>);
+        // } else {
+        //   // FALLBACK: use the first column key
+        //   const fallbackKey = columns[0].key as string;
+        //   nestedGroups = groups[level].reduce((acc, item) => {
+        //     const key = resolveKey(item, fallbackKey);
+        //     if (!acc[key]) acc[key] = [];
+        //     acc[key].push(item);
+        //     return acc;
+        //   }, {} as Record<string, T[]>);
+        // }
+
+        const fallbackKey = columns[0].key as string;
+        const nestedGroups = groups[level].reduce((acc, item) => {
+          const key = resolveKey(item, fallbackKey);
+          if (!acc[key]) acc[key] = [];
+          acc[key].push(item);
+          return acc;
+        }, {} as Record<string, T[]>);
+
+        Object.keys(nestedGroups)
+          .sort()
+          .forEach((sub) => {
+            const subRow = worksheet.addRow([sub]);
+            subRow.font = { bold: true };
+            subRow.getCell(1).fill = {
+              type: "pattern",
+              pattern: "solid",
+              fgColor: { argb: "FFF2CC" },
+            };
+
+            worksheet.mergeCells(
+              `A${rowIndex}:${String.fromCharCode(
+                64 + columns.length
+              )}${rowIndex}`
+            );
+            rowIndex++;
+
+            nestedGroups[sub].forEach((item) => {
+              const rowData: Record<string, any> = {};
+              columns.forEach((col) => {
+                rowData[col.key as string] = resolveKey(
+                  item,
+                  col.key as string
+                );
+              });
+              worksheet.addRow(rowData);
+              rowIndex++;
+            });
+
+            worksheet.addRow([]);
+            rowIndex++;
+          });
+
+        worksheet.addRow([]);
         rowIndex++;
       });
-
-      worksheet.addRow([]);
-      rowIndex++;
-    }
   } else {
     processedData.forEach((item) => {
       const rowData: Record<string, any> = {};

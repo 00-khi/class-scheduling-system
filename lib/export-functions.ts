@@ -2,6 +2,8 @@ import { xlsxExport } from "./export-xlsx";
 import { AVAILABLE_DAYS, formatTime, toMinutes } from "./schedule-utils";
 
 export function exportSectionSchedule(data: any[]) {
+  console.log("section schedule data:", data);
+
   const sortedByDayAndTime = data.sort((a, b) => {
     const dayDiff =
       AVAILABLE_DAYS.indexOf(a.day) - AVAILABLE_DAYS.indexOf(b.day);
@@ -18,7 +20,14 @@ export function exportSectionSchedule(data: any[]) {
   xlsxExport({
     data: formatted,
     fileName: "Section-Schedules",
-    groupBy: (item) => item.section.name,
+    groupBy: (item) => {
+      const year = item.section.year;
+
+      if (year >= 7 && year <= 10) return "JHS";
+      if (year >= 11 && year <= 12) return "SHS";
+      return "TER";
+    },
+    sortByKey: "section.name",
     columns: [
       { header: "Section", key: "section.name", width: 15 },
       { header: "Subject", key: "subject.name", width: 35 },
@@ -36,6 +45,8 @@ export function exportSectionSchedule(data: any[]) {
 }
 
 export function exportRoomSchedule(data: any[]) {
+  console.log("room schedule data:", data);
+
   const sortedByDayAndTime = data.sort((a, b) => {
     const dayDiff =
       AVAILABLE_DAYS.indexOf(a.day) - AVAILABLE_DAYS.indexOf(b.day);
@@ -63,7 +74,8 @@ export function exportRoomSchedule(data: any[]) {
   xlsxExport({
     data: formatted,
     fileName: "Room-Schedules",
-    groupBy: (item) => item.room.name,
+    groupBy: (item) => item.room.type,
+    // sortByKey: "room.name",
     columns: [
       { header: "Room", key: "room.name", width: 15 },
       { header: "Day", key: "day", width: 15 },
@@ -81,6 +93,8 @@ export function exportRoomSchedule(data: any[]) {
 }
 
 export function exportInstructorSchedule(data: any[]) {
+  console.log("instructor schedule data:", data);
+
   const sortedByDayAndTime = data.sort((a, b) => {
     const dayDiff =
       AVAILABLE_DAYS.indexOf(a.scheduledSubject.day) -
@@ -116,6 +130,7 @@ export function exportInstructorSchedule(data: any[]) {
     data: formatted,
     fileName: "Instructor-Schedules",
     groupBy: (item) => item.instructor.name,
+    sortByKey: "instructor.name",
     columns: [
       { header: "Instructor", key: "instructor.name", width: 30 },
       { header: "Section", key: "scheduledSubject.section.name", width: 15 },
