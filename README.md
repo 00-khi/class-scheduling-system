@@ -12,6 +12,7 @@ Developed as a capstone project for **STI College Legazpi**.
 - TypeScript
 - Shadcn UI
 - SQLite
+- Prisma
 
 ---
 
