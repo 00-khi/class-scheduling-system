@@ -24,28 +24,22 @@ Developed as a capstone project for **STI College Legazpi**.
 
 ### Installation
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/khiancarasicas/class-scheduling-system.git
-   cd class-scheduling-system
-   ```
-
-2. **Install dependencies:**
+1. **Install dependencies:**
    ```bash
    pnpm install
    ```
 
-3. **Set up Prisma:**
+2. **Set up Prisma:**
    ```bash
    pnpm dlx prisma migrate dev --name init
    ```
 
-4. **Run the development server:**
+3. **Run the development server:**
    ```bash
    pnpm dev
    ```
 
-5. Open [http://localhost:3000](http://localhost:3000) in your browser.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
@@ -59,3 +53,22 @@ Developed as a capstone project for **STI College Legazpi**.
 
 **Client:**  
 STI College Legazpi
+
+---
+
+## License
+
+This project is **not open source**.
+
+The **Automated Class Scheduling System** was developed as part of a capstone project for **STI College Legazpi** and is protected under a **custom proprietary license**.
+
+The system is intended **only for academic demonstration and evaluation purposes**.
+Any **commercial use, reproduction, modification, or redistribution** is strictly prohibited **without written permission** from the development team.
+
+For full license details, refer to the [`LICENSE.md`](./LICENSE.md) file in this repository.
+
+---
+
+## Contact
+
+For questions or feedback, please contact the development team or STI College Legazpi
